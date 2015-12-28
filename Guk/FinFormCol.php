@@ -1,6 +1,7 @@
 <?php
 /**
  * create table fin_form_col (id int not null auto_increment primary key, form_id int not null, title varchar(100) not null default '', weight int not null default 0) DEFAULT CHARSET=utf8;
+ * alter table fin_form_col add column is_editable_by_vuz boolean default false;
  */
 
 namespace Guk;
@@ -18,6 +19,7 @@ class FinFormCol implements \Cebera\Model\InterfaceFactory
     public $form_id;
     public $title = '';
     public $weight = 0;
+    public $is_editable_by_vuz = false;
 
     public function getId(){
         return $this->id;
@@ -29,5 +31,9 @@ class FinFormCol implements \Cebera\Model\InterfaceFactory
 
     public function getTitle(){
         return $this->title;
+    }
+
+    public function getIsEditableByVuz(){
+        return $this->is_editable_by_vuz;
     }
 }

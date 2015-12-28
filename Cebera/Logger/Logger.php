@@ -41,15 +41,19 @@ class Logger implements
             $ip_address = $_SERVER['REMOTE_ADDR'];
         }
 
+        /*
         \Cebera\DB\DBWrapper::query(\Cebera\Constants::DB_NAME_PARKFACE,
             "INSERT INTO admin_log (user_id, http_auth_user_name, ts, ip, action, entity_id, object) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?)",
             array(self::currentUserId(), self::getCurrentUserHttpAuthName(), $ip_address, $action, $entity_id, $serialized_object)
         );
+        */
     }
 
     static public function currentUserId()
     {
-        $current_user_id = \Parkface\Helpers::getCurrentUserId();
+        //$current_user_id = \Parkface\Helpers::getCurrentUserId();
+        $current_user_id = '';
+
         if ($current_user_id == '') {
             return 0;
         }

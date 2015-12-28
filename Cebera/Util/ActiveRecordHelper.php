@@ -63,7 +63,7 @@ class ActiveRecordHelper
 
             $quoted_fields_to_save_arr = array();
             foreach (array_keys($fields_to_save_arr) as $field_name_to_save) {
-                $quoted_fields_to_save_arr[] = '"' . $field_name_to_save . '"';
+                $quoted_fields_to_save_arr[] = $field_name_to_save;
             }
 
             \Cebera\DB\DBWrapper::query(
@@ -81,7 +81,7 @@ class ActiveRecordHelper
             $placeholders_arr = array();
 
             foreach ($fields_to_save_arr as $field_name => $field_value) {
-                $placeholders_arr[] = '"' . $field_name . '"=?';
+                $placeholders_arr[] = $field_name . '=?';
             }
 
             $values_arr = array_values($fields_to_save_arr);

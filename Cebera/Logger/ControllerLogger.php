@@ -24,7 +24,7 @@ class ControllerLogger
             )
         );
 
-        echo \Cebera\Render::template2('Cebera/Admin/templates/layout.tpl.php', array(
+        echo \Cebera\Render::template2('Cebera/Admin/templates/guk_layout.tpl.php', array(
                 'title' => 'История "' . $logger_objs_id . '"',
                 'content' => $html
              )
@@ -53,7 +53,7 @@ class ControllerLogger
             return 'missing record';
         }
 
-        echo \Cebera\Render::template2('Cebera/Admin/templates/layout.tpl.php', array(
+        echo \Cebera\Render::template2('Cebera/Admin/templates/guk_layout.tpl.php', array(
                 'title' => 'Запись ' . $record_obj->ts,
                 'content' => $html,
                 'breadcrumbs_arr' => array('История' => '/admin2/logger/object_log/' . urlencode($record_obj->entity_id))

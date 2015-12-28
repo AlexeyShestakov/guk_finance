@@ -2,6 +2,7 @@
 
 /**
  * create table fin_form_row (id int not null auto_increment primary key, form_id int not null, weight int not null default 0) DEFAULT CHARSET=utf8;
+ * alter table fin_form_row add column limit_int int not null default 0;
  */
 
 namespace Guk;
@@ -15,12 +16,17 @@ class FinFormRow implements \Cebera\Model\InterfaceFactory
     const DB_ID = \Cebera\Conf::DB_NAME_GUK_FINANCE;
     const DB_TABLE_NAME = 'fin_form_row';
 
-    public $id = 0;
-    public $form_id;
-    public $weight = 0;
+    protected $id = 0;
+    protected $form_id;
+    protected $weight = 0;
+    protected $limit_int = 0;
 
     public function getId(){
         return $this->id;
+    }
+
+    public function getLimit(){
+        return $this->limit_int;
     }
 
     public function getFormId(){

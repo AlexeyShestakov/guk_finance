@@ -1,4 +1,4 @@
-<h1>Forms page</h1>
+<h1>Формы</h1>
 
 <table class="table">
 
@@ -12,7 +12,7 @@ $form_ids_arr = \Cebera\DB\DBWrapper::readColumn(
 foreach ($form_ids_arr as $form_id){
     $form_obj = \Guk\FinForm::factory($form_id);
 
-    echo '<tr><td>' . $form_obj->getComment() . '</td><td><a href="/finform/' . $form_obj->getId() . '">изменить</a></td></tr>';
+    echo '<tr><td><a href="/finform/' . $form_obj->getId() . '">' . \Cebera\Helpers::replaceEmptyValue($form_obj->getComment()) . '</a></td></tr>';
 }
 
 ?>

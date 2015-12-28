@@ -24,8 +24,28 @@ class FinFormCell implements \Cebera\Model\InterfaceFactory
         return $this->id;
     }
 
+    public function getRowId(){
+        return $this->row_id;
+    }
+
+    public function getColId(){
+        return $this->col_id;
+    }
+
+    public function setRowId($row_id){
+        $this->row_id = $row_id;
+    }
+
+    public function setColId($col_id){
+        $this->col_id = $col_id;
+    }
+
     public function getValue(){
         return $this->value;
+    }
+
+    public function setValue($value){
+        $this->value = $value;
     }
 
     // TODO: move to factory

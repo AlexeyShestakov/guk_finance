@@ -4,6 +4,14 @@ namespace Cebera;
 
 class Helpers
 {
+    static public function replaceEmptyValue($value){
+        if (empty($value)){
+            return 'пустое_значение';
+        }
+
+        return $value;
+    }
+
     static public function implode_intval($glue, $pieces)
     {
         $intval_arr = array();

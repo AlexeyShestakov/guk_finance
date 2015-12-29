@@ -12,6 +12,7 @@ $form_obj = \Guk\FinForm::factory($form_id);
 <ul class="nav nav-tabs">
     <li role="presentation"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormPageUrl($form_obj->getId()); ?>">Поля</a></li>
     <li role="presentation" class="active"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormParamsPageUrl($form_obj->getId()); ?>">Параметры</a></li>
+    <li role="presentation"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormViewUrl($form_obj->getId()); ?>">Просмотр</a></li>
 </ul>
 
 <div>&nbsp;</div>

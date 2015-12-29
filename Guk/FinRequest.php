@@ -34,6 +34,15 @@ class FinRequest implements \Cebera\Model\InterfaceFactory
     public $fin_form_id;
     public $status_code = 0;
 
+    public function logChange($info, $comment = ''){
+        $log_obj = new \Guk\FinRequestLog();
+        $log_obj->setRequestId($this->getId());
+        $log_obj->setCreatedAtTs(time());
+        $log_obj->setChangeInfo($info);
+        $log_obj->setComment($comment);
+        $log_obj->save();
+    }
+
     static public function getStatusStrForCode($code){
         $status_arr = [
             0 => 'не указан',

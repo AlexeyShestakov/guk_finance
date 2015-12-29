@@ -34,8 +34,16 @@ class FinRequestCell implements \Cebera\Model\InterfaceFactory
         $this->value = $value;
     }
 
+    public function getFinRequestId(){
+        return $this->fin_request_id;
+    }
+
     public function setFinRequestId($fin_request_id){
         $this->fin_request_id = $fin_request_id;
+    }
+
+    public function getRowId(){
+        return $this->row_id;
     }
 
     public function setRowId($row_id){

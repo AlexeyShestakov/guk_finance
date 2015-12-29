@@ -62,6 +62,24 @@ class ControllerVuz
         echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
     }
 
+    static public function getFinRequestPrintUrl($request_id){
+        return '/vuz/finrequest/' . $request_id . '/print';
+    }
+
+    public function finRequestPrintAction($request_id){
+        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_request_print.tpl.php", array('request_id' => $request_id));
+        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+    }
+
+    static public function getFinRequestUploadUrl($request_id){
+        return '/vuz/finrequest/' . $request_id . '/upload';
+    }
+
+    public function finRequestUploadAction($request_id){
+        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_request_upload.tpl.php", array('request_id' => $request_id));
+        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+    }
+
     static public function getFinRequestFillUrl($request_id){
         return '/vuz/finrequest/' . $request_id . '/fill';
     }
@@ -88,9 +106,31 @@ class ControllerVuz
                     $request_cell_obj->save();
                 }
             }
+
+            if ($_POST['a'] == 'set_request_status_code'){
+
+                $status_code = $_POST['status_code'];
+                $request_obj = \Guk\FinRequest::factory($request_id);
+
+                $old_status_code = $request_obj->getStatusCode();
+
+                $request_obj->setStatusCode($status_code);
+                $request_obj->save();
+
+                $request_obj->logChange('ВУЗ изменил статус заявки с "' . \Guk\FinRequest::getStatusStrForCode($old_status_code) . '" на "' . \Guk\FinRequest::getStatusStrForCode($status_code) . '"".');
+            }
         }
 
         $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_request_fill_page.tpl.php", array('request_id' => $request_id));
+        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+    }
+
+    static public function getFinRequestHistoryUrl($request_id){
+        return '/vuz/finrequest/' . $request_id . '/history';
+    }
+
+    public function finRequestHistoryAction($request_id){
+        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_request_history.tpl.php", array('request_id' => $request_id));
         echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
     }
 }

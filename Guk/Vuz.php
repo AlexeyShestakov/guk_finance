@@ -31,7 +31,7 @@ class Vuz implements \Cebera\Model\InterfaceFactory
     public function getFinRequestIdsArrByCreatedAtDesc(){
         $fin_request_ids_arr = \Cebera\DB\DBWrapper::readColumn(
             \Cebera\Conf::DB_NAME_GUK_FINANCE,
-            'select id from fin_request where vuz_id = ?',
+            'select id from fin_request where vuz_id = ? order by created_at_ts desc',
             array($this->getId())
         );
 

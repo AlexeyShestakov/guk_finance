@@ -1,3 +1,3 @@
-<p>GUK MAIN PAGE</p>
+<?php
 
-<p><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Fin forms</a></p>
+\Cebera\Helpers::redirect(\Guk\FinFormsPage\ControllerFinFormsPage::getFinRequestsUrl());

@@ -46,6 +46,10 @@ class FinForm implements \Cebera\Model\InterfaceFactory
         return $this->created_at_ts;
     }
 
+    public function setCreatedAtTs($created_at_ts){
+        $this->created_at_ts = $created_at_ts;
+    }
+
     public function getCreatedByUserId(){
         return $this->created_by_user_id;
     }

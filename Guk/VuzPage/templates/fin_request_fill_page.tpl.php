@@ -18,10 +18,22 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
 <ul class="nav nav-tabs">
     <li role="presentation" class="active"><a href="<?php echo \Guk\VuzPage\ControllerVuz::getFinRequestFillUrl($request_obj->getId()); ?>">Заполнение</a></li>
     <li role="presentation"><a href="<?php echo \Guk\VuzPage\ControllerVuz::getFinRequestEditUrl($request_obj->getId()); ?>">Параметры</a></li>
-    <li role="presentation"><a href="#">Обоснование</a></li>
+    <li role="presentation"><a href="<?= \Guk\VuzPage\ControllerVuz::getFinRequestUploadUrl($request_obj->getId()) ?>">Обоснование</a></li>
+    <li role="presentation"><a href="<?= \Guk\VuzPage\ControllerVuz::getFinRequestHistoryUrl($request_obj->getId()) ?>">История</a></li>
+    <li role="presentation"><a href="<?= \Guk\VuzPage\ControllerVuz::getFinRequestPrintUrl($request_obj->getId()) ?>">Печать</a></li>
 </ul>
 
-<table class="table table-bordered table-condensed">
+<div>&nbsp;</div>
+
+<?php
+
+if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
+    echo '<div class="alert alert-info" role="alert">Заявка находится на утверждении в ГУК, изменение данных запрещено.</div>';
+}
+
+?>
+
+<table class="table table-bordered table-condensed table-striped">
 
     <?php
 
@@ -54,19 +66,24 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
                 }
 
                 echo '<td>';
-                echo '<form method="post" action="/vuz/finrequest/' . $request_obj->getId() . '/fill">';
-                echo '<input type="hidden" name="a" value="set_value"/>';
-                echo '<input type="hidden" name="row_id" value="' . $row_obj->getId() . '"/>';
-                echo '<input type="hidden" name="col_id" value="' . $col_obj->getId() . '"/>';
-                echo '<input name="value" style="width: 100%; border: 0px; border-bottom: 1px solid #222;" value="' . $cell_value . '"/></form>';
+
+                if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_DRAFT ){
+                    echo '<form method="post" action="' . \Guk\VuzPage\ControllerVuz::getFinRequestFillUrl($request_obj->getId()) . '">';
+                    echo '<input type="hidden" name="a" value="set_value"/>';
+                    echo '<input type="hidden" name="row_id" value="' . $row_obj->getId() . '"/>';
+                    echo '<input type="hidden" name="col_id" value="' . $col_obj->getId() . '"/>';
+                    echo '<input name="value" style="width: 100%; border: 0px; border-bottom: 1px solid #222;" value="' . $cell_value . '"/></form>';
+                } else {
+                    echo $cell_value;
+                }
+
+
                 echo '</td>';
             } else {
-                $cell_value = $row_obj->getId() . '-' . $col_obj->getId();
                 $cell_obj = \Guk\FinFormCell::getObjForRowAndCol($row_obj->getId(), $col_obj->getId());
 
                 if ($cell_obj){
-                    $cell_value = $cell_obj->getValue();
-                    echo '<td>' . $cell_value . '</td>';
+                    echo '<td>' . $cell_obj->getValue() . '</td>';
                 } else {
                     echo '<td></td>';
                 }
@@ -82,3 +99,24 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
     ?>
 
 </table>
+
+<div>
+
+    <?php
+
+    if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_DRAFT) {
+        echo '<form style="display: inline;" method="post" action="' . \Guk\VuzPage\ControllerVuz::getFinRequestFillUrl($request_obj->getId()) . '">';
+        echo '<input type="hidden" name="a" value="set_request_status_code"/>';
+        echo '<input type="hidden" name="status_code" value="' . \Guk\FinRequest::STATUS_IN_GUK_REWIEW . '"/>';
+        echo '<input type="submit" class="btn btn-default btn-primary" value="Отправить в ГУК"/>';
+        echo '</form>&nbsp;';
+
+        echo '<form style="display: inline;" method="post" action="' . \Guk\VuzPage\ControllerVuz::getFinRequestFillUrl($request_obj->getId()) . '">';
+        echo '<input type="hidden" name="a" value="set_request_status_code"/>';
+        echo '<input type="hidden" name="status_code" value="' . \Guk\FinRequest::STATUS_DISCARDED_BY_VUZ . '"/>';
+        echo '<input type="submit" class="btn btn-default btn-danger" value="Отменить заявку"/>';
+        echo '</form>';
+    }
+
+    ?>
+</div>

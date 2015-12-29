@@ -1,6 +1,12 @@
 <h1>Формы</h1>
 
 <table class="table">
+    <thead>
+    <tr>
+        <th>Форма</th>
+        <th><span class="glyphicon glyphicon-arrow-down"></span> Дата создания</th>
+    </tr>
+    </thead>
 
 <?php
 
@@ -12,7 +18,15 @@ $form_ids_arr = \Cebera\DB\DBWrapper::readColumn(
 foreach ($form_ids_arr as $form_id){
     $form_obj = \Guk\FinForm::factory($form_id);
 
-    echo '<tr><td><a href="/finform/' . $form_obj->getId() . '">' . \Cebera\Helpers::replaceEmptyValue($form_obj->getComment()) . '</a></td></tr>';
+    $row_classes = '';
+    if ($form_obj->isCurrent()){
+        $row_classes .= ' success ';
+    }
+
+    echo '<tr class="' . $row_classes . '">';
+    echo '<td><a href="/finform/' . $form_obj->getId() . '">' . \Cebera\Helpers::replaceEmptyValue($form_obj->getComment()) . '</a></td>';
+    echo '<td>' . date('d.m.Y', $form_obj->getCreatedAtTs()) . '</td>';
+    echo '</tr>';
 }
 
 ?>

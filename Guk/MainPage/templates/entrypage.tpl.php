@@ -31,14 +31,18 @@
 
 <body>
 
-<div class="container">
+<div class="container" style="margin-top: 70px;">
 
-    <!-- Main component for a primary marketing message or call to action -->
-    <div class="jumbotron">
+    <div style="text-align: center;" >
 
-        <p><a href="/guk">ENTER AS GUK</a></p>
-        <p><a href="/vuz">ENTER AS VUZ</a></p>
+        <h2 style="padding-bottom: 30px;">Финансовое планирование</h2>
 
+        <form action="/" method="post" style="max-width: 330px; margin: 0 auto;">
+            <input type="hidden" name="a" value="login">
+            <div><input class="form-control" name="user_name" placeholder="Имя пользователя"/></div>
+            <div><input class="form-control" name="password" placeholder="Пароль"/></div>
+            <div><input class="form-control btn btn-primary" type="submit" value="Войти"/></div>
+        </form>
 
     </div>
 

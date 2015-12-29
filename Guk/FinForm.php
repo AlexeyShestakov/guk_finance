@@ -2,6 +2,7 @@
 
 /**
  * create table fin_form (id int not null auto_increment primary key, created_at_ts int not null default 0, created_by_user_id int not null default 0, comment text not null default '')  DEFAULT CHARSET=utf8;
+ * alter table fin_form add column is_current boolean default false;
  */
 
 namespace Guk;
@@ -15,10 +16,11 @@ class FinForm implements \Cebera\Model\InterfaceFactory
     const DB_ID = \Cebera\Conf::DB_NAME_GUK_FINANCE;
     const DB_TABLE_NAME = 'fin_form';
 
-    public $id = 0;
-    public $created_at_ts = 0;
-    public $created_by_user_id = 0;
-    public $comment = '';
+    protected $id = 0;
+    protected $created_at_ts = 0;
+    protected $created_by_user_id = 0;
+    protected $comment = '';
+    protected $is_current = false;
 
     public function getId(){
         return $this->id;
@@ -26,6 +28,26 @@ class FinForm implements \Cebera\Model\InterfaceFactory
 
     public function getComment(){
         return $this->comment;
+    }
+
+    public function setComment($comment){
+        $this->comment = $comment;
+    }
+
+    public function isCurrent(){
+        return $this->is_current;
+    }
+
+    public function setIsCurrent($is_current){
+        $this->is_current = $is_current;
+    }
+
+    public function getCreatedAtTs(){
+        return $this->created_at_ts;
+    }
+
+    public function getCreatedByUserId(){
+        return $this->created_by_user_id;
     }
 
     public function getColIdsArrByWeight(){

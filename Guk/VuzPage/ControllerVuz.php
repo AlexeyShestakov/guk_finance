@@ -35,7 +35,7 @@ class ControllerVuz
         echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
     }
 
-    public function getFinRequestEditUrl($request_id){
+    static public function getFinRequestEditUrl($request_id){
         return '/vuz/finrequest/' . $request_id;
     }
 
@@ -62,7 +62,7 @@ class ControllerVuz
         echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
     }
 
-    public function getFinRequestFillUrl($request_id){
+    static public function getFinRequestFillUrl($request_id){
         return '/vuz/finrequest/' . $request_id . '/fill';
     }
 

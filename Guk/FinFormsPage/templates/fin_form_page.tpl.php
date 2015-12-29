@@ -16,8 +16,10 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
 
 <ul class="nav nav-tabs">
     <li role="presentation" class="active"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormPageUrl($form_obj->getId()); ?>">Поля</a></li>
-    <li role="presentation"><a href="#">Параметры</a></li>
+    <li role="presentation"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormParamsPageUrl($form_obj->getId()); ?>">Параметры</a></li>
 </ul>
+
+<div>&nbsp;</div>
 
 <table class="table table-bordered table-condensed">
 
@@ -76,3 +78,8 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
     ?>
 
 </table>
+
+<div>
+    <a href="" class="btn btn-default" role="button">Добавить строку</a>
+    <a href="" class="btn btn-default" role="button">Добавить колонку</a>
+</div>

@@ -13,6 +13,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 \Cebera\Router::match('@^/finform/(\d+)$@', array('\Guk\FinFormsPage\ControllerFinFormsPage', 'finFormPageAction'), 0);
 \Cebera\Router::match('@^/guk/requests$@', array('\Guk\FinFormsPage\ControllerFinFormsPage', 'finRequestsPageAction'), 0);
 \Cebera\Router::match('@^/guk/finrequest/(\d+)$@', array('\Guk\FinFormsPage\ControllerFinFormsPage', 'finRequestPageAction'), 0);
+\Cebera\Router::match('@^' . \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormParamsPageUrl('(\d+)') . '$@', array('\Guk\FinFormsPage\ControllerFinFormsPage', 'finFormParamsAction'), 0);
 
 \Cebera\Router::match('@^/vuz$@', array('\Guk\VuzPage\ControllerVuz', 'vuzPageAction'), 0);
 \Cebera\Router::match('@^/vuz/finrequest$@', array('\Guk\VuzPage\ControllerVuz', 'finRequestAddAction'), 0);

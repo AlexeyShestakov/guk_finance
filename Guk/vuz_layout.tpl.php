@@ -49,6 +49,9 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/vuz">Заявки</a></li>
                 </ul>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/vuz/payments">Платежи</a></li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Михаил Платонов (академия РВСН)</a></li>
                     <li><a href="#">выйти</a></li>

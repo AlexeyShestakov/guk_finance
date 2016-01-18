@@ -4,6 +4,75 @@ namespace Guk\VuzPage;
 
 class ControllerVuz
 {
+    static public function paymentsPageUrl(){
+        return '/vuz/payments';
+    }
+
+    public function paymentsPageAction(){
+        $vuz_id = 1; // TODO: get from account
+        $content = \Cebera\Render\Render::callLocaltemplate("templates/payments_page.tpl.php", array('vuz_id' => $vuz_id));
+        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+    }
+
+    static public function requestPaymentsPageUrl($request_id){
+        return '/vuz/finrequest/' . $request_id . '/payments';
+    }
+
+    public function requestPaymentsPageAction($request_id){
+        $vuz_id = 1; // TODO: get from account
+
+        if (array_key_exists('a', $_GET)) {
+            if ($_GET['a'] == 'add_payment') {
+                $payment_obj = new \Guk\VuzPayment();
+                $payment_obj->setTitle('Новый платеж');
+                $payment_obj->setVuzId($vuz_id);
+                $payment_obj->setCreatedAtTs(time());
+                $payment_obj->setRequestId($request_id);
+
+                $payment_obj->save();
+
+                //\Cebera\Helpers::redirect('/vuz/finrequest/' . $request_obj->getId() . '/fill');
+            }
+        }
+
+        $content = \Cebera\Render\Render::callLocaltemplate("templates/request_payments_page.tpl.php", array('vuz_id' => $vuz_id, 'request_id' => $request_id));
+        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+    }
+
+    static public function addPaymentToRequestUrl($request_id){
+        return self::requestPaymentsPageUrl($request_id) . '?a=add_payment';
+    }
+
+    public function paymentAddAction(){
+        $vuz_id = 1; // TODO: get from account
+
+        /*
+        if (array_key_exists('a', $_POST)) {
+            if ($_POST['a'] == 'add_request') {
+                $title = $_POST['title'];
+                $fin_form_id = $_POST['fin_form_id'];
+
+                $request_obj = new \Guk\FinRequest;
+                $request_obj->setTitle($title);
+                $request_obj->setVuzId($vuz_id);
+                $request_obj->setCreatedAtTs(time());
+                $request_obj->setFinFormId($fin_form_id);
+                $request_obj->setStatusCode(\Guk\FinRequest::STATUS_DRAFT);
+
+                $request_obj->save();
+
+                \Cebera\Helpers::redirect('/vuz/finrequest/' . $request_obj->getId() . '/fill');
+            }
+        }
+        */
+
+        $content = \Cebera\Render\Render::callLocaltemplate("templates/payment_add.tpl.php");
+        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+    }
+
+
+
+
     public function vuzPageAction(){
         $vuz_id = 1; // TODO: get from account
         $content = \Cebera\Render\Render::callLocaltemplate("templates/vuz_page.tpl.php", array('vuz_id' => $vuz_id));

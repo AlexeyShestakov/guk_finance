@@ -37,4 +37,14 @@ class Vuz implements \Cebera\Model\InterfaceFactory
 
         return $fin_request_ids_arr;
     }
+
+    public function getPaymentIdsArrByCreatedAtDesc(){
+        $payment_ids_arr = \Cebera\DB\DBWrapper::readColumn(
+            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+            'select id from ' . \Guk\VuzPayment::DB_TABLE_NAME. ' where vuz_id = ? order by created_at_ts desc',
+            array($this->getId())
+        );
+
+        return $payment_ids_arr;
+    }
 }

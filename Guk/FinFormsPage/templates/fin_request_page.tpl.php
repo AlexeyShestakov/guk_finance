@@ -29,6 +29,12 @@ if (!$requested_sum_col_id){
 
 <h1><a href="<?= \Guk\FinFormsPage\ControllerFinFormsPage::getFinRequestsUrl() ?>">Заявки</a> / <?= $request_obj->getTitle() ?></h1>
 
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinRequestUrl($request_obj->getId()); ?>">Данные</a></li>
+    <li role="presentation"><a href="">История</a></li>
+    <li role="presentation"><a href="<?= \Guk\FinFormsPage\ControllerFinFormsPage::requestPaymentsUrl($request_id); ?>">Платежи</a></li>
+</ul>
+
 <div>&nbsp;</div>
 
 <table class="table table-bordered table-condensed table-striped">

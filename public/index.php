@@ -18,6 +18,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 \Cebera\Router::match('@^/guk/finrequest/(\d+)$@', array('\Guk\FinFormsPage\ControllerFinFormsPage', 'finRequestPageAction'), 0);
 \Cebera\Router::match('@^' . \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormParamsPageUrl('(\d+)') . '$@', array('\Guk\FinFormsPage\ControllerFinFormsPage', 'finFormParamsAction'), 0);
 \Cebera\Router::match('@^' . \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormViewUrl('(\d+)') . '$@', array('\Guk\FinFormsPage\ControllerFinFormsPage', 'finFormViewAction'), 0);
+\Cebera\Router::match('@^' . \Guk\FinFormsPage\ControllerFinFormsPage::requestPaymentsUrl('(\d+)') . '$@', array('\Guk\FinFormsPage\ControllerFinFormsPage', 'requestPaymentsAction'), 0);
+\Cebera\Router::match('@^' . \Guk\FinFormsPage\ControllerFinFormsPage::paymentUrl('(\d+)') . '$@', array('\Guk\FinFormsPage\ControllerFinFormsPage', 'paymentAction'), 0);
+\Cebera\Router::match('@^' . \Guk\FinFormsPage\ControllerFinFormsPage::paymentsUrl() . '$@', array('\Guk\FinFormsPage\ControllerFinFormsPage', 'paymentsAction'), 0);
 
 \Cebera\Router::match('@^/guk/report/kbk$@', array('\Guk\FinFormsPage\ControllerFinFormsPage', 'kbkReportAction'), 0);
 

@@ -4,6 +4,65 @@ namespace Guk\FinFormsPage;
 
 class ControllerFinFormsPage
 {
+    static public function paymentsUrl($payment_id){
+        return '/guk/payments';
+    }
+
+    public function paymentsAction($payment_id){
+        $content = \Cebera\Render\Render::callLocaltemplate("templates/payments.tpl.php");
+        echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
+    }
+
+
+    static public function paymentUrl($payment_id){
+        return '/guk/payments/' . $payment_id;
+    }
+
+    public function paymentAction($payment_id){
+        if (array_key_exists('a', $_POST)){
+            if ($_POST['a'] == 'edit_payment'){
+                $title = $_POST['title'];
+
+                $payment_obj = \Guk\VuzPayment::factory($payment_id);
+
+                $payment_obj->setTitle($title);
+                $payment_obj->save();
+            }
+        }
+
+        $content = \Cebera\Render\Render::callLocaltemplate("templates/payment.tpl.php", array('payment_id' => $payment_id));
+        echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
+    }
+
+    static public function addPaymentToRequestUrl($request_id){
+        return self::requestPaymentsUrl($request_id) . '?a=add_payment';
+    }
+
+    static public function requestPaymentsUrl($request_id){
+        return self::getFinRequestUrl($request_id) . '/payments';
+    }
+
+    public function requestPaymentsAction($request_id){
+        if (array_key_exists('a', $_GET)) {
+            if ($_GET['a'] == 'add_payment') {
+                $request_obj = \Guk\FinRequest::factory($request_id);
+
+                $payment_obj = new \Guk\VuzPayment();
+                $payment_obj->setTitle('Новый платеж');
+                $payment_obj->setVuzId($request_obj->getVuzId());
+                $payment_obj->setCreatedAtTs(time());
+                $payment_obj->setRequestId($request_id);
+
+                $payment_obj->save();
+
+                //\Cebera\Helpers::redirect('/vuz/finrequest/' . $request_obj->getId() . '/fill');
+            }
+        }
+
+        $content = \Cebera\Render\Render::callLocaltemplate("templates/request_payments_page.tpl.php", array('request_id' => $request_id));
+        echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
+    }
+
     public function kbkReportAction(){
         $content = \Cebera\Render\Render::callLocaltemplate("templates/kbk_report.tpl.php");
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));

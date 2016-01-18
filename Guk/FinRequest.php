@@ -108,4 +108,15 @@ class FinRequest implements \Cebera\Model\InterfaceFactory
     public function setFinFormId($fin_form_id){
         $this->fin_form_id = $fin_form_id;
     }
+
+    public function getPaymentIdsArrByCreatedAtDesc(){
+        $payment_ids_arr = \Cebera\DB\DBWrapper::readColumn(
+            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+            'select id from ' . \Guk\VuzPayment::DB_TABLE_NAME. ' where fin_request_id = ? order by created_at_ts desc',
+            array($this->getId())
+        );
+
+        return $payment_ids_arr;
+    }
+
 }

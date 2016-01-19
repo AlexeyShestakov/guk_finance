@@ -9,6 +9,7 @@
     <thead>
     <tr>
         <th>Заявка</th>
+        <th>Сумма</th>
         <th><span class="glyphicon glyphicon-arrow-down"></span> Дата создания</th>
         <th>Статус</th>
     </tr>
@@ -23,7 +24,9 @@
 
         echo '<tr>';
         echo '<td><a href="' . \Guk\FinFormsPage\ControllerFinFormsPage::paymentUrl($payment_obj->getId()) . '">' . \Cebera\Helpers::replaceEmptyValue($payment_obj->getTitle()) . '</a></td>';
+        echo '<td>' . $payment_obj->getAmountRub() . '</td>';
         echo '<td>' . date('d.m.Y', $payment_obj->getCreatedAtTs()) . '</td>';
+        echo '<td>' . \Guk\VuzPayment::getStatusStrForCode($payment_obj->getStatusCode()) . '</td>';
         echo '</tr>';
     }
 

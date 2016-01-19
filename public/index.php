@@ -33,6 +33,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 \Cebera\Router::match('@^' . \Guk\VuzPage\ControllerVuz::getFinRequestUploadUrl('(\d+)') . '$@', array('\Guk\VuzPage\ControllerVuz', 'finRequestUploadAction'), 0);
 \Cebera\Router::match('@^' . \Guk\VuzPage\ControllerVuz::requestPaymentsPageUrl('(\d+)') . '$@', array('\Guk\VuzPage\ControllerVuz', 'requestPaymentsPageAction'), 0);
 \Cebera\Router::match('@^' . \Guk\VuzPage\ControllerVuz::paymentsPageUrl() . '$@', array('\Guk\VuzPage\ControllerVuz', 'paymentsPageAction'), 0);
+\Cebera\Router::match('@^' . \Guk\VuzPage\ControllerVuz::paymentUrl('(\d+)') . '$@', array('\Guk\VuzPage\ControllerVuz', 'paymentPageAction'), 0);
 
 
 // support for local php server (php -S) - tells local server to return static files

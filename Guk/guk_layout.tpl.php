@@ -64,7 +64,8 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Отчеты <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/guk/report/kbk">По КБК</a></li>
+                            <li><a href="/guk/report/kbk">Для текущей формы по КБК</a></li>
+                            <li><a href="/guk/report/current_form_payments">Платежи для текущей формы</a></li>
                         </ul>
                     </li>
                     <li><a href="<?= \Guk\FinFormsPage\ControllerFinFormsPage::paymentsUrl(); ?>">Платежи</a></li>

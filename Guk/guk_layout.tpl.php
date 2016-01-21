@@ -76,6 +76,7 @@ $cccn = \Cebera\Router::getCurrentControllerClassName();
                         </ul>
                     </li>
                     <li <?php if ($cccn == '\Guk\GukPages\ControllerPayments'){echo ' class="active" ';} ?> ><a href="<?= \Guk\GukPages\ControllerPayments::paymentsUrl(); ?>">Платежи</a></li>
+                    <li <?php if ($cccn == '\Guk\GukPages\ControllerDFO'){echo ' class="active" ';} ?> ><a href="<?= \Guk\GukPages\ControllerDFO::dfoUrl(); ?>">ДФО</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Логинов Олег</a></li>

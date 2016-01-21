@@ -34,6 +34,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 \Cebera\Router::match('@^' . \Guk\GukPages\ControllerReports::reportsByVuzUrl() . '$@', array('\Guk\GukPages\ControllerReports', 'reportsByVuzAction'), 0);
 
+\Cebera\Router::match('@^' . \Guk\GukPages\ControllerDFO::dfoUrl() . '$@', array('\Guk\GukPages\ControllerDFO', 'dfoAction'), 0);
+\Cebera\Router::match('@^' . \Guk\GukPages\ControllerDFO::dfoGenerateUrl() . '$@', array('\Guk\GukPages\ControllerDFO', 'dfoGenerateAction'), 0);
+
 \Cebera\Router::match('@^/vuz$@', array('\Guk\VuzPage\ControllerVuz', 'vuzPageAction'), 0);
 \Cebera\Router::match('@^/vuz/finrequest$@', array('\Guk\VuzPage\ControllerVuz', 'finRequestAddAction'), 0);
 \Cebera\Router::match('@^/vuz/finrequest/(\d+)$@', array('\Guk\VuzPage\ControllerVuz', 'finRequestEditAction'), 0);

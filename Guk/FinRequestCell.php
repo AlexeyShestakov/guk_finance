@@ -2,6 +2,7 @@
 
 /**
  * create table fin_request_cell (id int not null auto_increment primary key, fin_request_id int not null, col_id int not null, row_id int not null, value varchar(255) not null default '') default charset = utf8;
+ * alter table fin_request_cell ADD COLUMN corrected_value varchar(255) not null default '';
  */
 
 namespace Guk;
@@ -21,6 +22,7 @@ class FinRequestCell implements \Cebera\Model\InterfaceFactory
     protected $row_id;
     protected $col_id;
     protected $value = '';
+    protected $corrected_value = '';
 
     public function getId(){
         return $this->id;
@@ -32,6 +34,14 @@ class FinRequestCell implements \Cebera\Model\InterfaceFactory
 
     public function setValue($value){
         $this->value = $value;
+    }
+
+    public function getCorrectedValue(){
+        return $this->corrected_value;
+    }
+
+    public function setCorrectedValue($corrected_value){
+        $this->corrected_value = $corrected_value;
     }
 
     public function getFinRequestId(){
@@ -58,7 +68,7 @@ class FinRequestCell implements \Cebera\Model\InterfaceFactory
     /**
      * @param $row_id
      * @param $col_id
-     * @return \Guk\FinFormCell|null
+     * @return \Guk\FinRequestCell|null
      */
     static public function getObjForRequestAndRowAndCol($fin_request_id, $row_id, $col_id){
         $cell_id = \Cebera\DB\DBWrapper::readField(\Cebera\Conf::DB_NAME_GUK_FINANCE,

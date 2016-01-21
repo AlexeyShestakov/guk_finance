@@ -72,8 +72,10 @@ if (!$requested_sum_col_id){
                 $request_cell_obj = \Guk\FinRequestCell::getObjForRequestAndRowAndCol($request_id, $row_id, $col_id);
                 if ($request_cell_obj){
                     $cell_value = $request_cell_obj->getValue();
+                    $corrected_value = $request_cell_obj->getCorrectedValue();
+
                     echo '<td class="text-right"><small><b>';
-                    echo '<a href="#" onclick="$(\'#request_cell_id\').val(\'' . $request_cell_obj->getId() . '\'); $(\'#editValueModal_value\').val(\'' . $cell_value . '\'); $(\'#editValueModal\').modal();">' . $cell_value . '</a>';
+                    echo '<a href="#" onclick="$(\'#request_cell_id\').val(\'' . $request_cell_obj->getId() . '\'); $(\'#editValueModal_value\').val(\'' . $cell_value . '\'); $(\'#editValueModal_corrected_value\').val(\'' . $corrected_value . '\'); $(\'#editValueModal\').modal();">' . $cell_value . '<br>' . $corrected_value . '</a>';
                     echo '</b></small></td>';
                     $cols_count++;
                 } else {
@@ -126,7 +128,7 @@ if (!$requested_sum_col_id){
         $cols_count++;
 
         $row_extras_htmlid = 'request_' . $request_id . '_row_' . $row_obj->getId() . '_extras';
-        echo '<td style="text-align: center;"><small><a href="#" class="glyphicon glyphicon-tasks" onclick="$(\'#' . $row_extras_htmlid  . '\').slideToggle(0);"></a></small></td>';
+        echo '<td style="text-align: center;"><small><a href="#" class="glyphicon glyphicon-tasks" onclick="$(\'#' . $row_extras_htmlid  . '\').slideToggle(0); return false;"></a></small></td>';
         $cols_count++;
 
         echo '</tr>';
@@ -202,10 +204,13 @@ if (!$requested_sum_col_id){
                     <h4 class="modal-title" id="myModalLabel">Изменение значения</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Введите новое значение.</p>
-                    <div><input class="form-control" id="editValueModal_value" name="value" placeholder="Значение"></div>
+                    <p>Запрошенное значение:</p>
+                    <div><input class="form-control" id="editValueModal_value" name="value" placeholder="Значение" disabled></div>
                     <div>&nbsp;</div>
-                    <p>Опишите причину изменения значения.</p>
+                    <p>Введите скорректированное значение:</p>
+                    <div><input class="form-control" id="editValueModal_corrected_value" name="corrected_value" placeholder="Значение"></div>
+                    <div>&nbsp;</div>
+                    <p>Опишите причину изменения значения:</p>
                     <div><input class="form-control" id="editValueModal_value" name="comment" placeholder="Комментарий"></div>
                 </div>
                 <div class="modal-footer">

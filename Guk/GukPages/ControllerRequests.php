@@ -33,13 +33,13 @@ class ControllerRequests
 
             if ($_POST['a'] == 'set_request_cell_value'){
                 $request_cell_id = $_POST['request_cell_id'];
-                $value = $_POST['value'];
+                $corrected_value = $_POST['corrected_value'];
                 $comment = $_POST['comment'];
                 $request_cell_obj = \Guk\FinRequestCell::factory($request_cell_id);
 
                 $old_cell_value = $request_cell_obj->getValue();
 
-                $request_cell_obj->setValue($value);
+                $request_cell_obj->setCorrectedValue($corrected_value);
                 $request_cell_obj->save();
 
                 $request_obj = \Guk\FinRequest::factory($request_id);
@@ -47,7 +47,7 @@ class ControllerRequests
                 $row_obj = \Guk\FinFormRow::factory($row_id);
 
                 $request_obj->logChange(
-                    'ГУК изменил значение поля заявки с "' . $old_cell_value . '" на "' . $value . '"" в строке "' . $row_obj->getWeight() . '".',
+                    'ГУК изменил значение поля заявки с "' . $old_cell_value . '" на "' . $corrected_value . '"" в строке "' . $row_obj->getWeight() . '".',
                     $comment
                 );
             }

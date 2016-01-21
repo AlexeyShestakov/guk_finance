@@ -95,7 +95,7 @@ if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
 
         $row_extras_htmlid = 'request_' . $request_id . '_row_' . $row_obj->getId() . '_extras';
 
-        echo '<td style="text-align: center;"><small><a href="#" class="glyphicon glyphicon-tasks" onclick="$(\'#' . $row_extras_htmlid  . '\').slideToggle(0);"></a></small></td>';
+        echo '<td style="text-align: center;"><small><a href="#" class="glyphicon glyphicon-tasks" onclick="$(\'#' . $row_extras_htmlid  . '\').slideToggle(0); return false;"></a></small></td>';
         $cols_count++;
 
         echo '</tr>';

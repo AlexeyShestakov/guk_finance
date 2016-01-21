@@ -10,11 +10,11 @@ $form_obj = \Guk\FinForm::factory($form_id);
 
 ?>
 
-<h1><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Формы</a> / <a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormPageUrl($form_id); ?>"><?php echo \Cebera\Helpers::replaceEmptyValue($form_obj->getComment()); ?></a> / Строка</h1>
+<h1><a href="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Формы</a> / <a href="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormPageUrl($form_id); ?>"><?php echo \Cebera\Helpers::replaceEmptyValue($form_obj->getComment()); ?></a> / Строка</h1>
 
 <div>&nbsp;</div>
 
-<form class="form-horizontal" method="post" action="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormRowUrl($row_obj->getId()); ?>">
+<form class="form-horizontal" method="post" action="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormRowUrl($row_obj->getId()); ?>">
     <input type="hidden" name="a" value="edit_row">
 
     <div class="form-group">

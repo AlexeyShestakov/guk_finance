@@ -7,17 +7,13 @@ $form_obj = \Guk\FinForm::factory($form_id);
 
 ?>
 
-<h1><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Формы</a> / <?php echo \Cebera\Helpers::replaceEmptyValue($form_obj->getComment()); ?></h1>
+<h1><a href="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Формы</a> / <?php echo \Cebera\Helpers::replaceEmptyValue($form_obj->getComment()); ?></h1>
 
-<ul class="nav nav-tabs">
-    <li role="presentation"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormPageUrl($form_obj->getId()); ?>">Поля</a></li>
-    <li role="presentation" class="active"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormParamsPageUrl($form_obj->getId()); ?>">Параметры</a></li>
-    <li role="presentation"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormViewUrl($form_obj->getId()); ?>">Просмотр</a></li>
-</ul>
+<?php echo \Cebera\Render\Render::callLocaltemplate('form_tabs.tpl.php', array('form_id' => $form_id)); ?>
 
 <div>&nbsp;</div>
 
-<form class="form-horizontal" method="post" action="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormParamsPageUrl($form_obj->getId()); ?>">
+<form class="form-horizontal" method="post" action="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormParamsPageUrl($form_obj->getId()); ?>">
     <input type="hidden" name="a" value="edit_form">
 
     <div class="form-group">

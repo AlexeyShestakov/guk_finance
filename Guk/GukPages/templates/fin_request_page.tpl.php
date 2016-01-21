@@ -27,12 +27,12 @@ if (!$requested_sum_col_id){
 
 ?>
 
-<h1><a href="<?= \Guk\FinFormsPage\ControllerFinFormsPage::getFinRequestsUrl() ?>">Заявки</a> / <?= $request_obj->getTitle() ?></h1>
+<h1><a href="<?= \Guk\GukPages\ControllerRequests::getFinRequestsUrl() ?>">Заявки</a> / <?= $request_obj->getTitle() ?></h1>
 
 <ul class="nav nav-tabs">
-    <li role="presentation" class="active"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinRequestUrl($request_obj->getId()); ?>">Данные</a></li>
+    <li role="presentation" class="active"><a href="<?php echo \Guk\GukPages\ControllerRequests::getFinRequestUrl($request_obj->getId()); ?>">Данные</a></li>
     <li role="presentation"><a href="">История</a></li>
-    <li role="presentation"><a href="<?= \Guk\FinFormsPage\ControllerFinFormsPage::requestPaymentsUrl($request_id); ?>">Платежи</a></li>
+    <li role="presentation"><a href="<?= \Guk\GukPages\ControllerRequests::requestPaymentsUrl($request_id); ?>">Платежи</a></li>
 </ul>
 
 <div>&nbsp;</div>
@@ -148,7 +148,7 @@ if (!$requested_sum_col_id){
 <div class="modal fade" id="editValueModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" action="<?= \Guk\FinFormsPage\ControllerFinFormsPage::getFinRequestUrl($request_obj->getId()) ?>">
+            <form method="post" action="<?= \Guk\GukPages\ControllerRequests::getFinRequestUrl($request_obj->getId()) ?>">
                 <input type="hidden" name="a" value="set_request_cell_value"/>
                 <input type="hidden" id="request_cell_id" name="request_cell_id" value=""/>
                 <div class="modal-header">
@@ -175,7 +175,7 @@ if (!$requested_sum_col_id){
 <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" action="<?= \Guk\FinFormsPage\ControllerFinFormsPage::getFinRequestUrl($request_obj->getId()) ?>">
+            <form method="post" action="<?= \Guk\GukPages\ControllerRequests::getFinRequestUrl($request_obj->getId()) ?>">
                 <input type="hidden" name="a" value="set_request_status_code"/>
                 <input type="hidden" name="status_code" value="<?= \Guk\FinRequest::STATUS_REJECTED_BY_GUK ?>"/>
                 <div class="modal-header">
@@ -198,7 +198,7 @@ if (!$requested_sum_col_id){
 <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" action="<?= \Guk\FinFormsPage\ControllerFinFormsPage::getFinRequestUrl($request_obj->getId()) ?>">
+            <form method="post" action="<?= \Guk\GukPages\ControllerRequests::getFinRequestUrl($request_obj->getId()) ?>">
                 <input type="hidden" name="a" value="set_request_status_code"/>
                 <input type="hidden" name="status_code" value="<?= \Guk\FinRequest::STATUS_APPROVED_BY_GUK ?>"/>
                 <div class="modal-header">

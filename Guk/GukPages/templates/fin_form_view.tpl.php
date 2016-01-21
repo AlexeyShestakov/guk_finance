@@ -1,22 +1,17 @@
 <?php
-/*
-
-$form_id
-
-*/
+/**
+ * @var $form_id
+ */
 
 $form_obj = \Guk\FinForm::factory($form_id);
 
 ?>
 
-<h1><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Формы</a>
+<h1><a href="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Формы</a>
     / <?php echo \Cebera\Helpers::replaceEmptyValue($form_obj->getComment()); ?></h1>
 
-<ul class="nav nav-tabs">
-    <li role="presentation"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormPageUrl($form_obj->getId()); ?>">Поля</a></li>
-    <li role="presentation"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormParamsPageUrl($form_obj->getId()); ?>">Параметры</a></li>
-    <li role="presentation" class="active"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormViewUrl($form_obj->getId()); ?>">Просмотр</a></li>
-</ul>
+<?php echo \Cebera\Render\Render::callLocaltemplate('form_tabs.tpl.php', array('form_id' => $form_id)); ?>
+
 
 <div>&nbsp;</div>
 
@@ -32,15 +27,15 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
     <?php
 
     echo '<thead><tr>';
-    echo '<th>-</th>';
+    echo '<th style="text-align: center;">№</th>';
 
     foreach ($col_ids_arr as $col_id) {
         $col_obj = \Guk\FinFormCol::factory($col_id);
 
-        echo '<th>' . \Cebera\Helpers::replaceEmptyValue($col_obj->getTitle()) . '</th>';
+        echo '<th style="text-align: center;"><small>' . \Cebera\Helpers::replaceEmptyValue($col_obj->getTitle()) . '</small></th>';
     }
 
-    echo '<th>Лимит</th>';
+    echo '<th style="text-align: center;"><small>Лимит (тыс. руб.)</small></th>';
 
     echo '</tr></thead>';
 
@@ -55,7 +50,7 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
         }
 
         echo '<tr>';
-        echo '<td>' . \Cebera\Helpers::replaceEmptyValue($row_obj->getWeight()) . '</td>';
+        echo '<td style="text-align: right;"><small>' . \Cebera\Helpers::replaceEmptyValue($row_obj->getWeight()) . '</small></td>';
 
         foreach ($col_ids_arr as $col_id) {
             $col_obj = \Guk\FinFormCol::factory($col_id);
@@ -65,7 +60,7 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
             }
 
             if ($col_obj->getIsEditableByVuz()) {
-                echo '<td>для вуза</td>';
+                echo '<td style="text-align: center;"><small>-</small></td>';
             } else {
 
                 $cell_value = '';
@@ -75,15 +70,16 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
                     $cell_value = $cell_obj->getValue();
                 }
 
-                echo '<td>';
+                echo '<td style="text-align: center;"><small>';
                 echo $cell_value;
-                echo '</td>';
+                echo '</small></td>';
 
             }
 
         }
 
-        echo '<td>' . $row_obj->getLimit() . '</td>';
+        $limit_str = number_format ( floatval($row_obj->getLimit()), 0 , "." , " " );
+        echo '<td style="text-align: right;"><small>' . $limit_str . '</small></td>';
         echo '</tr>';
     }
 
@@ -91,3 +87,7 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
     ?>
 
 </table>
+
+<div>
+    <button type="button" class="btn btn-default">Скачать файл xls</button>
+</div>

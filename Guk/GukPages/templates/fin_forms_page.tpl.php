@@ -1,4 +1,4 @@
-<h1>Формы <a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormAddPageUrl(); ?>">+</a></h1>
+<h1>Формы <a href="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormAddPageUrl(); ?>">+</a></h1>
 
 <table class="table">
     <thead>
@@ -12,7 +12,7 @@
 
 $form_ids_arr = \Cebera\DB\DBWrapper::readColumn(
     \Cebera\Conf::DB_NAME_GUK_FINANCE,
-    'select id from ' . \Guk\FinForm::DB_TABLE_NAME . ' order by created_at_ts desc'
+    'select id from ' . \Guk\FinForm::DB_TABLE_NAME . ' where is_hidden = 0 order by created_at_ts desc'
 );
 
 foreach ($form_ids_arr as $form_id){

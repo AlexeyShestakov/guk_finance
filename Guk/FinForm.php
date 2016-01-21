@@ -21,6 +21,7 @@ class FinForm implements \Cebera\Model\InterfaceFactory
     protected $created_by_user_id = 0;
     protected $comment = '';
     protected $is_current = false;
+    protected $is_hidden = false;
 
     public function getId(){
         return $this->id;
@@ -40,6 +41,14 @@ class FinForm implements \Cebera\Model\InterfaceFactory
 
     public function setIsCurrent($is_current){
         $this->is_current = $is_current;
+    }
+
+    public function isHidden(){
+        return $this->is_hidden;
+    }
+
+    public function setIsHidden($is_hidden){
+        $this->is_hidden = $is_hidden;
     }
 
     public function getCreatedAtTs(){

@@ -26,6 +26,12 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
 
 <div>&nbsp;</div>
 
+<div>
+    <button class="btn btn-default">Скачать шаблон обоснования</button>
+</div>
+
+<div>&nbsp;</div>
+
 <form class="form-horizontal" method="post" action="/vuz/finrequest/<?php echo $request_obj->getId() ?>">
     <input type="hidden" name="a" value="edit_request">
 
@@ -38,7 +44,7 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default" <?php if ($request_obj->getStatusCode() != \Guk\FinRequest::STATUS_DRAFT){ echo ' disabled '; } ?>>Закачать</button>
+            <button type="submit" class="form-control btn btn-primary" <?php if ($request_obj->getStatusCode() != \Guk\FinRequest::STATUS_DRAFT){ echo ' disabled '; } ?>>Закачать</button>
         </div>
     </div>
 

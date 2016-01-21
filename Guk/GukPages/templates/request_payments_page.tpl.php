@@ -7,17 +7,17 @@ $request_obj = \Guk\FinRequest::factory($request_id);
 
 ?>
 
-<h1><a href="<?= \Guk\FinFormsPage\ControllerFinFormsPage::getFinRequestsUrl() ?>">Заявки</a> / <?= $request_obj->getTitle() ?></h1>
+<h1><a href="<?= \Guk\GukPages\ControllerRequests::getFinRequestsUrl() ?>">Заявки</a> / <?= $request_obj->getTitle() ?></h1>
 
 <ul class="nav nav-tabs">
-    <li role="presentation"><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinRequestUrl($request_obj->getId()); ?>">Данные</a></li>
+    <li role="presentation"><a href="<?php echo \Guk\GukPages\ControllerRequests::getFinRequestUrl($request_obj->getId()); ?>">Данные</a></li>
     <li role="presentation"><a href="">История</a></li>
-    <li role="presentation" class="active"><a href="<?= \Guk\FinFormsPage\ControllerFinFormsPage::requestPaymentsUrl($request_id); ?>">Платежи</a></li>
+    <li role="presentation" class="active"><a href="<?= \Guk\GukPages\ControllerRequests::requestPaymentsUrl($request_id); ?>">Платежи</a></li>
 </ul>
 
 <div>&nbsp;</div>
 
-<div><a class="btn btn-primary" href="<?= \Guk\FinFormsPage\ControllerFinFormsPage::addPaymentToRequestUrl($request_id) ?>">Добавить платеж</a></div>
+<div><a class="btn btn-primary" href="<?= \Guk\GukPages\ControllerRequests::addPaymentToRequestUrl($request_id) ?>">Добавить платеж</a></div>
 
 <table class="table">
 
@@ -38,7 +38,7 @@ $request_obj = \Guk\FinRequest::factory($request_id);
         $payment_obj = \Guk\VuzPayment::factory($payment_id);
 
         echo '<tr>';
-        echo '<td><a href="' . \Guk\FinFormsPage\ControllerFinFormsPage::paymentUrl($payment_obj->getId()) . '">' . \Cebera\Helpers::replaceEmptyValue($payment_obj->getTitle()) . '</a></td>';
+        echo '<td><a href="' . \Guk\GukPages\ControllerPayments::paymentUrl($payment_obj->getId()) . '">' . \Cebera\Helpers::replaceEmptyValue($payment_obj->getTitle()) . '</a></td>';
         echo '<td>' . $payment_obj->getAmountRub() . '</td>';
         echo '<td>' . date('d.m.Y', $payment_obj->getCreatedAtTs()) . '</td>';
         echo '<td>' . \Guk\VuzPayment::getStatusStrForCode($payment_obj->getStatusCode()) . '</td>';

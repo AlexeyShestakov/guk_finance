@@ -31,6 +31,12 @@
 
 <body>
 
+<?php
+
+$cccn = \Cebera\Router::getCurrentControllerClassName();
+
+?>
+
 <div class="container">
 
     <!-- Static navbar -->
@@ -47,8 +53,8 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="<?php echo \Guk\FinFormsPage\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Формы</a></li>
-                    <li class="active"><a href="/guk/requests">Заявки</a></li>
+                    <li <?php if ($cccn == '\Guk\GukPages\ControllerFinFormsPage'){echo ' class="active" ';} ?>><a href="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Формы</a></li>
+                    <li <?php if ($cccn == '\Guk\GukPages\ControllerRequests'){echo ' class="active" ';} ?> ><a href="/guk/requests">Заявки</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Справочники <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -68,11 +74,11 @@
                             <li><a href="/guk/report/current_form_payments">Платежи для текущей формы</a></li>
                         </ul>
                     </li>
-                    <li><a href="<?= \Guk\FinFormsPage\ControllerFinFormsPage::paymentsUrl(); ?>">Платежи</a></li>
+                    <li <?php if ($cccn == '\Guk\GukPages\ControllerPayments'){echo ' class="active" ';} ?> ><a href="<?= \Guk\GukPages\ControllerPayments::paymentsUrl(); ?>">Платежи</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Логинов Олег</a></li>
-                    <li><a href="#">выйти</a></li>
+                    <li><a href="/">выйти</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->

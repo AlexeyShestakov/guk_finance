@@ -16,7 +16,7 @@ $vuz_obj = \Guk\Vuz::factory($vuz_id);
     <thead>
     <tr>
         <th>Заявка</th>
-        <th><span class="glyphicon glyphicon-arrow-down"></span> Дата создания</th>
+        <th><span class="glyphicon glyphicon-sort-by-attributes-alt"></span> Дата создания</th>
         <th>Статус</th>
     </tr>
     </thead>

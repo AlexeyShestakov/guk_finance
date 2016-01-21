@@ -39,14 +39,15 @@ if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
     <?php
 
     echo '<thead><tr>';
-    echo '<th>-</th>';
+    echo '<th><small>№</small></th>';
 
     foreach ($col_ids_arr as $col_id){
         $col_obj = \Guk\FinFormCol::factory($col_id);
 
-        echo '<th><small>' . $col_obj->getTitle() . '</small></th>';
+        echo '<th style="text-align: center;"><small>' . $col_obj->getTitle() . '</small></th>';
     }
 
+    echo '<th style="text-align: center;"><small>Детали</small></th>';
     echo '</tr></thead>';
 
     foreach ($row_ids_arr as $row_id){
@@ -84,7 +85,7 @@ if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
                 $cell_obj = \Guk\FinFormCell::getObjForRowAndCol($row_obj->getId(), $col_obj->getId());
 
                 if ($cell_obj){
-                    echo '<td>' . $cell_obj->getValue() . '</td>';
+                    echo '<td style="text-align: center;"><small>' . $cell_obj->getValue() . '</small></td>';
                 } else {
                     echo '<td></td>';
                 }
@@ -93,6 +94,7 @@ if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
 
         }
 
+        echo '<td style="text-align: center;"><small><span class="glyphicon glyphicon-list"></span></small></td>';
         echo '</tr>';
     }
 

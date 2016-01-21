@@ -54,7 +54,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Михаил Платонов (академия РВСН)</a></li>
-                    <li><a href="#">выйти</a></li>
+                    <li><a href="/">выйти</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->

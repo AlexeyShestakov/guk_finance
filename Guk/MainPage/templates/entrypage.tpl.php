@@ -41,6 +41,7 @@
             <input type="hidden" name="a" value="login">
             <div><input class="form-control" name="user_name" placeholder="Имя пользователя"/></div>
             <div><input class="form-control" name="password" placeholder="Пароль"/></div>
+            <div>&nbsp;</div>
             <div><input class="form-control btn btn-primary" type="submit" value="Войти"/></div>
         </form>
 

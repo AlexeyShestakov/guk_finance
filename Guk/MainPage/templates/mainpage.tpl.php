@@ -1,3 +1,3 @@
 <?php
 
-\Cebera\Helpers::redirect(\Guk\FinFormsPage\ControllerFinFormsPage::getFinRequestsUrl());
+\Cebera\Helpers::redirect(\Guk\GukPages\ControllerRequests::getFinRequestsUrl());

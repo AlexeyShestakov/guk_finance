@@ -7,11 +7,11 @@ $payment_obj = \Guk\VuzPayment::factory($payment_id);
 
 ?>
 
-<h1><a href="<?php echo \Guk\VuzPage\ControllerVuz::paymentsPageUrl(); ?>">Платежи</a> / <?php echo \Cebera\Helpers::replaceEmptyValue($payment_obj->getTitle()); ?></h1>
+<h1><a href="<?php echo \Guk\VuzPage\ControllerPayments::paymentsPageUrl(); ?>">Платежи</a> / <?php echo \Cebera\Helpers::replaceEmptyValue($payment_obj->getTitle()); ?></h1>
 
 <div>&nbsp;</div>
 
-<form class="form-horizontal" method="post" action="<?php echo \Guk\VuzPage\ControllerVuz::paymentUrl($payment_obj->getId()); ?>">
+<form class="form-horizontal" method="post" action="<?php echo \Guk\VuzPage\ControllerPayments::paymentUrl($payment_obj->getId()); ?>">
     <input type="hidden" name="a" value="edit_payment">
 
     <div class="form-group">
@@ -60,7 +60,7 @@ $payment_obj = \Guk\VuzPayment::factory($payment_id);
 <div class="modal fade" id="paymentReceived" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" action="<?= \Guk\VuzPage\ControllerVuz::paymentUrl($payment_obj->getId()) ?>">
+            <form method="post" action="<?= \Guk\VuzPage\ControllerPayments::paymentUrl($payment_obj->getId()) ?>">
                 <input type="hidden" name="a" value="set_payment_status_code"/>
                 <input type="hidden" name="status_code" value="<?= \Guk\VuzPayment::STATUS_RECEIVED_BY_VUZ ?>"/>
                 <div class="modal-header">

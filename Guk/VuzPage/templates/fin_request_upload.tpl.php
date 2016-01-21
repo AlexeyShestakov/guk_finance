@@ -15,19 +15,12 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
 
 <h1><a href="/vuz">Заявки</a> / <?php echo \Cebera\Helpers::replaceEmptyValue($request_obj->getTitle()); ?></h1>
 
-<ul class="nav nav-tabs">
-    <li role="presentation"><a href="<?php echo \Guk\VuzPage\ControllerVuz::getFinRequestFillUrl($request_obj->getId()); ?>">Заполнение</a></li>
-    <li role="presentation"><a href="<?php echo \Guk\VuzPage\ControllerVuz::getFinRequestEditUrl($request_obj->getId()); ?>">Параметры</a></li>
-    <li role="presentation" class="active"><a href="<?= \Guk\VuzPage\ControllerVuz::getFinRequestUploadUrl($request_obj->getId()) ?>">Обоснование</a></li>
-    <li role="presentation"><a href="<?= \Guk\VuzPage\ControllerVuz::getFinRequestHistoryUrl($request_obj->getId()) ?>">История</a></li>
-    <li role="presentation"><a href="<?= \Guk\VuzPage\ControllerVuz::getFinRequestPrintUrl($request_obj->getId()) ?>">Печать</a></li>
-    <li role="presentation"><a href="<?= \Guk\VuzPage\ControllerVuz::requestPaymentsPageUrl($request_obj->getId()) ?>">Платежи</a></li>
-</ul>
+<?php echo \Cebera\Render\Render::callLocaltemplate('request_tabs.tpl.php', array("request_id" => $request_id)); ?>
 
 <div>&nbsp;</div>
 
 <div>
-    <button class="btn btn-default">Скачать шаблон обоснования</button>
+    <button class="btn btn-default "><span class="glyphicon glyphicon-save-file"></span> Скачать шаблон обоснования</button>
 </div>
 
 <div>&nbsp;</div>

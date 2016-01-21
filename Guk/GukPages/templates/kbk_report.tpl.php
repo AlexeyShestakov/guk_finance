@@ -30,8 +30,8 @@ if (!$requested_sum_col_id){
 
 //echo '<p>requested_sum_col_id: ' . $requested_sum_col_id . '</p>';
 
-echo '<table class="table table-condensed table-bordered table-striped"><thead>';
-echo '<tr>';
+echo '<table class="table table-condensed table-bordered table-striped">';
+echo '<thead><tr>';
 echo '<th>№</th>';
 echo '<th>КБК</th>';
 echo '<th>Лимит</th>';

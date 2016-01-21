@@ -37,7 +37,7 @@ if (!$requested_sum_col_id){
 
 <div>&nbsp;</div>
 
-<table class="table table-bordered table-condensed table-striped">
+<table class="table table-bordered table-condensed">
 
     <?php
 
@@ -47,20 +47,21 @@ if (!$requested_sum_col_id){
     foreach ($col_ids_arr as $col_id){
         $col_obj = \Guk\FinFormCol::factory($col_id);
 
-        echo '<th>' . mb_substr($col_obj->getTitle(), 0, 4) . '...</th>';
+        echo '<th class="text-center"><small>' . $col_obj->getTitle() . '</small></th>';
     }
 
-    echo '<th>Лимит</th>';
-    echo '<th>Всего запрошено</th>';
-    echo '<th>Всего одобрено</th>';
+    echo '<th class="text-center"><small>Лимит/<br>Запрошено/<br>Одобрено</small></th>';
+    echo '<th class="text-center"><small>Детали</small></th>';
 
     echo '</tr></thead>';
 
     foreach ($row_ids_arr as $row_id){
         $row_obj = \Guk\FinFormRow::factory($row_id);
+        $cols_count = 0;
 
         echo '<tr>';
         echo '<td>' . $row_obj->getId() . '</td>';
+        $cols_count++;
 
         foreach ($col_ids_arr as $col_id){
             $col_obj = \Guk\FinFormCol::factory($col_id);
@@ -71,29 +72,31 @@ if (!$requested_sum_col_id){
                 $request_cell_obj = \Guk\FinRequestCell::getObjForRequestAndRowAndCol($request_id, $row_id, $col_id);
                 if ($request_cell_obj){
                     $cell_value = $request_cell_obj->getValue();
-                    echo '<td><b>';
+                    echo '<td class="text-right"><small><b>';
                     echo '<a href="#" onclick="$(\'#request_cell_id\').val(\'' . $request_cell_obj->getId() . '\'); $(\'#editValueModal_value\').val(\'' . $cell_value . '\'); $(\'#editValueModal\').modal();">' . $cell_value . '</a>';
-                    echo '</b></td>';
+                    echo '</b></small></td>';
+                    $cols_count++;
                 } else {
-                    echo '<td></td>';
+                    echo '<td><small></small></td>';
+                    $cols_count++;
                 }
-
             } else {
                 $cell_value = $row_obj->getId() . '-' . $col_obj->getId();
                 $cell_obj = \Guk\FinFormCell::getObjForRowAndCol($row_obj->getId(), $col_obj->getId());
 
                 if ($cell_obj){
                     $cell_value = $cell_obj->getValue();
-                    echo '<td>' . $cell_value . '</td>';
+                    echo '<td class="text-center"><small>' . $cell_value . '</small></td>';
+                    $cols_count++;
                 } else {
-                    echo '<td></td>';
+                    echo '<td><small></small></td>';
+                    $cols_count++;
                 }
 
             }
 
         }
 
-        echo '<td>' . $row_obj->getLimit() . '</td>';
 
         $requested_sum = 0;
         $approved_sum = 0;
@@ -119,11 +122,54 @@ if (!$requested_sum_col_id){
             }
         }
 
-        echo '<td>' . $requested_sum . '</td>';
-        echo '<td>' . $approved_sum . '</td>';
+        echo '<td class="text-right"><small>' . number_format(floatval($row_obj->getLimit()), 0, '.', ' ') . '<br>' . number_format(floatval($requested_sum), 0, '.', ' ') . '<br>' . number_format(floatval($approved_sum), 0, '.', ' ') . '</small></td>';
+        $cols_count++;
 
+        $row_extras_htmlid = 'request_' . $request_id . '_row_' . $row_obj->getId() . '_extras';
+        echo '<td style="text-align: center;"><small><a href="#" class="glyphicon glyphicon-tasks" onclick="$(\'#' . $row_extras_htmlid  . '\').slideToggle(0);"></a></small></td>';
+        $cols_count++;
 
         echo '</tr>';
+
+        $details_table_htmlid = 'request_' . $request_id . '_details_table_for_row_' . $row_obj->getId();
+        echo '<tr style="display: none;" id="' . $row_extras_htmlid . '">';
+        echo '<td style="background-color: #ddd;" colspan="' . $cols_count . '">';
+        echo '<table id="' . $details_table_htmlid . '"  class="table table-bordered table-condensed">';
+        echo '<thead><tr>';
+
+        $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrById();
+        foreach ($detail_column_ids_arr as $detail_column_id){
+            $detail_column_obj = \Guk\DetailColumn::factory($detail_column_id);
+            echo '<th class="text-center"><small>' . $detail_column_obj->getTitle() . '</small></th>';
+        }
+
+        echo '</thead>';
+
+        $detail_row_ids_arr = \Guk\DetailRow::getDetailRowIdsArrForRequestAndFormRowById($request_id, $row_id);
+        foreach ($detail_row_ids_arr as $detail_row_id){
+            $detail_row_obj = \Guk\DetailRow::factory($detail_row_id);
+
+            $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrById();
+
+            echo '<tr>';
+            foreach ($detail_column_ids_arr as $detail_column_id) {
+                $detail_column_obj = \Guk\DetailColumn::factory($detail_column_id);
+
+                $detail_value = '';
+                $detail_cell_obj = \Guk\DetailCell::getObjForRowAndCol($detail_row_id, $detail_column_id);
+                if ($detail_cell_obj) {
+                    $detail_value = $detail_cell_obj->getValue();
+                }
+
+                echo '<td><small>' . $detail_value . '</small></td>';
+            }
+
+            echo '</tr>';
+        }
+
+        echo '</table>';
+
+        echo '</td></tr>';
     }
 
 

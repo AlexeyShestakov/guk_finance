@@ -27,7 +27,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 \Cebera\Router::match('@^' . \Guk\GukPages\ControllerPayments::paymentUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerPayments', 'paymentAction'), 0);
 \Cebera\Router::match('@^' . \Guk\GukPages\ControllerPayments::paymentsUrl() . '$@', array('\Guk\GukPages\ControllerPayments', 'paymentsAction'), 0);
 
+\Cebera\Router::match('@^' . \Guk\VuzPage\ControllerAjax::appendDetailUrl() . '$@', array('\Guk\VuzPage\ControllerAjax', 'appendDetailAction'), 0);
+\Cebera\Router::match('@^' . \Guk\VuzPage\ControllerAjax::saveDetailUrl() . '$@', array('\Guk\VuzPage\ControllerAjax', 'saveDetailAction'), 0);
+
 \Cebera\Router::match('@^/guk/report/kbk$@', array('\Guk\GukPages\ControllerFinFormsPage', 'kbkReportAction'), 0);
+
+\Cebera\Router::match('@^' . \Guk\GukPages\ControllerReports::reportsByVuzUrl() . '$@', array('\Guk\GukPages\ControllerReports', 'reportsByVuzAction'), 0);
 
 \Cebera\Router::match('@^/vuz$@', array('\Guk\VuzPage\ControllerVuz', 'vuzPageAction'), 0);
 \Cebera\Router::match('@^/vuz/finrequest$@', array('\Guk\VuzPage\ControllerVuz', 'finRequestAddAction'), 0);
@@ -37,8 +42,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 \Cebera\Router::match('@^' . \Guk\VuzPage\ControllerVuz::getFinRequestPrintUrl('(\d+)') . '$@', array('\Guk\VuzPage\ControllerVuz', 'finRequestPrintAction'), 0);
 \Cebera\Router::match('@^' . \Guk\VuzPage\ControllerVuz::getFinRequestUploadUrl('(\d+)') . '$@', array('\Guk\VuzPage\ControllerVuz', 'finRequestUploadAction'), 0);
 \Cebera\Router::match('@^' . \Guk\VuzPage\ControllerVuz::requestPaymentsPageUrl('(\d+)') . '$@', array('\Guk\VuzPage\ControllerVuz', 'requestPaymentsPageAction'), 0);
-\Cebera\Router::match('@^' . \Guk\VuzPage\ControllerVuz::paymentsPageUrl() . '$@', array('\Guk\VuzPage\ControllerVuz', 'paymentsPageAction'), 0);
-\Cebera\Router::match('@^' . \Guk\VuzPage\ControllerVuz::paymentUrl('(\d+)') . '$@', array('\Guk\VuzPage\ControllerVuz', 'paymentPageAction'), 0);
+
+\Cebera\Router::match('@^' . \Guk\VuzPage\ControllerPayments::paymentsPageUrl() . '$@', array('\Guk\VuzPage\ControllerPayments', 'paymentsPageAction'), 0);
+\Cebera\Router::match('@^' . \Guk\VuzPage\ControllerPayments::paymentUrl('(\d+)') . '$@', array('\Guk\VuzPage\ControllerPayments', 'paymentPageAction'), 0);
 
 
 // support for local php server (php -S) - tells local server to return static files

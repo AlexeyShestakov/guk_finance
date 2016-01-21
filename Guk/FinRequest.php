@@ -109,6 +109,16 @@ class FinRequest implements \Cebera\Model\InterfaceFactory
         $this->fin_form_id = $fin_form_id;
     }
 
+    static public function getRequestIdsArrForFormByCreatedAtDesc($form_id){
+        $requests_ids_arr = \Cebera\DB\DBWrapper::readColumn(
+            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+            'select id from ' . \Guk\FinRequest::DB_TABLE_NAME. ' where fin_form_id = ? order by created_at_ts desc',
+            array($form_id)
+        );
+
+        return $requests_ids_arr;
+    }
+
     public function getPaymentIdsArrByCreatedAtDesc(){
         $payment_ids_arr = \Cebera\DB\DBWrapper::readColumn(
             \Cebera\Conf::DB_NAME_GUK_FINANCE,

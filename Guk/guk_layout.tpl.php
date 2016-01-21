@@ -53,7 +53,7 @@ $cccn = \Cebera\Router::getCurrentControllerClassName();
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li <?php if ($cccn == '\Guk\GukPages\ControllerFinFormsPage'){echo ' class="active" ';} ?>><a href="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Формы</a></li>
+                    <li <?php if ($cccn == '\Guk\GukPages\ControllerFinFormsPage'){echo ' class="active" ';} ?> ><a href="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Формы</a></li>
                     <li <?php if ($cccn == '\Guk\GukPages\ControllerRequests'){echo ' class="active" ';} ?> ><a href="/guk/requests">Заявки</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Справочники <span class="caret"></span></a>
@@ -67,11 +67,12 @@ $cccn = \Cebera\Router::getCurrentControllerClassName();
                             <li><a href="#">One more separated link</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
+                    <li  <?php if ($cccn == '\Guk\GukPages\ControllerReports'){echo ' class="active" ';} ?> class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Отчеты <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/guk/report/kbk">Для текущей формы по КБК</a></li>
                             <li><a href="/guk/report/current_form_payments">Платежи для текущей формы</a></li>
+                            <li><a href="<?= \Guk\GukPages\ControllerReports::reportsByVuzUrl(); ?>">Заявки по ВУЗам для текущей формы</a></li>
                         </ul>
                     </li>
                     <li <?php if ($cccn == '\Guk\GukPages\ControllerPayments'){echo ' class="active" ';} ?> ><a href="<?= \Guk\GukPages\ControllerPayments::paymentsUrl(); ?>">Платежи</a></li>

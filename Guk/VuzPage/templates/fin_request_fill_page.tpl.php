@@ -15,14 +15,7 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
 
 <h1><a href="/vuz">Заявки</a> / <?php echo \Cebera\Helpers::replaceEmptyValue($request_obj->getTitle()); ?></h1>
 
-<ul class="nav nav-tabs">
-    <li role="presentation" class="active"><a href="<?php echo \Guk\VuzPage\ControllerVuz::getFinRequestFillUrl($request_obj->getId()); ?>">Заполнение</a></li>
-    <li role="presentation"><a href="<?php echo \Guk\VuzPage\ControllerVuz::getFinRequestEditUrl($request_obj->getId()); ?>">Параметры</a></li>
-    <li role="presentation"><a href="<?= \Guk\VuzPage\ControllerVuz::getFinRequestUploadUrl($request_obj->getId()) ?>">Обоснование</a></li>
-    <li role="presentation"><a href="<?= \Guk\VuzPage\ControllerVuz::getFinRequestHistoryUrl($request_obj->getId()) ?>">История</a></li>
-    <li role="presentation"><a href="<?= \Guk\VuzPage\ControllerVuz::getFinRequestPrintUrl($request_obj->getId()) ?>">Печать</a></li>
-    <li role="presentation"><a href="<?= \Guk\VuzPage\ControllerVuz::requestPaymentsPageUrl($request_obj->getId()) ?>">Платежи</a></li>
-</ul>
+<?php echo \Cebera\Render\Render::callLocaltemplate('request_tabs.tpl.php', array("request_id" => $request_id)); ?>
 
 <div>&nbsp;</div>
 
@@ -34,7 +27,7 @@ if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
 
 ?>
 
-<table class="table table-bordered table-condensed table-striped">
+<table class="table table-bordered table-condensed">
 
     <?php
 
@@ -51,10 +44,13 @@ if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
     echo '</tr></thead>';
 
     foreach ($row_ids_arr as $row_id){
+        $cols_count = 0;
+
         $row_obj = \Guk\FinFormRow::factory($row_id);
 
         echo '<tr>';
         echo '<td>' . $row_obj->getId() . '</td>';
+        $cols_count++;
 
         foreach ($col_ids_arr as $col_id){
             $col_obj = \Guk\FinFormCol::factory($col_id);
@@ -69,7 +65,7 @@ if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
 
                 echo '<td>';
 
-                if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_DRAFT ){
+                if (in_array($request_obj->getStatusCode(), array( \Guk\FinRequest::STATUS_DRAFT, \Guk\FinRequest::STATUS_REJECTED_BY_GUK ))){
                     echo '<form method="post" action="' . \Guk\VuzPage\ControllerVuz::getFinRequestFillUrl($request_obj->getId()) . '">';
                     echo '<input type="hidden" name="a" value="set_value"/>';
                     echo '<input type="hidden" name="row_id" value="' . $row_obj->getId() . '"/>';
@@ -81,21 +77,61 @@ if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
 
 
                 echo '</td>';
+                $cols_count++;
             } else {
                 $cell_obj = \Guk\FinFormCell::getObjForRowAndCol($row_obj->getId(), $col_obj->getId());
 
                 if ($cell_obj){
                     echo '<td style="text-align: center;"><small>' . $cell_obj->getValue() . '</small></td>';
+                    $cols_count++;
                 } else {
                     echo '<td></td>';
+                    $cols_count++;
                 }
 
             }
 
         }
 
-        echo '<td style="text-align: center;"><small><span class="glyphicon glyphicon-list"></span></small></td>';
+        $row_extras_htmlid = 'request_' . $request_id . '_row_' . $row_obj->getId() . '_extras';
+
+        echo '<td style="text-align: center;"><small><a href="#" class="glyphicon glyphicon-tasks" onclick="$(\'#' . $row_extras_htmlid  . '\').slideToggle(0);"></a></small></td>';
+        $cols_count++;
+
         echo '</tr>';
+
+        $details_table_htmlid = 'request_' . $request_id . '_details_table_for_row_' . $row_obj->getId();
+
+        echo '<tr style="display: none;" id="' . $row_extras_htmlid . '">';
+        echo '<td style="background-color: #ddd;" colspan="' . $cols_count . '">';
+        echo '<table id="' . $details_table_htmlid . '"  class="table table-bordered table-condensed">';
+        echo '<thead><tr>';
+        /*
+        echo '<th><small>Наименование расходов (услуги, закупки, работы)</small></th>';
+        echo '<th><small>Ед. изм.</small></th>';
+        echo '<th><small>Потребность</small></th>';
+        echo '<th><small>Примерная стоимость за единицу (тыс. руб.)</small></th>';
+        echo '<th><small>Общая стоимость (тыс. руб.)</small></th>';
+        echo '<th><small>Ожидаемый результат и краткое обоснование</small></th>';
+        */
+
+        $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrById();
+        foreach ($detail_column_ids_arr as $detail_column_id){
+            $detail_column_obj = \Guk\DetailColumn::factory($detail_column_id);
+            echo '<th class="text-center"><small>' . $detail_column_obj->getTitle() . '</small></th>';
+        }
+
+        echo '</thead>';
+
+        $detail_row_ids_arr = \Guk\DetailRow::getDetailRowIdsArrForRequestAndFormRowById($request_id, $row_id);
+        foreach ($detail_row_ids_arr as $detail_row_id){
+            echo \Cebera\Render\Render::callLocaltemplate('detail_row.tpl.php', array("detail_row_id" => $detail_row_id));
+        }
+
+        echo '</table>';
+
+        echo '<div><button class="btn btn-default btn-sm" onclick="append_detail(\'' . $request_id . '\', \'' . $row_obj->getId() . '\', \'' . $details_table_htmlid . '\');">Добавить строку обоснования</button></div>';
+        echo '</td></tr>';
     }
 
 
@@ -107,7 +143,7 @@ if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
 
     <?php
 
-    if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_DRAFT) {
+    if (in_array($request_obj->getStatusCode(), array( \Guk\FinRequest::STATUS_DRAFT, \Guk\FinRequest::STATUS_REJECTED_BY_GUK ))){
         echo '<form style="display: inline;" method="post" action="' . \Guk\VuzPage\ControllerVuz::getFinRequestFillUrl($request_obj->getId()) . '">';
         echo '<input type="hidden" name="a" value="set_request_status_code"/>';
         echo '<input type="hidden" name="status_code" value="' . \Guk\FinRequest::STATUS_IN_GUK_REWIEW . '"/>';
@@ -123,3 +159,33 @@ if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
 
     ?>
 </div>
+
+<script>
+
+    function append_detail(request_id, form_row_id, details_table_htmlid){
+        var context_obj = {details_table_htmlid: details_table_htmlid};
+
+        $.ajax({
+                method: "POST",
+                url: "<?= \Guk\VuzPage\ControllerAjax::appendDetailUrl(); ?>",
+                data: { a: "add_detail_row", request_id: request_id, form_row_id: form_row_id },
+                context: context_obj
+            })
+            .done(function( new_row_html ) {
+                //alert( "Got data: " + msg );
+                //alert(this.details_table_htmlid);
+                $('#' + this.details_table_htmlid).append(new_row_html);
+            });
+    }
+
+    function saveDetail(detail_row_id, detail_column_id, detail_value){
+        $.ajax({
+                method: "POST",
+                url: "<?= \Guk\VuzPage\ControllerAjax::saveDetailUrl(); ?>",
+                data: { a: "save_detail", detail_row_id: detail_row_id, detail_column_id: detail_column_id, detail_value: detail_value }
+            })
+            .done(function( new_row_html ) {
+            });
+    }
+
+</script>

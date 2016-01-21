@@ -30,7 +30,7 @@ $vuz_obj = \Guk\Vuz::factory($vuz_id);
         $payment_obj = \Guk\VuzPayment::factory($payment_id);
 
         echo '<tr>';
-        echo '<td><a href="' . \Guk\VuzPage\ControllerVuz::paymentUrl($payment_obj->getId()) . '">' . \Cebera\Helpers::replaceEmptyValue($payment_obj->getTitle()) . '</a></td>';
+        echo '<td><a href="' . \Guk\VuzPage\ControllerPayments::paymentUrl($payment_obj->getId()) . '">' . \Cebera\Helpers::replaceEmptyValue($payment_obj->getTitle()) . '</a></td>';
         echo '<td>' . $payment_obj->getAmountRub() . '</td>';
         echo '<td>' . date('d.m.Y', $payment_obj->getCreatedAtTs()) . '</td>';
         echo '<td>' . \Guk\VuzPayment::getStatusStrForCode($payment_obj->getStatusCode()) . '</td>';

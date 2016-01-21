@@ -31,6 +31,12 @@
 
 <body>
 
+<?php
+
+$cccn = \Cebera\Router::getCurrentControllerClassName();
+
+?>
+
 <div class="container">
 
     <!-- Static navbar -->
@@ -47,14 +53,14 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/vuz">Заявки</a></li>
+                    <li <?php if ($cccn == '\Guk\VuzPage\ControllerVuz'){echo ' class="active" ';} ?> ><a href="/vuz">Заявки</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/vuz/payments">Платежи</a></li>
+                    <li <?php if ($cccn == '\Guk\VuzPage\ControllerPayments'){echo ' class="active" ';} ?> ><a href="/vuz/payments">Платежи</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Михаил Платонов (академия РВСН)</a></li>
-                    <li><a href="/">выйти</a></li>
+                    <li><a href="/" title="Выйти"><span class="glyphicon glyphicon-log-out"></span></a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->

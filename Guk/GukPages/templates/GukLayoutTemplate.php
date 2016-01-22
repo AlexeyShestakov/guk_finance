@@ -10,7 +10,7 @@ class GukLayoutTemplate
  */
     static public function render($content){
 
-    $cccn = \Cebera\Router::getCurrentControllerClassName();
+    $cccn = \OLOG\Router::getCurrentControllerClassName();
 
 ?><!DOCTYPE html>
 <html lang="en">

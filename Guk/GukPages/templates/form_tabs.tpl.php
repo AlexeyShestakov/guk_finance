@@ -6,7 +6,7 @@
 
 $form_obj = \Guk\FinForm::factory($form_id);
 
-$camn = \Cebera\Router::getCurrentActionMethodName();
+$camn = \OLOG\Router::getCurrentActionMethodName();
 
 ?>
 

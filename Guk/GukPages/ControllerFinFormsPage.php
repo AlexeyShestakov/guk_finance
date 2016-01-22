@@ -218,7 +218,6 @@ class ControllerFinFormsPage
         }
 
         $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_form_page.tpl.php", array('form_id' => $form_id));
-        //echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
         \Guk\GukPages\templates\GukLayoutTemplate::render($content);
     }
 

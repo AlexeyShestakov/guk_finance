@@ -9,8 +9,11 @@ class ControllerReports
     }
 
     public function reportsByVuzAction(){
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/reports_by_vuz.tpl.php");
-        echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
+        ob_start();
+        \Guk\GukPages\templates\ReportByVuzTemplate::render();
+        $content = ob_get_clean();
+
+        \Guk\GukPages\templates\GukLayoutTemplate::render($content);
     }
 
 }

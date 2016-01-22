@@ -1,4 +1,14 @@
 {
+	"repositories": [
+		{
+			"type": "git",
+			"url": "https://github.com/o-log/php-router"
+		}
+	],
+	"require": {
+		"o-log/php-router": "dev-master"
+	},
+
 	"require-dev" : {
 		"imagine/imagine" : "~0.5.0"
 	},

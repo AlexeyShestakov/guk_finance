@@ -4,9 +4,11 @@ namespace Guk\GukPages;
 
 class ControllerForms
 {
+    const EDIT_COL_OPERATION_CODE = 'edit_col';
+    const EDIT_ROW_OPERATION_CODE = 'edit_row';
 
     public function kbkReportAction(){
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/kbk_report.tpl.php");
+        $content = \Cebera\Render\Render::callLocaltemplate("Templates/kbk_report.tpl.php");
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
     }
 
@@ -31,7 +33,7 @@ class ControllerForms
             }
         }
 
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_form_params.tpl.php", array('form_id' => $form_id));
+        $content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_form_params.tpl.php", array('form_id' => $form_id));
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
     }
 
@@ -40,7 +42,7 @@ class ControllerForms
     }
 
     public function docsAction($form_id){
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_form_docs.tpl.php", array('form_id' => $form_id));
+        $content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_form_docs.tpl.php", array('form_id' => $form_id));
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
     }
 
@@ -58,7 +60,7 @@ class ControllerForms
             }
         }
 
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/form_archive.tpl.php", array('form_id' => $form_id));
+        $content = \Cebera\Render\Render::callLocaltemplate("Templates/form_archive.tpl.php", array('form_id' => $form_id));
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
     }
 
@@ -67,7 +69,7 @@ class ControllerForms
     }
 
     public function historyAction($form_id){
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/form_history.tpl.php", array('form_id' => $form_id));
+        $content = \Cebera\Render\Render::callLocaltemplate("Templates/form_history.tpl.php", array('form_id' => $form_id));
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
     }
 
@@ -76,7 +78,7 @@ class ControllerForms
     }
 
     public function finFormViewAction($form_id){
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_form_view.tpl.php", array('form_id' => $form_id));
+        $content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_form_view.tpl.php", array('form_id' => $form_id));
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
     }
 
@@ -85,23 +87,35 @@ class ControllerForms
     }
 
     public function finFormRowAction($row_id){
-        if (array_key_exists('a', $_POST)){
-            if ($_POST['a'] == 'edit_row'){
-                $weight = $_POST['weight'];
-                $limit = $_POST['limit'];
-                $kbk = $_POST['kbk'];
+        \Cebera\BT::matchOperation(self::EDIT_ROW_OPERATION_CODE, function() use($row_id){self::editRowOperation($row_id);});
 
-                $row_obj = \Guk\FinFormRow::factory($row_id);
+        if (isset($_GET['a'])){
+            if ($_GET['a'] == 'add_term'){
+                $row_term_obj = new \Guk\FormRowTermId();
 
-                $row_obj->setWeight($weight);
-                $row_obj->setLimit($limit);
-                $row_obj->setKbk($kbk);
-                $row_obj->save();
+                $row_term_obj->setFormRowId($row_id);
+                $row_term_obj->setTermId($_GET['term_id']);
+
+                $row_term_obj->save();
             }
         }
 
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_form_row.tpl.php", array('row_id' => $row_id));
-        echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
+        ob_start();
+        \Guk\GukPages\Templates\FormRowTemplate::render($row_id);
+        $content = ob_get_clean();
+
+        \Guk\GukPages\Templates\GukLayoutTemplate::render($content);
+    }
+
+    static public function editRowOperation($row_id)
+    {
+        $row_obj = \Guk\FinFormRow::factory($row_id);
+
+        $row_obj->setWeight(\Cebera\BT::getPostValue('weight'));
+        $row_obj->setLimit(\Cebera\BT::getPostValue('limit'));
+        $row_obj->setKbk(\Cebera\BT::getPostValue('kbk'));
+
+        $row_obj->save();
     }
 
     static public function getFinFormColUrl($col_id){
@@ -109,33 +123,35 @@ class ControllerForms
     }
 
     public function finFormColAction($col_id){
-        if (array_key_exists('a', $_POST)){
-            if ($_POST['a'] == 'edit_col'){
-                $weight = $_POST['weight'];
-                $title = $_POST['title'];
+        \Cebera\BT::matchOperation(self::EDIT_COL_OPERATION_CODE, function() use($col_id){self::editColOperation($col_id);});
 
-                $for_vuz = 0;
-                if (array_key_exists('for_vuz', $_POST)) {
-                    $for_vuz = 1;
-                }
+        ob_start();
+        \Guk\GukPages\Templates\FormColTemplate::render($col_id);
+        $content = ob_get_clean();
 
-                $is_requested_sum = 0;
-                if (array_key_exists('is_requested_sum', $_POST)) {
-                    $is_requested_sum = 1;
-                }
+        \Guk\GukPages\Templates\GukLayoutTemplate::render($content);
+    }
 
-                $col_obj = \Guk\FinFormCol::factory($col_id);
-
-                $col_obj->setWeight($weight);
-                $col_obj->setTitle($title);
-                $col_obj->setIsEditableByVuz($for_vuz);
-                $col_obj->setIsRequestedSum($is_requested_sum);
-                $col_obj->save();
-            }
+    static public function editColOperation($col_id)
+    {
+        $for_vuz = 0;
+        if (array_key_exists('for_vuz', $_POST)) {
+            $for_vuz = 1;
         }
 
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_form_col.tpl.php", array('col_id' => $col_id));
-        echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
+        $is_requested_sum = 0;
+        if (array_key_exists('is_requested_sum', $_POST)) {
+            $is_requested_sum = 1;
+        }
+
+        $col_obj = \Guk\FinFormCol::factory($col_id);
+
+        $col_obj->setWeight(\Cebera\BT::getPostValue(\Guk\GukPages\Templates\FormColTemplate::FIELD_NAME_WEIGHT));
+        $col_obj->setTitle(\Cebera\BT::getPostValue(\Guk\GukPages\Templates\FormColTemplate::FIELD_NAME_TITLE));
+        $col_obj->setIsEditableByVuz($for_vuz);
+        $col_obj->setIsRequestedSum($is_requested_sum);
+        $col_obj->setVocabularyId(\Cebera\BT::getPostValue(\Guk\GukPages\Templates\FormColTemplate::FIELD_NAME_VOCABULARY_ID));
+        $col_obj->save();
     }
 
     static public function getFinFormsPageUrl(){
@@ -144,9 +160,9 @@ class ControllerForms
 
     public function finFormsPageAction(){
         ob_start();
-        \Guk\GukPages\templates\FormsTemplate::render();
+        \Guk\GukPages\Templates\FormsTemplate::render();
         $content = ob_get_clean();
-        \Guk\GukPages\templates\GukLayoutTemplate::render($content);
+        \Guk\GukPages\Templates\GukLayoutTemplate::render($content);
     }
 
     static public function formUrl($form_id){
@@ -160,10 +176,8 @@ class ControllerForms
     public function finFormAddAction(){
         if (array_key_exists('a', $_POST)) {
             if ($_POST['a'] == 'add_form') {
-                $comment = $_POST['comment'];
-
                 $form_obj = new \Guk\FinForm();
-                $form_obj->setComment($comment);
+                $form_obj->setComment(\Cebera\BT::getPostValue('comment'));
                 $form_obj->setCreatedAtTs(time());
                 $form_obj->save();
 
@@ -171,7 +185,7 @@ class ControllerForms
             }
         }
 
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_form_add.tpl.php");
+        $content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_form_add.tpl.php");
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
     }
 
@@ -219,8 +233,11 @@ class ControllerForms
             }
         }
 
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_form_page.tpl.php", array('form_id' => $form_id));
-        \Guk\GukPages\templates\GukLayoutTemplate::render($content);
+        ob_start();
+        \Guk\GukPages\Templates\FormPageTemplate::render($form_id);
+        $content = ob_get_clean();
+
+        \Guk\GukPages\Templates\GukLayoutTemplate::render($content);
     }
 
 }

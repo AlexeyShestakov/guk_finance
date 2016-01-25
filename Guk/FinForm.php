@@ -7,13 +7,13 @@
 
 namespace Guk;
 
-class FinForm implements \Cebera\Model\InterfaceFactory
+class FinForm implements \OLOG\Model\InterfaceFactory
 {
-    use \Cebera\Model\FactoryTrait;
-    use \Cebera\Util\ActiveRecord;
-    use \Cebera\Util\ProtectProperties;
+    use \OLOG\Model\FactoryTrait;
+    use \OLOG\Model\ActiveRecord;
+    use \OLOG\Model\ProtectProperties;
 
-    const DB_ID = \Cebera\Conf::DB_NAME_GUK_FINANCE;
+    const DB_ID = \AppConfig\Config::DB_NAME_GUK_FINANCE;
     const DB_TABLE_NAME = 'fin_form';
 
     protected $id = 0;
@@ -64,8 +64,8 @@ class FinForm implements \Cebera\Model\InterfaceFactory
     }
 
     public function getColIdsArrByWeight(){
-        $col_ids_arr = \Cebera\DB\DBWrapper::readColumn(
-            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+        $col_ids_arr = \OLOG\DB\DBWrapper::readColumn(
+            \AppConfig\Config::DB_NAME_GUK_FINANCE,
             'select id from ' . \Guk\FinFormCol::DB_TABLE_NAME . ' where form_id = ? order by weight',
             array($this->id)
         );
@@ -74,8 +74,8 @@ class FinForm implements \Cebera\Model\InterfaceFactory
     }
 
     public function getRowIdsArrByWeight(){
-        $col_ids_arr = \Cebera\DB\DBWrapper::readColumn(
-            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+        $col_ids_arr = \OLOG\DB\DBWrapper::readColumn(
+            \AppConfig\Config::DB_NAME_GUK_FINANCE,
             'select id from ' . \Guk\FinFormRow::DB_TABLE_NAME . ' where form_id = ? order by weight',
             array($this->id)
         );

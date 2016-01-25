@@ -5,14 +5,16 @@ header('Content-Type: text/html; charset=utf-8');
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-\OLOG\Router::match('@^/$@', array('\Guk\MainPage\ControllerMainPage', 'entryPageAction'), 0);
+\OLOG\ConfWrapper::assignConfig(\AppConfig\Config::get());
 
-\OLOG\Router::match('@^/guk$@', array('\Guk\MainPage\ControllerMainPage', 'mainPageAction'), 0);
+\OLOG\Router::match('@^/$@', array(\Guk\MainPage\ControllerMainPage::class, 'entryPageAction'), 0);
+
+\OLOG\Router::match('@^/guk$@', array(\Guk\MainPage\ControllerMainPage::class, 'mainPageAction'), 0);
 
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormsPageUrl() . '$@', array(\Guk\GukPages\ControllerForms::class, 'finFormsPageAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormAddPageUrl() . '$@', array('\Guk\GukPages\ControllerForms', 'finFormAddAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormRowUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormRowAction'), 0);
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormColUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormColAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormColUrl('(\d+)') . '$@', array(\Guk\GukPages\ControllerForms::class, 'finFormColAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::formUrl('(\d+)') . '$@', array(\Guk\GukPages\ControllerForms::class, 'finFormPageAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormParamsPageUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormParamsAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormViewUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormViewAction'), 0);
@@ -20,7 +22,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::archiveUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'archiveAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::historyUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'historyAction'), 0);
 
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerRequests::getFinRequestsUrl() . '$@', array('\Guk\GukPages\ControllerRequests', 'finRequestsPageAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerRequests::getFinRequestsUrl() . '$@', array(\Guk\GukPages\ControllerRequests::class, 'finRequestsPageAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerRequests::getFinRequestUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerRequests', 'finRequestPageAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerRequests::requestPaymentsUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerRequests', 'requestPaymentsAction'), 0);
 
@@ -33,6 +35,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 \OLOG\Router::match('@^/guk/report/kbk$@', array(\Guk\GukPages\ControllerForms::class, 'kbkReportAction'), 0);
 
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerReports::reportsByVuzUrl() . '$@', array(\Guk\GukPages\ControllerReports::class, "reportsByVuzAction"), 0);
+
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerTerms::vocabulariesUrl() . '$@', array(\Guk\GukPages\ControllerTerms::class, "vocabulariesAction"), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerTerms::vocabularyUrl('(\d+)') . '$@', array(\Guk\GukPages\ControllerTerms::class, "vocabularyAction"), 0);
 
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerDFO::dfoUrl() . '$@', array(\Guk\GukPages\ControllerDFO::class, 'dfoAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerDFO::dfoGenerateUrl() . '$@', array(\Guk\GukPages\ControllerDFO::class, 'dfoGenerateAction'), 0);
@@ -51,7 +56,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 
 // support for local php server (php -S) - tells local server to return static files
-if (\Cebera\ConfWrapper::value('return_false_if_no_route', false)) {
+if (\OLOG\ConfWrapper::value('return_false_if_no_route', false)) {
     return false;
 }
 

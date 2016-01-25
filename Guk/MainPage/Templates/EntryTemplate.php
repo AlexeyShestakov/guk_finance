@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+<?php
+
+namespace Guk\MainPage\Templates;
+
+class EntryTemplate
+{
+    static public function render(){
+        ?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -60,3 +67,7 @@
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
+
+<?php
+}
+}

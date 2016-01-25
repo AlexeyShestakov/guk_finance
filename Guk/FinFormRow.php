@@ -8,13 +8,13 @@
 
 namespace Guk;
 
-class FinFormRow implements \Cebera\Model\InterfaceFactory
+class FinFormRow implements \OLOG\Model\InterfaceFactory
 {
-    use \Cebera\Model\FactoryTrait;
-    use \Cebera\Util\ActiveRecord;
-    use \Cebera\Util\ProtectProperties;
+    use \OLOG\Model\FactoryTrait;
+    use \OLOG\Model\ActiveRecord;
+    use \OLOG\Model\ProtectProperties;
 
-    const DB_ID = \Cebera\Conf::DB_NAME_GUK_FINANCE;
+    const DB_ID = \AppConfig\Config::DB_NAME_GUK_FINANCE;
     const DB_TABLE_NAME = 'fin_form_row';
 
     protected $id = 0;

@@ -1,5 +1,3 @@
 <?php
 
-\Guk\GukPages\templates\GukLayoutTemplate::render($content);
-
-?>
+\Guk\GukPages\Templates\GukLayoutTemplate::render($content);

@@ -6,13 +6,13 @@
 
 namespace Guk;
 
-class Vuz implements \Cebera\Model\InterfaceFactory
+class Vuz implements \OLOG\Model\InterfaceFactory
 {
-    use \Cebera\Model\FactoryTrait;
-    use \Cebera\Util\ActiveRecord;
-    use \Cebera\Util\ProtectProperties;
+    use \OLOG\Model\FactoryTrait;
+    use \OLOG\Model\ActiveRecord;
+    use \OLOG\Model\ProtectProperties;
 
-    const DB_ID = \Cebera\Conf::DB_NAME_GUK_FINANCE;
+    const DB_ID = \AppConfig\Config::DB_NAME_GUK_FINANCE;
     const DB_TABLE_NAME = 'vuz';
 
     public $id = 0;
@@ -29,8 +29,8 @@ class Vuz implements \Cebera\Model\InterfaceFactory
     }
 
     public function getFinRequestIdsArrByCreatedAtDesc(){
-        $fin_request_ids_arr = \Cebera\DB\DBWrapper::readColumn(
-            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+        $fin_request_ids_arr = \OLOG\DB\DBWrapper::readColumn(
+            \AppConfig\Config::DB_NAME_GUK_FINANCE,
             'select id from fin_request where vuz_id = ? order by created_at_ts desc',
             array($this->getId())
         );
@@ -39,8 +39,8 @@ class Vuz implements \Cebera\Model\InterfaceFactory
     }
 
     public function getPaymentIdsArrByCreatedAtDesc(){
-        $payment_ids_arr = \Cebera\DB\DBWrapper::readColumn(
-            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+        $payment_ids_arr = \OLOG\DB\DBWrapper::readColumn(
+            \AppConfig\Config::DB_NAME_GUK_FINANCE,
             'select id from ' . \Guk\VuzPayment::DB_TABLE_NAME. ' where vuz_id = ? order by created_at_ts desc',
             array($this->getId())
         );

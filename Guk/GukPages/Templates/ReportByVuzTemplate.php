@@ -1,6 +1,6 @@
 <?php
 
-namespace Guk\GukPages\templates;
+namespace Guk\GukPages\Templates;
 
 class ReportByVuzTemplate
 {

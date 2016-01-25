@@ -3,17 +3,18 @@
  * create table fin_form_col (id int not null auto_increment primary key, form_id int not null, title varchar(100) not null default '', weight int not null default 0) DEFAULT CHARSET=utf8;
  * alter table fin_form_col add column is_editable_by_vuz boolean default false;
  * alter table fin_form_col add column is_requested_sum boolean not null default false;
+ * alter table fin_form_col add column vocabulary_id int not null default 0;
  */
 
 namespace Guk;
 
-class FinFormCol implements \Cebera\Model\InterfaceFactory
+class FinFormCol implements \OLOG\Model\InterfaceFactory
 {
-    use \Cebera\Model\FactoryTrait;
-    use \Cebera\Util\ActiveRecord;
-    use \Cebera\Util\ProtectProperties;
+    use \OLOG\Model\FactoryTrait;
+    use \OLOG\Model\ActiveRecord;
+    use \OLOG\Model\ProtectProperties;
 
-    const DB_ID = \Cebera\Conf::DB_NAME_GUK_FINANCE;
+    const DB_ID = \AppConfig\Config::DB_NAME_GUK_FINANCE;
     const DB_TABLE_NAME = 'fin_form_col';
 
     public $id = 0;
@@ -22,6 +23,7 @@ class FinFormCol implements \Cebera\Model\InterfaceFactory
     public $weight = 0;
     public $is_editable_by_vuz = 0;
     public $is_requested_sum = 0;
+    public $vocabulary_id = 0;
 
     public function getId(){
         return $this->id;
@@ -49,6 +51,14 @@ class FinFormCol implements \Cebera\Model\InterfaceFactory
 
     public function setWeight($weight){
         $this->weight = $weight;
+    }
+
+    public function getVocabularyId(){
+        return $this->vocabulary_id;
+    }
+
+    public function setVocabularyId($vocabulary_id){
+        $this->vocabulary_id = $vocabulary_id;
     }
 
     public function getTitle(){

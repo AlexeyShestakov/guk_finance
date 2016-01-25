@@ -2,13 +2,13 @@
 
 namespace AppConfig;
 
-class Conf
+class Config
 {
     const DB_NAME_GUK_FINANCE = 'guk_finance';
 
     public static function get()
     {
-        $conf = \Guk\CommonConfig::get();
+        //$conf = \Guk\CommonConfig::get();
 
         $conf['cache_lifetime'] = 60;
 

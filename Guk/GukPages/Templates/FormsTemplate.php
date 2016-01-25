@@ -1,6 +1,6 @@
 <?php
 
-namespace Guk\GukPages\templates;
+namespace Guk\GukPages\Templates;
 
 class FormsTemplate
 {
@@ -20,8 +20,8 @@ class FormsTemplate
 
         <?php
 
-        $form_ids_arr = \Cebera\DB\DBWrapper::readColumn(
-            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+        $form_ids_arr = \OLOG\DB\DBWrapper::readColumn(
+            \AppConfig\Config::DB_NAME_GUK_FINANCE,
             'select id from ' . \Guk\FinForm::DB_TABLE_NAME . ' where is_hidden = 0 order by created_at_ts desc'
         );
 

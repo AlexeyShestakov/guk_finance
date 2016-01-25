@@ -10,20 +10,21 @@ class ControllerMainPage
                 $user_name = $_POST['user_name'];
 
                 if ($user_name == 'guk'){
-                    \Cebera\Helpers::redirect('/guk');
+                    \OLOG\Helpers::redirect('/guk');
                 }
                 
                 if ($user_name == 'vuz'){
-                    \Cebera\Helpers::redirect('/vuz');
+                    \OLOG\Helpers::redirect('/vuz');
                 }
             }
         }
 
-        echo \Cebera\Render\Render::callLocaltemplate("templates/entrypage.tpl.php");
+        //echo \Cebera\Render\Render::callLocaltemplate("templates/entrypage.tpl.php");
+        \Guk\MainPage\Templates\EntryTemplate::render();
     }
 
     public function mainPageAction(){
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/mainpage.tpl.php");
+        $content = \Cebera\Render\Render::callLocaltemplate("Templates/mainpage.tpl.php");
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
     }
 }

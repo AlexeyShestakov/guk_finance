@@ -17,7 +17,7 @@ class Render {
 
         $cb_arr = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
         $caller_obj = array_shift($cb_arr);
-        \Cebera\Helpers::assert($caller_obj);
+        \OLOG\Helpers::assert($caller_obj);
 
         $caller_path = $caller_obj['file'];
         $caller_path_arr = pathinfo($caller_path);

@@ -88,8 +88,8 @@ class ControllerRequests
     }
 
     public function finRequestsPageAction(){
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_requests_page.tpl.php");
-        echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
+        $content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_requests_page.tpl.php");
+        \Guk\GukPages\Templates\GukLayoutTemplate::render($content);
     }
 
 }

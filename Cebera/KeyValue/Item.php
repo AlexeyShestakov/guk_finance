@@ -10,7 +10,7 @@ class Item implements
     \Cebera\Model\InterfaceFactory
 {
     use \Cebera\Util\ActiveRecord;
-    use \Cebera\Util\ProtectProperties;
+    use \Cebera\Model\ProtectProperties;
     use \Cebera\Tree\Item;
     use \Cebera\Model\FactoryTrait;
 

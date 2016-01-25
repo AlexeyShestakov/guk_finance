@@ -2,7 +2,7 @@
 
 namespace Guk\GukPages;
 
-class ControllerFinFormsPage
+class ControllerForms
 {
 
     public function kbkReportAction(){
@@ -139,20 +139,22 @@ class ControllerFinFormsPage
     }
 
     static public function getFinFormsPageUrl(){
-        return '/guk/finforms';
+        return '/guk/forms';
     }
 
     public function finFormsPageAction(){
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_forms_page.tpl.php");
-        echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
+        ob_start();
+        \Guk\GukPages\templates\FormsTemplate::render();
+        $content = ob_get_clean();
+        \Guk\GukPages\templates\GukLayoutTemplate::render($content);
     }
 
-    static public function getFinFormPageUrl($form_id){
-        return '/finform/' . $form_id;
+    static public function formUrl($form_id){
+        return '/guk/form/' . $form_id;
     }
 
     static public function getFinFormAddPageUrl(){
-        return '/guk/finform';
+        return '/guk/form';
     }
 
     public function finFormAddAction(){
@@ -165,7 +167,7 @@ class ControllerFinFormsPage
                 $form_obj->setCreatedAtTs(time());
                 $form_obj->save();
 
-                \Cebera\Helpers::redirect(self::getFinFormPageUrl($form_obj->getId()));
+                \Cebera\Helpers::redirect(self::formUrl($form_obj->getId()));
             }
         }
 

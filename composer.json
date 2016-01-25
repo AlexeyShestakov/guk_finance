@@ -15,7 +15,8 @@
 	"autoload" : {
 		"psr-0" : {
 			"Guk" : "",
-			"Cebera" : ""
+			"Cebera" : "",
+			"AppConfig" : ""
 		},
 		"files" : [
 			"configs/Config.php"

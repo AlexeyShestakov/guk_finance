@@ -1,8 +1,8 @@
 <?php
 
-namespace Cebera\Conf;
+namespace Guk;
 
-class Common
+class CommonConfig
 {
     public static function get()
     {

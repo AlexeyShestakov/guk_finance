@@ -1,7 +1,7 @@
 <h1>Создание формы</h1>
 
 
-<form style="background-color: #eee; padding: 20px;" class="form-horizontal" method="post" action="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormAddPageUrl(); ?>">
+<form style="background-color: #eee; padding: 20px;" class="form-horizontal" method="post" action="<?php echo \Guk\GukPages\ControllerForms::getFinFormAddPageUrl(); ?>">
     <input type="hidden" name="a" value="add_form">
 
     <div class="form-group">

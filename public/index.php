@@ -9,16 +9,16 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 \OLOG\Router::match('@^/guk$@', array('\Guk\MainPage\ControllerMainPage', 'mainPageAction'), 0);
 
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerFinFormsPage::getFinFormsPageUrl() . '$@', array('\Guk\GukPages\ControllerFinFormsPage', 'finFormsPageAction'), 0);
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerFinFormsPage::getFinFormAddPageUrl() . '$@', array('\Guk\GukPages\ControllerFinFormsPage', 'finFormAddAction'), 0);
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerFinFormsPage::getFinFormRowUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerFinFormsPage', 'finFormRowAction'), 0);
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerFinFormsPage::getFinFormColUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerFinFormsPage', 'finFormColAction'), 0);
-\OLOG\Router::match('@^/finform/(\d+)$@', array(\Guk\GukPages\ControllerFinFormsPage::class, 'finFormPageAction'), 0);
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerFinFormsPage::getFinFormParamsPageUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerFinFormsPage', 'finFormParamsAction'), 0);
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerFinFormsPage::getFinFormViewUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerFinFormsPage', 'finFormViewAction'), 0);
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerFinFormsPage::docsUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerFinFormsPage', 'docsAction'), 0);
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerFinFormsPage::archiveUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerFinFormsPage', 'archiveAction'), 0);
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerFinFormsPage::historyUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerFinFormsPage', 'historyAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormsPageUrl() . '$@', array(\Guk\GukPages\ControllerForms::class, 'finFormsPageAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormAddPageUrl() . '$@', array('\Guk\GukPages\ControllerForms', 'finFormAddAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormRowUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormRowAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormColUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormColAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::formUrl('(\d+)') . '$@', array(\Guk\GukPages\ControllerForms::class, 'finFormPageAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormParamsPageUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormParamsAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormViewUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormViewAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::docsUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'docsAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::archiveUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'archiveAction'), 0);
+\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::historyUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'historyAction'), 0);
 
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerRequests::getFinRequestsUrl() . '$@', array('\Guk\GukPages\ControllerRequests', 'finRequestsPageAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerRequests::getFinRequestUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerRequests', 'finRequestPageAction'), 0);
@@ -30,7 +30,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 \OLOG\Router::match('@^' . \Guk\VuzPage\ControllerAjax::appendDetailUrl() . '$@', array('\Guk\VuzPage\ControllerAjax', 'appendDetailAction'), 0);
 \OLOG\Router::match('@^' . \Guk\VuzPage\ControllerAjax::saveDetailUrl() . '$@', array(\Guk\VuzPage\ControllerAjax::class, 'saveDetailAction'), 0);
 
-\OLOG\Router::match('@^/guk/report/kbk$@', array(\Guk\GukPages\ControllerFinFormsPage::class, 'kbkReportAction'), 0);
+\OLOG\Router::match('@^/guk/report/kbk$@', array(\Guk\GukPages\ControllerForms::class, 'kbkReportAction'), 0);
 
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerReports::reportsByVuzUrl() . '$@', array(\Guk\GukPages\ControllerReports::class, "reportsByVuzAction"), 0);
 

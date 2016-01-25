@@ -61,8 +61,8 @@ class GukLayoutTemplate
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li <?php if ($cccn == '\Guk\GukPages\ControllerFinFormsPage'){echo ' class="active" ';} ?> ><a href="<?php echo \Guk\GukPages\ControllerFinFormsPage::getFinFormsPageUrl(); ?>">Формы</a></li>
-                    <li <?php if ($cccn == '\Guk\GukPages\ControllerRequests'){echo ' class="active" ';} ?> ><a href="/guk/requests">Заявки</a></li>
+                    <li <?php if ($cccn == \Guk\GukPages\ControllerForms::class){echo ' class="active" ';} ?> ><a href="<?php echo \Guk\GukPages\ControllerForms::getFinFormsPageUrl(); ?>">Формы</a></li>
+                    <li <?php if ($cccn == \Guk\GukPages\ControllerRequests::class){echo ' class="active" ';} ?> ><a href="/guk/requests">Заявки</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Справочники <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -83,8 +83,8 @@ class GukLayoutTemplate
                             <li><a href="<?= \Guk\GukPages\ControllerReports::reportsByVuzUrl(); ?>">Заявки по ВУЗам для текущей формы</a></li>
                         </ul>
                     </li>
-                    <li <?php if ($cccn == '\Guk\GukPages\ControllerPayments'){echo ' class="active" ';} ?> ><a href="<?= \Guk\GukPages\ControllerPayments::paymentsUrl(); ?>">Платежи</a></li>
-                    <li <?php if ($cccn == '\Guk\GukPages\ControllerDFO'){echo ' class="active" ';} ?> ><a href="<?= \Guk\GukPages\ControllerDFO::dfoUrl(); ?>">ДФО</a></li>
+                    <li <?php if ($cccn == \Guk\GukPages\ControllerPayments::class){echo ' class="active" ';} ?> ><a href="<?= \Guk\GukPages\ControllerPayments::paymentsUrl(); ?>">Платежи</a></li>
+                    <li <?php if ($cccn == \Guk\GukPages\ControllerDFO::class){echo ' class="active" ';} ?> ><a href="<?= \Guk\GukPages\ControllerDFO::dfoUrl(); ?>">ДФО</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Логинов Олег</a></li>

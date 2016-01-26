@@ -91,12 +91,12 @@ class BT
         return '<th>' . self::sanitizeTagContent($val) . '</th>';
     }
 
-    static public function td($val){
-        return self::td_plain(self::sanitizeTagContent($val));
+    static public function td($val, $classes_str = ''){
+        return self::td_plain(self::sanitizeTagContent($val), $classes_str);
     }
 
-    static public function td_plain($val){
-        return '<td>' . $val . '</td>';
+    static public function td_plain($val, $classes_str = ''){
+        return '<td class="' . $classes_str . '">' . $val . '</td>';
     }
 
     static public function beginTd(){

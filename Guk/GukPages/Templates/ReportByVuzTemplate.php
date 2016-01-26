@@ -48,6 +48,7 @@ class ReportByVuzTemplate
             $vuz_obj = \Guk\Vuz::factory($vuz_id);
             $vuz_requested_sum = 0;
             $vuz_corrected_sum = 0;
+            $vuz_expenses_sum = 0;
 
             $by_kbk_arr = [];
 
@@ -56,6 +57,16 @@ class ReportByVuzTemplate
                 'select id from ' . \Guk\FinRequest::DB_TABLE_NAME . ' where vuz_id = ? and status_code in (?) order by created_at_ts desc',
                 array($vuz_id, \Guk\FinRequest::STATUS_APPROVED_BY_GUK)
             );
+
+
+            foreach ($row_ids_arr as $form_row_id) {
+                $vuz_expense_obj = \Guk\VuzExpenses::getObjForVuzAndFormRow($vuz_id, $form_row_id);
+                if ($vuz_expense_obj) {
+                    $vuz_expenses_sum += $vuz_expense_obj->getExpensesRub();
+                }
+            }
+
+
 
             foreach ($vuz_request_ids_arr as $vuz_request_id){
                 $vuz_request_obj = \Guk\FinRequest::factory($vuz_request_id);
@@ -94,17 +105,19 @@ class ReportByVuzTemplate
             }
 
             echo '<tr>';
-            echo '<td><b>' . $vuz_obj->getTitle() . '</b></td>';
+            echo '<td><b>' . $vuz_obj->getTitle() . ' <a href="#" onclick="$(\'.vuz_' . $vuz_id . '_row\').toggle(); return false;"><span class="glyphicon glyphicon-list"></span></a></b></td>';
             echo '<td class="text-right"><b>' . count($vuz_request_ids_arr) . '</b></td>';
             echo '<td class="text-right"><b>' . number_format(floatval($vuz_requested_sum), 0, '.', ' ') . '</b></td>';
             echo '<td class="text-right"><b>' . number_format(floatval($vuz_corrected_sum), 0, '.', ' ') . '</b></td>';
             echo '<td class="text-right"><b>' . number_format(floatval($vuz_requested_sum - $vuz_corrected_sum), 0, '.', ' ') . '</b></td>';
-            echo '<td class="text-right"><b>#</b></td>';
+            echo '<td class="text-right"><b>' . number_format(floatval($vuz_expenses_sum), 0, '.', ' ') . '</b></td>';
             echo '</tr>';
 
             foreach ($by_kbk_arr as $form_row_id => $values_arr){
-                echo '<tr>';
-                echo '<td class="text-right">Строка ' . $form_row_id . '</td>';
+                $form_row_obj = \Guk\FinFormRow::factory($form_row_id);
+
+                echo '<tr class="vuz_' . $vuz_id . '_row" style="display: none;">';
+                echo '<td class="text-right">' . implode('<br>', $form_row_obj->getTermsStrArr()) . ' <a href="#" onclick="$(\'.vuz_' . $vuz_id . '_row_' . $form_row_id . '_request\').toggle(); return false;"><span class="glyphicon glyphicon-list"></span></a></td>';
                 echo '<td class="text-right">-</td>';
                 echo '<td class="text-right">' . number_format(floatval($values_arr['requested']), 0, '.', ' ') . '</td>';
                 echo '<td class="text-right">' . number_format(floatval($values_arr['corrected']), 0, '.', ' ') . '</td>';
@@ -116,9 +129,32 @@ class ReportByVuzTemplate
                     $expense_str = $vuz_expense_obj->getExpensesRub();
                 }
 
-                echo \Cebera\BT::td(number_format(floatval($expense_str), 0, '.', ' '));
+                echo \Cebera\BT::td(number_format(floatval($expense_str), 0, '.', ' '), 'text-right');
 
                 echo '</tr>';
+
+                foreach ($vuz_request_ids_arr as $vuz_request_id){
+                        $form_row_obj = \Guk\FinFormRow::factory($form_row_id);
+
+                        $request_cell_obj = \Guk\FinRequestCell::getObjForRequestAndRowAndCol($vuz_request_id, $form_row_id, $requested_sum_col_id);
+
+                        if ($request_cell_obj) {
+                            $corrected_value = $request_cell_obj->getCorrectedValue();
+                            if (!$corrected_value){
+                                $corrected_value = $request_cell_obj->getValue();
+                            }
+
+                            echo '<tr class="vuz_' . $vuz_id . '_row_' . $form_row_id . '_request" style="display: none;">';
+                            echo '<td style="background-color: #eee;" class="text-right">Заявка ' . $vuz_request_id . '</td>';
+                            echo '<td style="background-color: #eee;" class="text-right">-</td>';
+                            echo '<td style="background-color: #eee;" class="text-right">' . number_format(floatval($request_cell_obj->getValue()), 0, '.', ' ') . '</td>';
+                            echo '<td style="background-color: #eee;" class="text-right">' . number_format(floatval($corrected_value), 0, '.', ' ') . '</td>';
+                            echo '<td style="background-color: #eee;" class="text-right">' . number_format(floatval($corrected_value - $request_cell_obj->getValue()), 0, '.', ' ') . '</td>';
+                            echo '<td style="background-color: #eee;" class="text-right">-</td>';
+
+                            echo '</tr>';
+                        }
+                }
             }
         }
 

@@ -58,4 +58,21 @@ class FinFormRow implements \OLOG\Model\InterfaceFactory
     public function setWeight($weight){
         $this->weight = $weight;
     }
+
+    public function getTermsStrArr(){
+        $row_terms_str_arr = array();
+
+        $row_to_term_ids_arr = \Guk\FormRowToTerm::getIdsArrForFormRow($this->id);
+        foreach ($row_to_term_ids_arr as $row_to_term_id){
+            $row_to_term_obj = \Guk\FormRowToTerm::factory($row_to_term_id);
+            $term_id = $row_to_term_obj->getTermId();
+            $term_obj = \Guk\Term::factory($term_id);
+            $vocabulary_id = $term_obj->getVocabularyId();
+            $vocabulary_obj = \Guk\Vocabulary::factory($vocabulary_id);
+
+            $row_terms_str_arr[] = $vocabulary_obj->getTitle() . ' - ' . $term_obj->getTitle();
+        }
+
+        return $row_terms_str_arr;
+    }
 }

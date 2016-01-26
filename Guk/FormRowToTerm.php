@@ -7,7 +7,7 @@
 namespace Guk;
 
 
-class FormRowTermId implements \OLOG\Model\InterfaceFactory
+class FormRowToTerm implements \OLOG\Model\InterfaceFactory
 {
     use \OLOG\Model\FactoryTrait;
     use \OLOG\Model\ActiveRecord;

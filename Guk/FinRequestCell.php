@@ -8,13 +8,13 @@
 namespace Guk;
 
 
-class FinRequestCell implements \Cebera\Model\InterfaceFactory
+class FinRequestCell implements \OLOG\Model\InterfaceFactory
 {
-    use \Cebera\Model\FactoryTrait;
-    use \Cebera\Util\ActiveRecord;
-    use \Cebera\Util\ProtectProperties;
+    use \OLOG\Model\FactoryTrait;
+    use \OLOG\Model\ActiveRecord;
+    use \OLOG\Model\ProtectProperties;
 
-    const DB_ID = \Cebera\Conf::DB_NAME_GUK_FINANCE;
+    const DB_ID = \AppConfig\Config::DB_NAME_GUK_FINANCE;
     const DB_TABLE_NAME = 'fin_request_cell';
 
     protected $id = 0;
@@ -71,7 +71,8 @@ class FinRequestCell implements \Cebera\Model\InterfaceFactory
      * @return \Guk\FinRequestCell|null
      */
     static public function getObjForRequestAndRowAndCol($fin_request_id, $row_id, $col_id){
-        $cell_id = \Cebera\DB\DBWrapper::readField(\Cebera\Conf::DB_NAME_GUK_FINANCE,
+        $cell_id = \OLOG\DB\DBWrapper::readField(
+            \AppConfig\Config::DB_NAME_GUK_FINANCE,
             'select id from ' . self::DB_TABLE_NAME . ' where fin_request_id = ? and row_id = ? and col_id = ?',
             array($fin_request_id, $row_id, $col_id)
         );

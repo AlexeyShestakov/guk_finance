@@ -12,12 +12,7 @@ class FormPageTemplate
         echo \Cebera\BT::h1_plain(\Cebera\BT::a(\Guk\GukPages\ControllerForms::getFinFormsPageUrl(), 'Формы') . ' / ' . $form_obj->getComment());
 
         echo \Cebera\Render\Render::callLocaltemplate('form_tabs.tpl.php', array('form_id' => $form_id));
-
-        ?>
-
-        <div>&nbsp;</div>
-
-        <?php
+        echo \Cebera\BT::div_plain('&nbsp;');
 
         if ($form_obj->isCurrent()) {
             echo '<div class="alert alert-warning" role="alert">Для текущей формы изменение полей запрещено.</div>';
@@ -27,7 +22,7 @@ class FormPageTemplate
         $col_ids_arr = $form_obj->getColIdsArrByWeight();
         $row_ids_arr = $form_obj->getRowIdsArrByWeight();
 
-        echo \Cebera\BT::beginTable();
+        echo \Cebera\BT::beginTable('table-bordered table-condensed');
 
             echo '<thead><tr>';
             echo '<th>-</th>';
@@ -65,9 +60,9 @@ class FormPageTemplate
                         echo '<td>для вуза</td>';
                     } else {
                         if ($col_obj->getVocabularyId()){
-                            echo '<td>';
+                            echo '<td style="background-color: #eee;">';
 
-                            $row_to_term_obj = \Guk\FormRowTermId::getObjForFormRowAndVocabulary($row_id, $col_obj->getVocabularyId());
+                            $row_to_term_obj = \Guk\FormRowToTerm::getObjForFormRowAndVocabulary($row_id, $col_obj->getVocabularyId());
                             if ($row_to_term_obj){
                                 $term_id = $row_to_term_obj->getTermId();
                                 $term_obj = \Guk\Term::factory($term_id);

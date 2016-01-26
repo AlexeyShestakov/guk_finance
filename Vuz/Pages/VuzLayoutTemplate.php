@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+<?php
+
+namespace Vuz\Pages;
+
+class VuzLayoutTemplate
+{
+    static public function render($content){
+        ?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -33,7 +40,7 @@
 
 <?php
 
-$cccn = \Cebera\Router::getCurrentControllerClassName();
+$cccn = \OLOG\Router::getCurrentControllerClassName();
 
 ?>
 
@@ -53,10 +60,13 @@ $cccn = \Cebera\Router::getCurrentControllerClassName();
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li <?php if ($cccn == '\Guk\VuzPage\ControllerVuz'){echo ' class="active" ';} ?> ><a href="/vuz">Заявки</a></li>
+                    <li <?php if ($cccn == \Guk\VuzPage\ControllerVuz::class){echo ' class="active" ';} ?> ><a href="/vuz">Заявки</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li <?php if ($cccn == '\Guk\VuzPage\ControllerPayments'){echo ' class="active" ';} ?> ><a href="/vuz/payments">Платежи</a></li>
+                    <li <?php if ($cccn == \Vuz\Pages\Payments\Controller::class){echo ' class="active" ';} ?> ><a href="<?= \Vuz\Pages\Payments\Controller::paymentsPageUrl() ?>">Платежи</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li <?php if ($cccn == \Vuz\Pages\Expenses\Controller::class){echo ' class="active" ';} ?> ><a href="<?= \Vuz\Pages\Expenses\Controller::expensesUrl() ?>">Расходы</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Михаил Платонов (академия РВСН)</a></li>
@@ -83,3 +93,8 @@ $cccn = \Cebera\Router::getCurrentControllerClassName();
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
+
+
+<?php
+    }
+}

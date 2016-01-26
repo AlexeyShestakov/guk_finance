@@ -7,13 +7,13 @@
 namespace Guk;
 
 
-class DetailColumn implements \Cebera\Model\InterfaceFactory
+class DetailColumn implements \OLOG\Model\InterfaceFactory
 {
-    use \Cebera\Model\FactoryTrait;
-    use \Cebera\Util\ActiveRecord;
-    use \Cebera\Util\ProtectProperties;
+    use \OLOG\Model\FactoryTrait;
+    use \OLOG\Model\ActiveRecord;
+    use \OLOG\Model\ProtectProperties;
 
-    const DB_ID = \Cebera\Conf::DB_NAME_GUK_FINANCE;
+    const DB_ID = \AppConfig\Config::DB_NAME_GUK_FINANCE;
     const DB_TABLE_NAME = 'detail_columns';
 
     protected $id = 0;
@@ -41,8 +41,8 @@ class DetailColumn implements \Cebera\Model\InterfaceFactory
     }
 
     static public function getDetailColumnIdsArrById(){
-        $detail_column_ids_arr = \Cebera\DB\DBWrapper::readColumn(
-            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+        $detail_column_ids_arr = \OLOG\DB\DBWrapper::readColumn(
+            \AppConfig\Config::DB_NAME_GUK_FINANCE,
             'select id from ' . \Guk\DetailColumn::DB_TABLE_NAME. ' order by id',
             array()
         );

@@ -4,6 +4,36 @@ namespace Cebera;
 
 class BT
 {
+    static public function formInput($field_name, $field_value, $readonly = false){
+        ob_start();
+
+        $readonly_str = '';
+
+        if ($readonly){
+            $readonly_str = 'readonly';
+        }
+
+        echo '<input class="form-control" name="' . self::sanitizeAttrValue($field_name) . '" value="' . self::sanitizeAttrValue($field_value) . '" ' . $readonly_str . '/>';
+
+        return ob_get_clean();
+    }
+
+    static public function operationButton($form_action_url, $operation_code, $title, $data_arr = array()){
+        ob_start();
+
+        echo '<form style="display: inline;" method="post" action="' . self::sanitizeUrl($form_action_url) . '">';
+        echo '<input type="hidden" name="operation_code" value="' . self::sanitizeAttrValue($operation_code) . '"/>';
+
+        foreach ($data_arr as $key => $value){
+            echo '<input type="hidden" name="' . self::sanitizeAttrValue($key) . '" value="' . self::sanitizeAttrValue($value) . '"/>';
+        }
+
+        echo '<input type="submit" class="btn btn-default" value="' . self::sanitizeAttrValue($title) . '"/>';
+        echo '</form>';
+
+        return ob_get_clean();
+    }
+
     static public function getPostValue($field_name){
         if (isset($_POST[$field_name])){
             return $_POST[$field_name];
@@ -69,6 +99,14 @@ class BT
         return '<td>' . $val . '</td>';
     }
 
+    static public function beginTd(){
+        return '<td>';
+    }
+
+    static public function endTd(){
+        return '</td>';
+    }
+
     static public function tr_plain($val){
         return self::beginTr() . $val . self::endTr();
     }
@@ -77,8 +115,8 @@ class BT
         return '<a href="' . self::sanitizeUrl($url) . '">' . self::sanitizeTagContent($text) . '</a>';
     }
 
-    static public function beginTable(){
-        return '<table class="table">';
+    static public function beginTable($classes_str = ''){
+        return '<table class="table ' . self::sanitizeAttrValue($classes_str) . ' ">';
     }
 
     static public function h1_plain($value){
@@ -113,8 +151,21 @@ class BT
         return ob_get_clean();
     }
 
+    static public function beginFormSimple($action_url, $operation_code){
+        ob_start();
+
+        ?>
+        <form method="post" action="<?= $action_url ?>">
+        <input type="hidden" name="operation_code" value="<?= $operation_code ?>">
+
+        <?php
+
+        return ob_get_clean();
+    }
+
     static public function beginModal($modal_id, $modal_title){
         ob_start();
+
         ?>
         <div class="modal fade" id="<?= $modal_id ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -123,7 +174,7 @@ class BT
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel"><?= $modal_title ?></h4>
                     </div>
-<?php
+        <?php
 
         return ob_get_clean();
     }
@@ -142,11 +193,12 @@ class BT
 
     static public function endModal(){
         ob_start();
+
         ?>
                 </div>
             </div>
         </div>
-<?php
+        <?php
 
         return ob_get_clean();
     }
@@ -182,12 +234,14 @@ class BT
 
     static public function modalFooterCloseAndSubmit(){
         ob_start();
-    ?>
+
+        ?>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             <button type="submit" class="btn btn-primary">Сохранить</button>
         </div>
-    <?php
+        <?php
+
          return ob_get_clean();
    }
 }

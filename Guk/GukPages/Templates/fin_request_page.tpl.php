@@ -103,8 +103,8 @@ if (!$requested_sum_col_id){
         $requested_sum = 0;
         $approved_sum = 0;
 
-        $request_cell_ids_arr = \Cebera\DB\DBWrapper::readColumn(
-            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+        $request_cell_ids_arr = \OLOG\DB\DBWrapper::readColumn(
+            \AppConfig\Config::DB_NAME_GUK_FINANCE,
             'select id from ' . \Guk\FinRequestCell::DB_TABLE_NAME . ' where row_id = ? and col_id = ?',
             array($row_id, $requested_sum_col_id)
         );

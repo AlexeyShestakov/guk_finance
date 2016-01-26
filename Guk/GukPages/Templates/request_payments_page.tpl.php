@@ -38,7 +38,7 @@ $request_obj = \Guk\FinRequest::factory($request_id);
         $payment_obj = \Guk\VuzPayment::factory($payment_id);
 
         echo '<tr>';
-        echo '<td><a href="' . \Guk\GukPages\ControllerPayments::paymentUrl($payment_obj->getId()) . '">' . \Cebera\Helpers::replaceEmptyValue($payment_obj->getTitle()) . '</a></td>';
+        echo '<td><a href="' . \Guk\Pages\Payments\Controller::paymentUrl($payment_obj->getId()) . '">' . \Guk\Helpers::replaceEmptyString($payment_obj->getTitle()) . '</a></td>';
         echo '<td>' . $payment_obj->getAmountRub() . '</td>';
         echo '<td>' . date('d.m.Y', $payment_obj->getCreatedAtTs()) . '</td>';
         echo '<td>' . \Guk\VuzPayment::getStatusStrForCode($payment_obj->getStatusCode()) . '</td>';

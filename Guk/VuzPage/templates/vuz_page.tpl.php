@@ -43,7 +43,7 @@ foreach ($request_ids_arr as $request_id){
     }
 
     echo '<tr class="' . $row_class . '">';
-    echo '<td><a href="/vuz/finrequest/' . $request_obj->getId() . '/fill">' . \Cebera\Helpers::replaceEmptyValue($request_obj->getTitle()) . '</a></td>';
+    echo '<td><a href="/vuz/finrequest/' . $request_obj->getId() . '/fill">' . \Guk\Helpers::replaceEmptyString($request_obj->getTitle()) . '</a></td>';
     echo '<td>' . date('d.m.Y', $request_obj->getCreatedAtTs()) . '</td>';
     echo '<td>' . $request_obj::getStatusStrForCode($request_obj->getStatusCode()) . '</td>';
     echo '</tr>';

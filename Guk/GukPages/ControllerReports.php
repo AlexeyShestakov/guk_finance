@@ -10,10 +10,10 @@ class ControllerReports
 
     public function reportsByVuzAction(){
         ob_start();
-        \Guk\GukPages\templates\ReportByVuzTemplate::render();
+        \Guk\GukPages\Templates\ReportByVuzTemplate::render();
         $content = ob_get_clean();
 
-        \Guk\GukPages\templates\GukLayoutTemplate::render($content);
+        \Guk\GukPages\GukLayoutTemplate::render($content);
     }
 
 }

@@ -110,8 +110,8 @@ class FinRequest implements \OLOG\Model\InterfaceFactory
     }
 
     static public function getRequestIdsArrForFormByCreatedAtDesc($form_id){
-        $requests_ids_arr = \Cebera\DB\DBWrapper::readColumn(
-            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+        $requests_ids_arr = \OLOG\DB\DBWrapper::readColumn(
+            \AppConfig\Config::DB_NAME_GUK_FINANCE,
             'select id from ' . \Guk\FinRequest::DB_TABLE_NAME. ' where fin_form_id = ? order by created_at_ts desc',
             array($form_id)
         );
@@ -120,8 +120,8 @@ class FinRequest implements \OLOG\Model\InterfaceFactory
     }
 
     public function getPaymentIdsArrByCreatedAtDesc(){
-        $payment_ids_arr = \Cebera\DB\DBWrapper::readColumn(
-            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+        $payment_ids_arr = \OLOG\DB\DBWrapper::readColumn(
+            \AppConfig\Config::DB_NAME_GUK_FINANCE,
             'select id from ' . \Guk\VuzPayment::DB_TABLE_NAME. ' where fin_request_id = ? order by created_at_ts desc',
             array($this->getId())
         );

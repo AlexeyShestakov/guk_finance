@@ -91,7 +91,7 @@ class ControllerForms
 
         if (isset($_GET['a'])){
             if ($_GET['a'] == 'add_term'){
-                $row_term_obj = new \Guk\FormRowTermId();
+                $row_term_obj = new \Guk\FormRowToTerm();
 
                 $row_term_obj->setFormRowId($row_id);
                 $row_term_obj->setTermId($_GET['term_id']);
@@ -104,7 +104,7 @@ class ControllerForms
         \Guk\GukPages\Templates\FormRowTemplate::render($row_id);
         $content = ob_get_clean();
 
-        \Guk\GukPages\Templates\GukLayoutTemplate::render($content);
+        \Guk\GukPages\GukLayoutTemplate::render($content);
     }
 
     static public function editRowOperation($row_id)
@@ -129,7 +129,7 @@ class ControllerForms
         \Guk\GukPages\Templates\FormColTemplate::render($col_id);
         $content = ob_get_clean();
 
-        \Guk\GukPages\Templates\GukLayoutTemplate::render($content);
+        \Guk\GukPages\GukLayoutTemplate::render($content);
     }
 
     static public function editColOperation($col_id)
@@ -162,7 +162,7 @@ class ControllerForms
         ob_start();
         \Guk\GukPages\Templates\FormsTemplate::render();
         $content = ob_get_clean();
-        \Guk\GukPages\Templates\GukLayoutTemplate::render($content);
+        \Guk\GukPages\GukLayoutTemplate::render($content);
     }
 
     static public function formUrl($form_id){
@@ -197,7 +197,6 @@ class ControllerForms
                 $value = $_POST['value'];
 
                 $cell_obj = \Guk\FinFormCell::getObjForRowAndCol($row_id, $col_id);
-                //$request_cell_obj = \Guk\FinRequestCell::getObjForRequestAndRowAndCol($request_id, $row_id, $col_id);
                 if ($cell_obj){
                     $cell_obj->setValue($value);
                     $cell_obj->save();
@@ -237,7 +236,7 @@ class ControllerForms
         \Guk\GukPages\Templates\FormPageTemplate::render($form_id);
         $content = ob_get_clean();
 
-        \Guk\GukPages\Templates\GukLayoutTemplate::render($content);
+        \Guk\GukPages\GukLayoutTemplate::render($content);
     }
 
 }

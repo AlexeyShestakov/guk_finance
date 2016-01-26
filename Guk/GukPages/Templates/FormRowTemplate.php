@@ -26,7 +26,7 @@ class FormRowTemplate
 
         echo \Cebera\BT::formGroup('Вес', '<input class="form-control" name="' . self::FIELD_NAME_WEIGHT . '" value="' . $row_obj->getWeight() . '">');
         echo \Cebera\BT::formGroup('Лимит', '<input class="form-control" name="' . self::FIELD_NAME_LIMIT . '" value="' . $row_obj->getLimit() . '"><span id="helpBlock" class="help-block">Лимит бюджетного финансирования по этой строке.</span>');
-        echo \Cebera\BT::formGroup('Лимит', '<input class="form-control" name="' . self::FIELD_NAME_KBK . '" value="' . $row_obj->getKbk() . '"><span id="helpBlock" class="help-block">Код бюджетной классификации для этой строки, используется в отчетах.</span>');
+        echo \Cebera\BT::formGroup('КБК', '<input class="form-control" name="' . self::FIELD_NAME_KBK . '" value="' . $row_obj->getKbk() . '"><span id="helpBlock" class="help-block">Код бюджетной классификации для этой строки, используется в отчетах.</span>');
         echo \Cebera\BT::formSubmit();
 
         echo \Cebera\BT::endForm();
@@ -38,10 +38,10 @@ class FormRowTemplate
 
 
 
-        $row_to_term_ids = \Guk\FormRowTermId::getIdsArrForFormRow($row_id);
+        $row_to_term_ids = \Guk\FormRowToTerm::getIdsArrForFormRow($row_id);
 
         foreach ($row_to_term_ids as $row_to_term_id) {
-            $row_to_term_obj = \Guk\FormRowTermId::factory($row_to_term_id);
+            $row_to_term_obj = \Guk\FormRowToTerm::factory($row_to_term_id);
             $term_id = $row_to_term_obj->getTermId();
             $term_obj = \Guk\Term::factory($term_id);
             echo \Cebera\BT::div_plain($term_obj->getTitle());
@@ -51,7 +51,7 @@ class FormRowTemplate
 
 
         echo \Cebera\BT::beginModal(self::ADD_TERM_MODAL_ID, 'Назначение терма') .
-            \Cebera\BT::beginForm(\Guk\GukPages\ControllerForms::getFinFormRowUrl($row_id), \Guk\GukPages\ControllerTerms::ADD_TERM_OPERATION_CODE);
+            \Cebera\BT::beginForm(\Guk\GukPages\ControllerForms::getFinFormRowUrl($row_id), \Guk\Pages\Terms\ControllerTerms::ADD_TERM_OPERATION_CODE);
 
         echo \Cebera\BT::beginModalBody();
 

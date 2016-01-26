@@ -13,9 +13,9 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
 
 ?>
 
-<h1><a href="/vuz">Заявки</a> / <?php echo \Cebera\Helpers::replaceEmptyValue($request_obj->getTitle()); ?></h1>
+<h1><a href="/vuz">Заявки</a> / <?php echo \Guk\Helpers::replaceEmptyString($request_obj->getTitle()); ?></h1>
 
-<?php echo \Cebera\Render\Render::callLocaltemplate('request_tabs.tpl.php', array("request_id" => $request_id)); ?>
+<?php \Vuz\Pages\Requests\RequestTabs::render($request_id); ?>
 
 <div>&nbsp;</div>
 

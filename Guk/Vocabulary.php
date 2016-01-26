@@ -20,6 +20,10 @@ class Vocabulary implements \OLOG\Model\InterfaceFactory
     protected $created_by_user_id = 0;
     protected $created_at_ts = 0;
 
+    public function __construct(){
+        $this->created_at_ts = time();
+    }
+
     public function getId(){
         return $this->id;
     }

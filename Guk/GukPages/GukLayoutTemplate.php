@@ -1,6 +1,6 @@
 <?php
 
-namespace Guk\GukPages\Templates;
+namespace Guk\GukPages;
 
 class GukLayoutTemplate
 {
@@ -63,7 +63,7 @@ class GukLayoutTemplate
                 <ul class="nav navbar-nav">
                     <li <?php if ($cccn == \Guk\GukPages\ControllerForms::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(\Guk\GukPages\ControllerForms::getFinFormsPageUrl(), 'Формы') ?></li>
                     <li <?php if ($cccn == \Guk\GukPages\ControllerRequests::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(\Guk\GukPages\ControllerRequests::getFinRequestsUrl(), 'Заявки') ?></li>
-                    <li <?php if ($cccn == \Guk\GukPages\ControllerTerms::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(\Guk\GukPages\ControllerTerms::vocabulariesUrl(), 'Справочники') ?></li>
+                    <li <?php if ($cccn == \Guk\Pages\Terms\ControllerTerms::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(\Guk\Pages\Terms\ControllerTerms::vocabulariesUrl(), 'Справочники') ?></li>
                     <li <?php if ($cccn == \Guk\GukPages\ControllerReports::class){echo ' class="active" ';} ?> class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Отчеты <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -72,7 +72,7 @@ class GukLayoutTemplate
                             <li><a href="<?= \Guk\GukPages\ControllerReports::reportsByVuzUrl(); ?>">Заявки по ВУЗам для текущей формы</a></li>
                         </ul>
                     </li>
-                    <li <?php if ($cccn == \Guk\GukPages\ControllerPayments::class){echo ' class="active" ';} ?> ><a href="<?= \Guk\GukPages\ControllerPayments::paymentsUrl(); ?>">Платежи</a></li>
+                    <li <?php if ($cccn == \Guk\Pages\Payments\Controller::class){echo ' class="active" ';} ?> ><a href="<?= \Guk\Pages\Payments\Controller::paymentsUrl(); ?>">Платежи</a></li>
                     <li <?php if ($cccn == \Guk\GukPages\ControllerDFO::class){echo ' class="active" ';} ?> ><a href="<?= \Guk\GukPages\ControllerDFO::dfoUrl(); ?>">ДФО</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

@@ -18,7 +18,7 @@ class VocabulariesTemplate
             $vocabulary_obj = \Guk\Vocabulary::factory($vocabulary_id);
 
             echo \Cebera\BT::beginTr();
-            echo '<td>' . \Cebera\BT::a(\Guk\GukPages\ControllerTerms::vocabularyUrl($vocabulary_obj->getId()), $vocabulary_obj->getTitle()) . '</td>';
+            echo \Cebera\BT::td_plain(\Cebera\BT::a(\Guk\Pages\Terms\ControllerTerms::vocabularyUrl($vocabulary_obj->getId()), $vocabulary_obj->getTitle()));
             echo \Cebera\BT::td(date('d.m.Y', $vocabulary_obj->getCreatedAtTs()));
             echo \Cebera\BT::endTr();
         }
@@ -28,7 +28,7 @@ class VocabulariesTemplate
         // MODALS
 
         echo \Cebera\BT::beginModal(self::ADD_VOCABULARY_MODAL_ID, 'Создание словаря');
-        echo \Cebera\BT::beginForm(\Guk\GukPages\ControllerTerms::vocabulariesUrl(), \Guk\GukPages\ControllerTerms::ADD_VOCABULARY_OPERATION_CODE);
+        echo \Cebera\BT::beginForm(\Guk\Pages\Terms\ControllerTerms::vocabulariesUrl(), \Guk\Pages\Terms\ControllerTerms::ADD_VOCABULARY_OPERATION_CODE);
 
         ?>
 

@@ -8,7 +8,7 @@ $form_obj = \Guk\FinForm::factory($form_id);
 ?>
 
 <h1><a href="<?php echo \Guk\GukPages\ControllerForms::getFinFormsPageUrl(); ?>">Формы</a>
-    / <?php echo \Cebera\Helpers::replaceEmptyValue($form_obj->getComment()); ?></h1>
+    / <?php echo \Guk\Helpers::replaceEmptyString($form_obj->getComment()); ?></h1>
 
 <?php echo \Cebera\Render\Render::callLocaltemplate('form_tabs.tpl.php', array('form_id' => $form_id)); ?>
 
@@ -32,7 +32,7 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
     foreach ($col_ids_arr as $col_id) {
         $col_obj = \Guk\FinFormCol::factory($col_id);
 
-        echo '<th style="text-align: center;"><small>' . \Cebera\Helpers::replaceEmptyValue($col_obj->getTitle()) . '</small></th>';
+        echo '<th style="text-align: center;"><small>' . \Guk\Helpers::replaceEmptyString($col_obj->getTitle()) . '</small></th>';
     }
 
     echo '<th style="text-align: center;"><small>Лимит (тыс. руб.)</small></th>';
@@ -50,7 +50,7 @@ $row_ids_arr = $form_obj->getRowIdsArrByWeight();
         }
 
         echo '<tr>';
-        echo '<td style="text-align: right;"><small>' . \Cebera\Helpers::replaceEmptyValue($row_obj->getWeight()) . '</small></td>';
+        echo '<td style="text-align: right;"><small>' . \Guk\Helpers::replaceEmptyString($row_obj->getWeight()) . '</small></td>';
 
         foreach ($col_ids_arr as $col_id) {
             $col_obj = \Guk\FinFormCol::factory($col_id);

@@ -25,8 +25,12 @@ class ControllerVuz
             }
         }
 
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/request_payments_page.tpl.php", array('vuz_id' => $vuz_id, 'request_id' => $request_id));
-        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+        //$content = \Cebera\Render\Render::callLocaltemplate("templates/request_payments_page.tpl.php", array('vuz_id' => $vuz_id, 'request_id' => $request_id));
+        ob_start();
+        \Vuz\Pages\Requests\RequestPaymentsTemplate::render($vuz_id, $request_id);
+        $content = ob_get_clean();
+
+        \Vuz\Pages\VuzLayoutTemplate::render($content);
     }
 
     static public function addPaymentToRequestUrl($request_id){
@@ -36,7 +40,7 @@ class ControllerVuz
     public function vuzPageAction(){
         $vuz_id = 1; // TODO: get from account
         $content = \Cebera\Render\Render::callLocaltemplate("templates/vuz_page.tpl.php", array('vuz_id' => $vuz_id));
-        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+        \Vuz\Pages\VuzLayoutTemplate::render($content);
     }
 
     public function finRequestAddAction(){
@@ -56,12 +60,12 @@ class ControllerVuz
 
                 $request_obj->save();
 
-                \Cebera\Helpers::redirect('/vuz/finrequest/' . $request_obj->getId() . '/fill');
+                \OLOG\Helpers::redirect('/vuz/finrequest/' . $request_obj->getId() . '/fill');
             }
         }
 
         $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_request_add.tpl.php");
-        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+        \Vuz\Pages\VuzLayoutTemplate::render($content);
     }
 
     static public function getFinRequestEditUrl($request_id){
@@ -88,7 +92,7 @@ class ControllerVuz
         }
 
         $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_request_edit.tpl.php", array('request_id' => $request_id));
-        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+        \Vuz\Pages\VuzLayoutTemplate::render($content);
     }
 
     static public function getFinRequestPrintUrl($request_id){
@@ -97,7 +101,7 @@ class ControllerVuz
 
     public function finRequestPrintAction($request_id){
         $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_request_print.tpl.php", array('request_id' => $request_id));
-        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+        \Vuz\Pages\VuzLayoutTemplate::render($content);
     }
 
     static public function getFinRequestUploadUrl($request_id){
@@ -106,7 +110,7 @@ class ControllerVuz
 
     public function finRequestUploadAction($request_id){
         $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_request_upload.tpl.php", array('request_id' => $request_id));
-        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+        \Vuz\Pages\VuzLayoutTemplate::render($content);
     }
 
     static public function getFinRequestFillUrl($request_id){
@@ -151,7 +155,7 @@ class ControllerVuz
         }
 
         $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_request_fill_page.tpl.php", array('request_id' => $request_id));
-        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+        \Vuz\Pages\VuzLayoutTemplate::render($content);
     }
 
     static public function getFinRequestHistoryUrl($request_id){
@@ -160,6 +164,6 @@ class ControllerVuz
 
     public function finRequestHistoryAction($request_id){
         $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_request_history.tpl.php", array('request_id' => $request_id));
-        echo \Cebera\Render\Render::callLocaltemplate("../vuz_layout.tpl.php", array('content' => $content));
+        \Vuz\Pages\VuzLayoutTemplate::render($content);
     }
 }

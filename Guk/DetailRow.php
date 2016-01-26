@@ -6,13 +6,13 @@
 namespace Guk;
 
 
-class DetailRow implements \Cebera\Model\InterfaceFactory
+class DetailRow implements \OLOG\Model\InterfaceFactory
 {
-    use \Cebera\Model\FactoryTrait;
-    use \Cebera\Util\ActiveRecord;
-    use \Cebera\Util\ProtectProperties;
+    use \OLOG\Model\FactoryTrait;
+    use \OLOG\Model\ActiveRecord;
+    use \OLOG\Model\ProtectProperties;
 
-    const DB_ID = \Cebera\Conf::DB_NAME_GUK_FINANCE;
+    const DB_ID = \AppConfig\Config::DB_NAME_GUK_FINANCE;
     const DB_TABLE_NAME = 'detail_rows';
 
     protected $id = 0;
@@ -40,8 +40,8 @@ class DetailRow implements \Cebera\Model\InterfaceFactory
     }
 
     static public function getDetailRowIdsArrForRequestAndFormRowById($request_id, $form_row_id){
-        $detail_row_ids_arr = \Cebera\DB\DBWrapper::readColumn(
-            \Cebera\Conf::DB_NAME_GUK_FINANCE,
+        $detail_row_ids_arr = \OLOG\DB\DBWrapper::readColumn(
+            \AppConfig\Config::DB_NAME_GUK_FINANCE,
             'select id from ' . \Guk\DetailRow::DB_TABLE_NAME. ' where request_id = ? and form_row_id = ? order by id',
             array($request_id, $form_row_id)
         );

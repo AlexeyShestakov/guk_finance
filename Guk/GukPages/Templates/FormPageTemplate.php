@@ -9,7 +9,7 @@ class FormPageTemplate
 
         $form_obj = \Guk\FinForm::factory($form_id);
 
-        echo \Cebera\BT::h1_plain(\Cebera\BT::a(\Guk\GukPages\ControllerForms::getFinFormsPageUrl(), 'Формы') . ' / ' . $form_obj->getComment());
+        echo \Cebera\BT::h1_plain(\Cebera\BT::a(\Guk\GukPages\ControllerForms::finFormsPageAction(1), 'Формы') . ' / ' . $form_obj->getComment());
 
         echo \Cebera\Render\Render::callLocaltemplate('form_tabs.tpl.php', array('form_id' => $form_id));
         echo \Cebera\BT::div_plain('&nbsp;');
@@ -21,6 +21,43 @@ class FormPageTemplate
 
         $col_ids_arr = $form_obj->getColIdsArrByWeight();
         $row_ids_arr = $form_obj->getRowIdsArrByWeight();
+
+        $max_row_weight = 0;
+        $max_col_weight = 0;
+
+        foreach ($row_ids_arr as $row_id) {
+            $row_obj = \Guk\FinFormRow::factory($row_id);
+
+            if ($row_obj->getWeight() > $max_row_weight) {
+                $max_row_weight = $row_obj->getWeight();
+            }
+        }
+
+        foreach ($col_ids_arr as $col_id) {
+            $col_obj = \Guk\FinFormCol::factory($col_id);
+
+            if ($col_obj->getWeight() > $max_col_weight) {
+                $max_col_weight = $col_obj->getWeight();
+            }
+        }
+
+        echo '<div>';
+            echo \Cebera\BT::operationButton(
+                \Guk\GukPages\ControllerForms::finFormPageAction(1, $form_obj->getId()),
+                \Guk\GukPages\ControllerForms::OPERATION_CODE_ADD_ROW,
+                'Добавить строку',
+                array('weight' => $max_row_weight + 1)
+            );
+
+            echo '<form style="display: inline;" method="post" action="' . \Guk\GukPages\ControllerForms::finFormPageAction(1, $form_obj->getId()) . '">';
+            echo '<input type="hidden" name="a" value="add_col"/>';
+            echo '<input type="hidden" name="weight" value="' . ($max_col_weight + 1) . '"/>';
+            echo '<input type="submit" class="btn btn-default" value="Добавить колонку"/>';
+            echo '</form>';
+
+        echo '</div>';
+
+        echo \Cebera\BT::div_plain('&nbsp;');
 
         echo \Cebera\BT::beginTable('table-bordered table-condensed');
 
@@ -36,25 +73,14 @@ class FormPageTemplate
             echo '<th>Лимит (тыс. руб.)</th>';
             echo '</tr></thead>';
 
-            $max_row_weight = 0;
-            $max_col_weight = 0;
-
             foreach ($row_ids_arr as $row_id) {
                 $row_obj = \Guk\FinFormRow::factory($row_id);
 
-                if ($row_obj->getWeight() > $max_row_weight) {
-                    $max_row_weight = $row_obj->getWeight();
-                }
-
                 echo '<tr>';
-                echo '<td><a href="' . \Guk\GukPages\ControllerForms::getFinFormRowUrl($row_obj->getId()) . '">' . \Guk\Helpers::replaceEmptyString($row_obj->getWeight()) . '</a></td>';
+                echo '<td><a href="' . \Guk\GukPages\ControllerForms::finFormRowAction(1, $row_obj->getId()) . '">' . \Guk\Helpers::replaceEmptyString($row_obj->getWeight()) . '</a></td>';
 
                 foreach ($col_ids_arr as $col_id) {
                     $col_obj = \Guk\FinFormCol::factory($col_id);
-
-                    if ($col_obj->getWeight() > $max_col_weight) {
-                        $max_col_weight = $col_obj->getWeight();
-                    }
 
                     if ($col_obj->getIsEditableByVuz()) {
                         echo '<td>для вуза</td>';
@@ -81,7 +107,7 @@ class FormPageTemplate
                             }
 
                             echo '<td>';
-                            echo '<form method="post" action="' . \Guk\GukPages\ControllerForms::formUrl($form_obj->getId()) . '">';
+                            echo '<form method="post" action="' . \Guk\GukPages\ControllerForms::finFormPageAction(1, $form_obj->getId()) . '">';
                             echo '<input type="hidden" name="a" value="set_value"/>';
                             echo '<input type="hidden" name="row_id" value="' . $row_obj->getId() . '"/>';
                             echo '<input type="hidden" name="col_id" value="' . $col_obj->getId() . '"/>';
@@ -99,25 +125,5 @@ class FormPageTemplate
 
         echo \Cebera\BT::endTable();
 
-            ?>
-
-        <div>
-
-            <?php
-
-            echo '<form style="display: inline;" method="post" action="' . \Guk\GukPages\ControllerForms::formUrl($form_obj->getId()) . '">';
-            echo '<input type="hidden" name="a" value="add_row"/>';
-            echo '<input type="hidden" name="weight" value="' . ($max_row_weight + 1) . '"/>';
-            echo '<input type="submit" class="btn btn-default" value="Добавить строку"/>';
-            echo '</form>';
-
-            echo '<form style="display: inline;" method="post" action="' . \Guk\GukPages\ControllerForms::formUrl($form_obj->getId()) . '">';
-            echo '<input type="hidden" name="a" value="add_col"/>';
-            echo '<input type="hidden" name="weight" value="' . ($max_col_weight + 1) . '"/>';
-            echo '<input type="submit" class="btn btn-default" value="Добавить колонку"/>';
-            echo '</form>';
-            ?>
-        </div>
-        <?php
     }
 }

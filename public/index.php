@@ -11,11 +11,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 \OLOG\Router::match('@^/guk$@', array(\Guk\MainPage\ControllerMainPage::class, 'mainPageAction'), 0);
 
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormsPageUrl() . '$@', array(\Guk\GukPages\ControllerForms::class, 'finFormsPageAction'), 0);
+\OLOG\Router::match2(\Guk\GukPages\ControllerForms::finFormsPageAction(2), 0);
+\OLOG\Router::match2(\Guk\GukPages\ControllerForms::finFormPageAction(2, '(\d+)'), 0);
+\OLOG\Router::match2(\Guk\GukPages\ControllerForms::finFormRowAction(2, '(\d+)'), 0);
+
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormAddPageUrl() . '$@', array('\Guk\GukPages\ControllerForms', 'finFormAddAction'), 0);
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormRowUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormRowAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormColUrl('(\d+)') . '$@', array(\Guk\GukPages\ControllerForms::class, 'finFormColAction'), 0);
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::formUrl('(\d+)') . '$@', array(\Guk\GukPages\ControllerForms::class, 'finFormPageAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormParamsPageUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormParamsAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormViewUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormViewAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::docsUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'docsAction'), 0);

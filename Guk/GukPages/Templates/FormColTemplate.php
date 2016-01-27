@@ -5,9 +5,9 @@ namespace Guk\GukPages\Templates;
 
 class FormColTemplate
 {
-    const FIELD_NAME_VOCABULARY_ID = 'vocabulary_id';
-    const FIELD_NAME_WEIGHT = 'weight';
-    const FIELD_NAME_TITLE = 'title';
+    const FIELD_NAME_VOCABULARY_ID = 'FIELD_NAME_VOCABULARY_ID';
+    const FIELD_NAME_WEIGHT = 'FIELD_NAME_WEIGHT';
+    const FIELD_NAME_TITLE = 'FIELD_NAME_TITLE';
 
     static public function render($col_id)
     {
@@ -17,12 +17,19 @@ class FormColTemplate
         $form_obj = \Guk\FinForm::factory($form_id);
 
         echo \Cebera\BT::h1_plain(
-            \Cebera\BT::a(\Guk\GukPages\ControllerForms::getFinFormsPageUrl(), 'Формы') . ' / ' .
-            \Cebera\BT::a(\Guk\GukPages\ControllerForms::formUrl($form_id), \Guk\Helpers::replaceEmptyString($form_obj->getComment())) . ' / ' .
+            \Cebera\BT::a(\Guk\GukPages\ControllerForms::finFormsPageAction(1), 'Формы') . ' / ' .
+            \Cebera\BT::a(\Guk\GukPages\ControllerForms::finFormPageAction(1, $form_id), \Guk\Helpers::replaceEmptyString($form_obj->getComment())) . ' / ' .
             'Колонка'
         );
 
-        echo \Cebera\BT::beginForm(\Guk\GukPages\ControllerForms::getFinFormColUrl($col_obj->getId()), \Guk\GukPages\ControllerForms::EDIT_COL_OPERATION_CODE);
+        echo '<div>';
+
+        echo \Cebera\BT::operationButton(\Guk\GukPages\ControllerForms::getFinFormColUrl($col_obj->getId()), \Guk\GukPages\ControllerForms::OPERATION_CODE_DELETE_COL, 'Удалить колонку');
+
+        echo '</div>';
+        echo \Cebera\BT::div_plain('&nbsp;');
+
+        echo \Cebera\BT::beginForm(\Guk\GukPages\ControllerForms::getFinFormColUrl($col_obj->getId()), \Guk\GukPages\ControllerForms::OPERATION_CODE_EDIT_COL);
 
         echo \Cebera\BT::formGroup('Вес', '<input class="form-control" name="' . self::FIELD_NAME_WEIGHT . '" value="' . $col_obj->getWeight() . '">');
         echo \Cebera\BT::formGroup('Название', '<input class="form-control" name="' . self::FIELD_NAME_TITLE . '" value="' . $col_obj->getTitle() . '">');

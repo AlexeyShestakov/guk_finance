@@ -1,6 +1,8 @@
 <?php
 /**
  * create table fin_form_cell (id int not null auto_increment primary key, col_id int not null, row_id int not null, value varchar(255) not null default '') default charset = utf8;
+ * alter table fin_form_cell add foreign key (col_id) references fin_form_col(id);
+ * alter table fin_form_cell add foreign key (row_id) references fin_form_row(id);
  */
 
 namespace Guk;

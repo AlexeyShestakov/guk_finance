@@ -4,8 +4,10 @@ namespace Guk\GukPages;
 
 class ControllerForms
 {
-    const EDIT_COL_OPERATION_CODE = 'edit_col';
-    const EDIT_ROW_OPERATION_CODE = 'edit_row';
+    const OPERATION_CODE_EDIT_COL = 'OPERATION_CODE_EDIT_COL';
+    const OPERATION_CODE_EDIT_ROW = 'OPERATION_CODE_EDIT_ROW';
+    const OPERATION_CODE_DELETE_COL = 'OPERATION_CODE_DELETE_COL';
+    const OPERATION_CODE_ADD_ROW = 'OPERATION_CODE_ADD_ROW';
 
     public function kbkReportAction(){
         $content = \Cebera\Render\Render::callLocaltemplate("Templates/kbk_report.tpl.php");
@@ -82,12 +84,18 @@ class ControllerForms
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
     }
 
+    /*
     static public function getFinFormRowUrl($row_id){
         return '/guk/finformrow/' . $row_id;
     }
+    */
 
-    public function finFormRowAction($row_id){
-        \Cebera\BT::matchOperation(self::EDIT_ROW_OPERATION_CODE, function() use($row_id){self::editRowOperation($row_id);});
+    static public function finFormRowAction($mode, $row_id){
+        $self_url = '/guk/finformrow/' . $row_id;
+        if ($mode == 1){return $self_url;}
+        if ($mode == 2){return array(__METHOD__, $self_url);}
+
+        \Cebera\BT::matchOperation(self::OPERATION_CODE_EDIT_ROW, function() use($row_id){self::editRowOperation($row_id);});
 
         if (isset($_GET['a'])){
             if ($_GET['a'] == 'add_term'){
@@ -123,13 +131,24 @@ class ControllerForms
     }
 
     public function finFormColAction($col_id){
-        \Cebera\BT::matchOperation(self::EDIT_COL_OPERATION_CODE, function() use($col_id){self::editColOperation($col_id);});
+        \Cebera\BT::matchOperation(self::OPERATION_CODE_EDIT_COL, function() use($col_id){self::editColOperation($col_id);});
+        \Cebera\BT::matchOperation(self::OPERATION_CODE_DELETE_COL, function() use($col_id){self::deleteColOperation($col_id);});
 
         ob_start();
         \Guk\GukPages\Templates\FormColTemplate::render($col_id);
         $content = ob_get_clean();
 
         \Guk\GukPages\GukLayoutTemplate::render($content);
+    }
+
+    static public function deleteColOperation($col_id)
+    {
+        $col_obj = \Guk\FinFormCol::factory($col_id);
+        $form_id = $col_obj->getFormId();
+
+        $col_obj->delete();
+
+        \OLOG\Helpers::redirect(\Guk\GukPages\ControllerForms::finFormPageAction(1, $form_id));
     }
 
     static public function editColOperation($col_id)
@@ -154,19 +173,21 @@ class ControllerForms
         $col_obj->save();
     }
 
+    /*
     static public function getFinFormsPageUrl(){
         return '/guk/forms';
     }
+    */
 
-    public function finFormsPageAction(){
+    static public function finFormsPageAction($mode){
+        $self_url = '/guk/forms';
+        if ($mode == 1){return $self_url;}
+        if ($mode == 2){return array(__METHOD__, $self_url);}
+
         ob_start();
         \Guk\GukPages\Templates\FormsTemplate::render();
         $content = ob_get_clean();
         \Guk\GukPages\GukLayoutTemplate::render($content);
-    }
-
-    static public function formUrl($form_id){
-        return '/guk/form/' . $form_id;
     }
 
     static public function getFinFormAddPageUrl(){
@@ -181,7 +202,7 @@ class ControllerForms
                 $form_obj->setCreatedAtTs(time());
                 $form_obj->save();
 
-                \Cebera\Helpers::redirect(self::formUrl($form_obj->getId()));
+                \Cebera\Helpers::redirect(self::finFormPageAction(1, $form_obj->getId()));
             }
         }
 
@@ -189,7 +210,17 @@ class ControllerForms
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
     }
 
-    public function finFormPageAction($form_id){
+    /*
+    static public function formUrl($form_id){
+        return '/guk/form/' . $form_id;
+    }
+    */
+
+    static public function finFormPageAction($mode, $form_id){
+        $self_url = '/guk/form/' . $form_id;
+        if ($mode == 1){return $self_url;}
+        if ($mode == 2){return array(__METHOD__, $self_url);}
+
         if (array_key_exists('a', $_POST)){
             if ($_POST['a'] == 'set_value'){
                 $row_id = $_POST['row_id'];
@@ -209,17 +240,6 @@ class ControllerForms
                 }
             }
 
-            if ($_POST['a'] == 'add_row'){
-                $weight = $_POST['weight'];
-
-                $row_obj = new \Guk\FinFormRow();
-
-                $row_obj->setFormId($form_id);
-                $row_obj->setWeight($weight);
-
-                $row_obj->save();
-            }
-
             if ($_POST['a'] == 'add_col'){
                 $weight = $_POST['weight'];
 
@@ -232,11 +252,28 @@ class ControllerForms
             }
         }
 
+        \Cebera\BT::matchOperation(self::OPERATION_CODE_ADD_ROW, function() use ($form_id){self::operationAddRow($form_id);});
+
         ob_start();
         \Guk\GukPages\Templates\FormPageTemplate::render($form_id);
         $content = ob_get_clean();
 
         \Guk\GukPages\GukLayoutTemplate::render($content);
     }
+
+    static public function operationAddRow($form_id)
+    {
+        $weight = $_POST['weight'];
+
+        $row_obj = new \Guk\FinFormRow();
+
+        $row_obj->setFormId($form_id);
+        $row_obj->setWeight($weight);
+
+        $row_obj->save();
+
+        \OLOG\Helpers::redirect(self::finFormPageAction(1, $form_id));
+    }
+
 
 }

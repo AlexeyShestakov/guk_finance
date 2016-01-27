@@ -17,12 +17,12 @@ class FormRowTemplate
         $form_obj = \Guk\FinForm::factory($form_id);
 
         echo \Cebera\BT::h1_plain(
-            \Cebera\BT::a(\Guk\GukPages\ControllerForms::getFinFormsPageUrl(), 'Формы') . ' / ' .
-            \Cebera\BT::a(\Guk\GukPages\ControllerForms::formUrl($form_id), \Guk\Helpers::replaceEmptyString($form_obj->getComment())) . ' / ' .
+            \Cebera\BT::a(\Guk\GukPages\ControllerForms::finFormsPageAction(1), 'Формы') . ' / ' .
+            \Cebera\BT::a(\Guk\GukPages\ControllerForms::finFormPageAction(1, $form_id), \Guk\Helpers::replaceEmptyString($form_obj->getComment())) . ' / ' .
             'Строка'
         );
 
-        echo \Cebera\BT::beginForm(\Guk\GukPages\ControllerForms::getFinFormRowUrl($row_obj->getId()), \Guk\GukPages\ControllerForms::EDIT_ROW_OPERATION_CODE);
+        echo \Cebera\BT::beginForm(\Guk\GukPages\ControllerForms::finFormRowAction(1, $row_obj->getId()), \Guk\GukPages\ControllerForms::OPERATION_CODE_EDIT_ROW);
 
         echo \Cebera\BT::formGroup('Вес', '<input class="form-control" name="' . self::FIELD_NAME_WEIGHT . '" value="' . $row_obj->getWeight() . '">');
         echo \Cebera\BT::formGroup('Лимит', '<input class="form-control" name="' . self::FIELD_NAME_LIMIT . '" value="' . $row_obj->getLimit() . '"><span id="helpBlock" class="help-block">Лимит бюджетного финансирования по этой строке.</span>');
@@ -51,7 +51,7 @@ class FormRowTemplate
 
 
         echo \Cebera\BT::beginModal(self::ADD_TERM_MODAL_ID, 'Назначение терма') .
-            \Cebera\BT::beginForm(\Guk\GukPages\ControllerForms::getFinFormRowUrl($row_id), \Guk\Pages\Terms\ControllerTerms::ADD_TERM_OPERATION_CODE);
+            \Cebera\BT::beginForm(\Guk\GukPages\ControllerForms::finFormRowAction(1, $row_id), \Guk\Pages\Terms\ControllerTerms::ADD_TERM_OPERATION_CODE);
 
         echo \Cebera\BT::beginModalBody();
 
@@ -67,7 +67,7 @@ class FormRowTemplate
             $term_ids_arr = \Guk\Term::getTermIdsArrForVocabularyByTitle($vocabulary_id);
             foreach ($term_ids_arr as $term_id){
                 $term_obj = \Guk\Term::factory($term_id);
-                echo '<li><a href="' . \Guk\GukPages\ControllerForms::getFinFormRowUrl($row_id) . '?a=add_term&term_id=' . $term_id . '">' . $term_obj->getTitle() . '</a></li>';
+                echo '<li><a href="' . \Guk\GukPages\ControllerForms::finFormRowAction(1, $row_id) . '?a=add_term&term_id=' . $term_id . '">' . $term_obj->getTitle() . '</a></li>';
             }
 
             echo '</ul>';

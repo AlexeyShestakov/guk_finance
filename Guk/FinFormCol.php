@@ -4,6 +4,7 @@
  * alter table fin_form_col add column is_editable_by_vuz boolean default false;
  * alter table fin_form_col add column is_requested_sum boolean not null default false;
  * alter table fin_form_col add column vocabulary_id int not null default 0;
+ * alter table fin_form_col add foreign key (form_id) references fin_form (id);
  */
 
 namespace Guk;

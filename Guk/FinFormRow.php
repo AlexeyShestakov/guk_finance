@@ -4,6 +4,7 @@
  * create table fin_form_row (id int not null auto_increment primary key, form_id int not null, weight int not null default 0) DEFAULT CHARSET=utf8;
  * alter table fin_form_row add column limit_int int not null default 0;
  * alter table fin_form_row add column kbk varchar(255) not null default '';
+ * alter table fin_form_row add foreign key (form_id) references fin_form (id);
  */
 
 namespace Guk;

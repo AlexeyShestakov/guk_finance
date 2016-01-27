@@ -24,7 +24,6 @@ class ControllerMainPage
     }
 
     public function mainPageAction(){
-        $content = \Cebera\Render\Render::callLocaltemplate("Templates/mainpage.tpl.php");
-        echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
+        \OLOG\Helpers::redirect(\Guk\GukPages\ControllerRequests::getFinRequestsUrl());
     }
 }

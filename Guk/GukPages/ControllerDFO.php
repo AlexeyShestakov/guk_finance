@@ -15,7 +15,7 @@ class ControllerDFO
         \Guk\GukPages\Templates\DFOTemplate::render();
         $content = ob_get_clean();
 
-        \Guk\GukPages\GukLayoutTemplate::render($content);
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
     static public function dfoGenerateUrl(){
@@ -29,7 +29,7 @@ class ControllerDFO
         \Guk\GukPages\DFOGenerateTemplate::render();
         $content = ob_get_clean();
 
-        \Guk\GukPages\GukLayoutTemplate::render($content);
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
     public function dfoAddPaymentsGroupOperation()

@@ -1,7 +1,8 @@
 <?php
 
-namespace Guk\GukPages\Templates;
+namespace Guk\Pages\Forms;
 
+use Guk\Pages\Forms\FormsController;
 
 class FormColTemplate
 {
@@ -16,18 +17,14 @@ class FormColTemplate
         $form_id = $col_obj->getFormId();
         $form_obj = \Guk\FinForm::factory($form_id);
 
-        echo \Cebera\BT::h1_plain(
-            \Cebera\BT::a(\Guk\GukPages\ControllerForms::finFormsPageAction(1), 'Формы') . ' / ' .
-            \Cebera\BT::a(\Guk\GukPages\ControllerForms::finFormPageAction(1, $form_id), \Guk\Helpers::replaceEmptyString($form_obj->getComment())) . ' / ' .
+        echo \Cebera\BT::pageHeader_plain(
+            \Cebera\BT::a(FormsController::formsAction(1), 'Формы') . ' / ' .
+            \Cebera\BT::a(FormsController::finFormPageAction(1, $form_id), \Guk\Helpers::replaceEmptyString($form_obj->getComment())) . ' / ' .
             'Колонка'
         );
 
-        echo '<div>';
-
-        echo \Cebera\BT::operationButton(\Guk\GukPages\ControllerForms::getFinFormColUrl($col_obj->getId()), \Guk\GukPages\ControllerForms::OPERATION_CODE_DELETE_COL, 'Удалить колонку');
-
-        echo '</div>';
-        echo \Cebera\BT::div_plain('&nbsp;');
+        echo \Cebera\BT::div_plain(\Cebera\BT::operationButton(\Guk\GukPages\ControllerForms::getFinFormColUrl($col_obj->getId()), \Guk\GukPages\ControllerForms::OPERATION_CODE_DELETE_COL, 'Удалить колонку'));
+        echo \Cebera\BT::delimiter();
 
         echo \Cebera\BT::beginForm(\Guk\GukPages\ControllerForms::getFinFormColUrl($col_obj->getId()), \Guk\GukPages\ControllerForms::OPERATION_CODE_EDIT_COL);
 

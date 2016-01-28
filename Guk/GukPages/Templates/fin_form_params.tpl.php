@@ -3,13 +3,16 @@
  * @var $form_id
  */
 
+use Guk\Pages\Forms\FormsController;
+
 $form_obj = \Guk\FinForm::factory($form_id);
+
+echo \Cebera\BT::pageHeader_plain('<a href="' . FormsController::formsAction(1) . '">Формы</a> / ' . $form_obj->getComment() . '</h1>');
 
 ?>
 
-<h1><a href="<?php echo \Guk\GukPages\ControllerForms::finFormsPageAction(1); ?>">Формы</a> / <?php echo $form_obj->getComment(); ?></h1>
 
-<?php echo \Cebera\Render\Render::callLocaltemplate('form_tabs.tpl.php', array('form_id' => $form_id)); ?>
+<?php \Guk\Pages\Forms\FormTabsTemplate::render($form_id); ?>
 
 <div>&nbsp;</div>
 

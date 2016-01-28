@@ -1,6 +1,8 @@
 <?php
 
-namespace Guk\GukPages;
+namespace Guk\Pages;
+
+use Guk\Pages\Forms\FormsController;
 
 class GukLayoutTemplate
 {
@@ -25,6 +27,8 @@ class GukLayoutTemplate
 
     <!-- Bootstrap core CSS -->
     <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -61,7 +65,7 @@ class GukLayoutTemplate
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li <?php if ($cccn == \Guk\GukPages\ControllerForms::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(\Guk\GukPages\ControllerForms::finFormsPageAction(1), 'Формы') ?></li>
+                    <li <?php if ($cccn == \Guk\GukPages\ControllerForms::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(FormsController::formsAction(1), 'Формы') ?></li>
                     <li <?php if ($cccn == \Guk\GukPages\ControllerRequests::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(\Guk\GukPages\ControllerRequests::getFinRequestsUrl(), 'Заявки') ?></li>
                     <li <?php if ($cccn == \Guk\Pages\Terms\ControllerTerms::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(\Guk\Pages\Terms\ControllerTerms::vocabulariesUrl(), 'Справочники') ?></li>
                     <li <?php if ($cccn == \Guk\GukPages\ControllerReports::class){echo ' class="active" ';} ?> class="dropdown">

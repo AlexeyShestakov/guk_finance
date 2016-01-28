@@ -5,8 +5,11 @@
  */
 
 $detail_row_obj = \Guk\DetailRow::factory($detail_row_id);
+$request_id = $detail_row_obj->getRequestId();
+$request_obj = \Guk\FinRequest::factory($request_id);
+$form_id = $request_obj->getFinFormId();
 
-$detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrById();
+$detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrForFormById($form_id);
 
 echo '<tr>';
 foreach ($detail_column_ids_arr as $detail_column_id) {

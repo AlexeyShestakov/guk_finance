@@ -1,6 +1,8 @@
 <?php
 
 // ставим хидер с Content-Type по умолчанию для всех клиентов
+use Guk\Pages\Forms\FormsController;
+
 header('Content-Type: text/html; charset=utf-8');
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -11,11 +13,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 \OLOG\Router::match('@^/guk$@', array(\Guk\MainPage\ControllerMainPage::class, 'mainPageAction'), 0);
 
-\OLOG\Router::match2(\Guk\GukPages\ControllerForms::finFormsPageAction(2), 0);
-\OLOG\Router::match2(\Guk\GukPages\ControllerForms::finFormPageAction(2, '(\d+)'), 0);
-\OLOG\Router::match2(\Guk\GukPages\ControllerForms::finFormRowAction(2, '(\d+)'), 0);
+\OLOG\Router::match2(FormsController::formsAction(2), 0);
+\OLOG\Router::match2(FormsController::finFormPageAction(2, '(\d+)'), 0);
+\OLOG\Router::match2(FormsController::finFormRowAction(2, '(\d+)'), 0);
 
-\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormAddPageUrl() . '$@', array('\Guk\GukPages\ControllerForms', 'finFormAddAction'), 0);
+//\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormAddPageUrl() . '$@', array('\Guk\GukPages\ControllerForms', 'finFormAddAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormColUrl('(\d+)') . '$@', array(\Guk\GukPages\ControllerForms::class, 'finFormColAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormParamsPageUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormParamsAction'), 0);
 \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormViewUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormViewAction'), 0);

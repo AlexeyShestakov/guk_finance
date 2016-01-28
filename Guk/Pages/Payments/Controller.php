@@ -14,7 +14,7 @@ class Controller
         ob_start();
         \Guk\Pages\Payments\GroupsTemplate::render();
         $content = ob_get_clean();
-        \Guk\GukPages\GukLayoutTemplate::render($content);
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
     static public function groupUrl($group_id){
@@ -28,7 +28,7 @@ class Controller
         \Guk\Pages\Payments\GroupTemplate::render($group_id);
         $content = ob_get_clean();
 
-        \Guk\GukPages\GukLayoutTemplate::render($content);
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
     static public function sendGroupToDFOOperation($group_id){
@@ -83,7 +83,7 @@ class Controller
         \Guk\Pages\Payments\PaymentTemplate::render($payment_id);
         $content = ob_get_clean();
 
-        \Guk\GukPages\GukLayoutTemplate::render($content);
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
 }

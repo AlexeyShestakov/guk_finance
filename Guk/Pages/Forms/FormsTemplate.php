@@ -1,12 +1,16 @@
 <?php
 
-namespace Guk\GukPages\Templates;
+namespace Guk\Pages\Forms;
 
 class FormsTemplate
 {
+    const MODAL_ID_ADD_FORM = 'MODAL_ID_ADD_FORM';
+    const FIELD_NAME_FORM_TITLE = 'FIELD_NAME_FORM_TITLE';
+
     static public function render()
     {
-        echo '<h1>Формы ' . \Cebera\BT::a(\Guk\GukPages\ControllerForms::getFinFormAddPageUrl(), '+') . '</h1>';
+        echo \Cebera\BT::pageHeader_plain('Формы');
+        echo \Cebera\BT::div_plain(\Cebera\BT::modalToggleButton(self::MODAL_ID_ADD_FORM, 'Создать'));
 
         echo \Cebera\BT::beginTable();
 
@@ -34,11 +38,15 @@ class FormsTemplate
             }
 
             echo \Cebera\BT::beginTr($row_classes);
-            echo '<td>' . \Cebera\BT::a(\Guk\GukPages\ControllerForms::finFormPageAction(1, $form_obj->getId()), $form_obj->getComment()) . '</td>';
+            echo '<td>' . \Cebera\BT::a(FormsController::finFormPageAction(1, $form_obj->getId()), $form_obj->getComment()) . '</td>';
             echo \Cebera\BT::td(date('d.m.Y', $form_obj->getCreatedAtTs()));
             echo \Cebera\BT::endTr();
         }
 
         echo \Cebera\BT::endTable();
+
+        echo \Cebera\BT::beginModalForm(self::MODAL_ID_ADD_FORM, 'Создание формы', \Guk\Pages\Forms\FormsController::formsAction(1), \Guk\Pages\Forms\FormsController::ADD_FORM_OPERATION_CODE);
+        echo \Cebera\BT::formGroup('Название', '<input class="form-control" name="' . self::FIELD_NAME_FORM_TITLE . '" value="">');
+        echo \Cebera\BT::endModalForm();
     }
 }

@@ -11,7 +11,7 @@ $form_obj = \Guk\FinForm::factory($form_id);
 $col_ids_arr = $form_obj->getColIdsArrByWeight();
 $row_ids_arr = $form_obj->getRowIdsArrByWeight();
 
-$detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrById();
+$detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrForFormById($form_id);
 $detail_columns_count = count($detail_column_ids_arr);
 
 
@@ -67,7 +67,7 @@ $detail_columns_count = count($detail_column_ids_arr);
         foreach ($detail_row_ids_arr as $detail_row_id){
             $detail_row_obj = \Guk\DetailRow::factory($detail_row_id);
 
-            $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrById();
+            $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrForFormById($form_id);
 
             echo '<tr>';
             foreach ($detail_column_ids_arr as $detail_column_id) {

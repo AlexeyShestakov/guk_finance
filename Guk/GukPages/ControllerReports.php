@@ -13,7 +13,7 @@ class ControllerReports
         \Guk\GukPages\Templates\ReportByVuzTemplate::render();
         $content = ob_get_clean();
 
-        \Guk\GukPages\GukLayoutTemplate::render($content);
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
 }

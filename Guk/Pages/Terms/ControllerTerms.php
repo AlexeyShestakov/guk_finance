@@ -23,7 +23,7 @@ class ControllerTerms
         \Guk\GukPages\Templates\VocabulariesTemplate::render();
         $content = ob_get_clean();
 
-        \Guk\GukPages\GukLayoutTemplate::render($content);
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
     static public function vocabularyUrl($id){
@@ -50,7 +50,7 @@ class ControllerTerms
         \Guk\Pages\Terms\VocabularyTemplate::render($vocabulary_id);
         $content = ob_get_clean();
 
-        \Guk\GukPages\GukLayoutTemplate::render($content);
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
     static public function addVocabularyOperation(){

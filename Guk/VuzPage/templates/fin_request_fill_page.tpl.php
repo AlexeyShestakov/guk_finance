@@ -115,7 +115,7 @@ if ($request_obj->getStatusCode() == \Guk\FinRequest::STATUS_IN_GUK_REWIEW){
         echo '<th><small>Ожидаемый результат и краткое обоснование</small></th>';
         */
 
-        $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrById();
+        $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrForFormById($form_id);
         foreach ($detail_column_ids_arr as $detail_column_id){
             $detail_column_obj = \Guk\DetailColumn::factory($detail_column_id);
             echo '<th class="text-center"><small>' . $detail_column_obj->getTitle() . '</small></th>';

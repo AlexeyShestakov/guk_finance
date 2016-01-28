@@ -55,7 +55,7 @@ class ControllerRequests
 
         $content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_request_page.tpl.php", array('request_id' => $request_id));
         //echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
-        \Guk\GukPages\GukLayoutTemplate::render($content);
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
 
@@ -82,7 +82,7 @@ class ControllerRequests
 
         $content = \Cebera\Render\Render::callLocaltemplate("Templates/request_payments_page.tpl.php", array('request_id' => $request_id));
         //echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
-        \Guk\GukPages\GukLayoutTemplate::render($content);
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
     static public function getFinRequestsUrl(){
@@ -91,7 +91,7 @@ class ControllerRequests
 
     public function finRequestsPageAction(){
         $content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_requests_page.tpl.php");
-        \Guk\GukPages\GukLayoutTemplate::render($content);
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
 }

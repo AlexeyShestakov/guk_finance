@@ -4,6 +4,10 @@ namespace Cebera;
 
 class BT
 {
+    static public function delimiter(){
+        return '<div>&nbsp;</div>';
+    }
+
     static public function formInput($field_name, $field_value, $readonly = false){
         ob_start();
 
@@ -55,7 +59,9 @@ class BT
     }
 
     static public function sanitizeTagContent($value){
-        return htmlspecialchars($value);
+        $value = htmlspecialchars($value);
+        $value = preg_replace('@\R@mu', '<br>', $value);
+        return $value;
     }
 
     static public function select($name, $values_arr, $current_id){
@@ -119,8 +125,34 @@ class BT
         return '<table class="table ' . self::sanitizeAttrValue($classes_str) . ' ">';
     }
 
+    static public function breadcrumbs($arr){
+        ob_start();
+
+        echo '<ol class="breadcrumb">';
+
+        foreach ($arr as $url => $title){
+            if ($url){
+                echo '<li>' . self::a($url, $title) . '</li>';
+            } else {
+                echo '<li class="active">' . $title . '</li>';
+            }
+        }
+
+        echo '</ol>';
+
+        return ob_get_clean();
+    }
+
     static public function h1_plain($value){
         return '<h1>' . $value . '</h1>';
+    }
+
+    static public function h2_plain($value){
+        return '<h2>' . $value . '</h2>';
+    }
+
+    static public function pageHeader_plain($value){
+        return '<div class="page-header"><h2>' . $value . '</h2></div>';
     }
 
     static public function div_plain($value){
@@ -163,6 +195,17 @@ class BT
         return ob_get_clean();
     }
 
+    static public function beginModalForm($modal_id, $modal_title, $action_url, $operation_code){
+        ob_start();
+
+        echo \Cebera\BT::beginModal($modal_id, $modal_title);
+        echo \Cebera\BT::beginForm($action_url, $operation_code);
+        echo \Cebera\BT::beginModalBody();
+
+        return ob_get_clean();
+    }
+
+
     static public function beginModal($modal_id, $modal_title){
         ob_start();
 
@@ -189,6 +232,17 @@ class BT
 
     static public function endForm(){
         return '</form>';
+    }
+
+    static public function endModalForm(){
+        ob_start();
+
+        echo \Cebera\BT::endModalBody();
+        echo \Cebera\BT::modalFooterCloseAndSubmit();
+        echo \Cebera\BT::endForm();
+        echo \Cebera\BT::endModal();
+
+        return ob_get_clean();
     }
 
     static public function endModal(){

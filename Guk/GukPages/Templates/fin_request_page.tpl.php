@@ -139,7 +139,7 @@ if (!$requested_sum_col_id){
         echo '<table id="' . $details_table_htmlid . '"  class="table table-bordered table-condensed">';
         echo '<thead><tr>';
 
-        $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrById();
+        $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrForFormById($form_id);
         foreach ($detail_column_ids_arr as $detail_column_id){
             $detail_column_obj = \Guk\DetailColumn::factory($detail_column_id);
             echo '<th class="text-center"><small>' . $detail_column_obj->getTitle() . '</small></th>';
@@ -151,7 +151,7 @@ if (!$requested_sum_col_id){
         foreach ($detail_row_ids_arr as $detail_row_id){
             $detail_row_obj = \Guk\DetailRow::factory($detail_row_id);
 
-            $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrById();
+            $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrForFormById($form_id);
 
             echo '<tr>';
             foreach ($detail_column_ids_arr as $detail_column_id) {

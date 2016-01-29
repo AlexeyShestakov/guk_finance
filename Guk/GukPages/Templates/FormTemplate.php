@@ -19,7 +19,6 @@ class FormTemplate
         echo \Cebera\BT::pageHeader_plain(\Cebera\BT::a(FormsController::formsAction(1), 'Формы') . ' / ' .  $form_obj->getComment());
 
         echo \Guk\Pages\Forms\FormTabsTemplate::render($form_id);
-        echo \Cebera\BT::delimiter();
 
         if ($form_obj->isCurrent()) {
             echo '<div class="alert alert-warning" role="alert">Для текущей формы изменение полей запрещено.</div>';
@@ -50,13 +49,13 @@ class FormTemplate
 
         echo '<div>';
             echo \Cebera\BT::operationButton(
-                FormsController::finFormPageAction(1, $form_obj->getId()),
+                FormsController::formAction(1, $form_obj->getId()),
                 \Guk\GukPages\ControllerForms::OPERATION_CODE_ADD_ROW,
                 'Добавить строку',
                 array('weight' => $max_row_weight + 1)
             );
 
-            echo '<form style="display: inline;" method="post" action="' . FormsController::finFormPageAction(1, $form_obj->getId()) . '">';
+            echo '<form style="display: inline;" method="post" action="' . FormsController::formAction(1, $form_obj->getId()) . '">';
             echo '<input type="hidden" name="a" value="add_col"/>';
             echo '<input type="hidden" name="weight" value="' . ($max_col_weight + 1) . '"/>';
             echo '<input type="submit" class="btn btn-default" value="Добавить колонку"/>';
@@ -148,7 +147,7 @@ class FormTemplate
 
         echo \Cebera\BT::endTable();
 
-        echo \Cebera\BT::beginModalForm(self::MODAL_ID_EDIT_CELL, 'Редактирование ячейки', FormsController::finFormPageAction(1, $form_id), FormsController::OPERATION_CODE_EDIT_CELL);
+        echo \Cebera\BT::beginModalForm(self::MODAL_ID_EDIT_CELL, 'Редактирование ячейки', FormsController::formAction(1, $form_id), FormsController::OPERATION_CODE_EDIT_CELL);
         echo '<input type="hidden" name="' . self::FIELD_NAME_ROW_ID. '" id="' . self::FIELD_NAME_ROW_ID. '">';
         echo '<input type="hidden" name="' . self::FIELD_NAME_COL_ID. '" id="' . self::FIELD_NAME_COL_ID. '">';
         echo \Cebera\BT::formGroup('Значение', '<textarea class="form-control" name="' . self::FIELD_NAME_CELL_VALUE. '" id="' . self::FIELD_NAME_CELL_VALUE. '"></textarea>');

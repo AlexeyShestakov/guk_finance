@@ -1,10 +1,11 @@
 <?php
 
 /**
- * create table fin_request(id int not null auto_increment primary key, created_at_ts int not null default 0, created_by_user_id int not null default 0, title varchar(250) not null default '') default charset = utf8;
+ * create table fin_request(id int not null auto_increment primary key, created_at_ts int not null default 0, created_by_user_id int not null default 0, title varchar(250) not null default '') default charset = utf8 engine = InnoDB;
  * alter table fin_request add column vuz_id int not null;
  * alter table fin_request add column fin_form_id int not null;
  * alter table fin_request add column status_code int not null default 0;
+ * alter table fin_request add foreign key (fin_form_id) references fin_form (id);
  */
 
 namespace Guk;
@@ -33,6 +34,48 @@ class FinRequest implements \OLOG\Model\InterfaceFactory
     public $vuz_id;
     public $fin_form_id;
     public $status_code = 0;
+
+    public function getCorrectedSumForRow($row_id){
+        $form_id = $this->getFinFormId();
+        $form_obj = \Guk\FinForm::factory($form_id);
+        $requested_sum_col_id = $form_obj->getRequestedSumColId();
+        $request_cell_obj = \Guk\FinRequestCell::getObjForRequestAndRowAndCol($this->getId(), $row_id, $requested_sum_col_id);
+
+        if ($request_cell_obj) {
+            $corrected_value = $request_cell_obj->getCorrectedValue();
+            if (!$corrected_value){
+                $corrected_value = $request_cell_obj->getValue();
+            }
+
+            return intval($corrected_value);
+        }
+
+        return 0;
+    }
+
+    public function setCorrectedSumForRow($row_id, $corrected_value){
+        $form_id = $this->getFinFormId();
+        $form_obj = \Guk\FinForm::factory($form_id);
+        $requested_sum_col_id = $form_obj->getRequestedSumColId();
+        $request_cell_obj = \Guk\FinRequestCell::getObjForRequestAndRowAndCol($this->getId(), $row_id, $requested_sum_col_id);
+
+        \OLOG\Helpers::assert($request_cell_obj); // в норме такого быть не должно, мы же не корректируем отсутствующие значения?
+        $request_cell_obj->setCorrectedValue($corrected_value);
+        $request_cell_obj->save();
+    }
+
+    public function getRequestedSumForRow($row_id){
+        $form_id = $this->getFinFormId();
+        $form_obj = \Guk\FinForm::factory($form_id);
+        $requested_sum_col_id = $form_obj->getRequestedSumColId();
+        $request_cell_obj = \Guk\FinRequestCell::getObjForRequestAndRowAndCol($this->getId(), $row_id, $requested_sum_col_id);
+
+        if ($request_cell_obj) {
+            return intval($request_cell_obj->getValue());
+        }
+
+        return 0;
+    }
 
     public function logChange($info, $comment = ''){
         $log_obj = new \Guk\FinRequestLog();

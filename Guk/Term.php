@@ -1,6 +1,6 @@
 <?php
 /**
- * create table term(id int not null auto_increment primary key, created_at_ts int not null default 0, created_by_user_id int not null default 0, title varchar(250) not null default '') default charset = utf8;
+ * create table term(id int not null auto_increment primary key, created_at_ts int not null default 0, created_by_user_id int not null default 0, title varchar(250) not null default '') default charset = utf8 engine = InnoDB;
  * alter table term add column vocabulary_id int not null;
  */
 

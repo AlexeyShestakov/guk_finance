@@ -1,6 +1,6 @@
 <?php
 /**
- * create table form_row_term_id (id int unsigned not null auto_increment primary key, form_row_id int not null, term_id int not null) default charset utf8;
+ * create table form_row_term_id (id int unsigned not null auto_increment primary key, form_row_id int not null, term_id int not null) default charset utf8 engine = InnoDB;
  * alter table form_row_term_id add unique index (form_row_id, term_id);
  */
 

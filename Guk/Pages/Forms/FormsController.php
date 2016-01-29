@@ -3,6 +3,8 @@
 namespace Guk\Pages\Forms;
 
 use Guk\GukPages\ControllerForms;
+use Cebera\BT;
+use \Guk\Pages\Forms\FormDetailsTemplate;
 
 class FormsController
 {
@@ -10,6 +12,7 @@ class FormsController
     const OPERATION_CODE_EDIT_CELL = 'OPERATION_CODE_EDIT_CELL';
     const OPERATION_CODE_DELETE_ROW = 'OPERATION_CODE_DELETE_ROW';
     const OPERATION_CODE_REMOVE_ROW_TERM = 'OPERATION_CODE_REMOVE_ROW_TERM';
+    const OPERATION_ADD_DETAIL_COLUMN = 'OPERATION_ADD_DETAIL_COLUMN';
 
     public static function formsAction($mode)
     {
@@ -31,16 +34,18 @@ class FormsController
         $form_obj->setCreatedAtTs(time());
         $form_obj->save();
 
-        \OLOG\Helpers::redirect(FormsController::finFormPageAction(1, $form_obj->getId()));
+        \OLOG\Helpers::redirect(FormsController::formAction(1, $form_obj->getId()));
     }
 
-    public static function finFormPageAction($mode, $form_id)
+    public static function formAction($mode, $form_id)
     {
         $self_url = '/guk/form/' . $form_id;
         if ($mode == 1) return $self_url;
         if ($mode == 2) return array(__METHOD__, $self_url);
 
         \Cebera\BT::matchOperation(self::OPERATION_CODE_EDIT_CELL, function() use ($form_id){self::operationEditFormCell($form_id);});
+        \Cebera\BT::matchOperation(ControllerForms::OPERATION_CODE_ADD_ROW, function () use ($form_id) {ControllerForms::operationAddRow($form_id);});
+
 
         if (array_key_exists('a', $_POST)) {
 
@@ -55,10 +60,6 @@ class FormsController
                 $col_obj->save();
             }
         }
-
-        \Cebera\BT::matchOperation(ControllerForms::OPERATION_CODE_ADD_ROW, function () use ($form_id) {
-            ControllerForms::operationAddRow($form_id);
-        });
 
         ob_start();
         \Guk\GukPages\Templates\FormTemplate::render($form_id);
@@ -85,7 +86,7 @@ class FormsController
             $cell_obj->save();
         }
 
-        \OLOG\Helpers::redirect(\Guk\Pages\Forms\FormsController::finFormPageAction(1, $form_id));
+        \OLOG\Helpers::redirect(\Guk\Pages\Forms\FormsController::formAction(1, $form_id));
     }
 
     public static function finFormRowAction($mode, $row_id)
@@ -134,7 +135,7 @@ class FormsController
 
         $row_obj->delete();
 
-        \OLOG\Helpers::redirect(\Guk\Pages\Forms\FormsController::finFormPageAction(1, $form_id));
+        \OLOG\Helpers::redirect(\Guk\Pages\Forms\FormsController::formAction(1, $form_id));
     }
 
     static public function deleteRowTermOperation($row_id)
@@ -146,6 +147,48 @@ class FormsController
         $row_to_term_obj->delete();
 
         \OLOG\Helpers::redirect(FormsController::finFormRowAction(1, $row_id));
+    }
+
+    public static function docsAction($mode, $form_id)
+    {
+        $self_url = '/guk/finform/' . $form_id . '/docs';
+        if ($mode == 1) return $self_url;
+        if ($mode == 2) return array(__METHOD__, $self_url);
+
+        BT::matchOperation(self::OPERATION_ADD_DETAIL_COLUMN, function() use($form_id){
+            $new_col_obj = new \Guk\DetailColumn();
+            $new_col_obj->setFormId($form_id);
+            $new_col_obj->save();
+
+            \OLOG\Helpers::redirect(self::docsAction(1, $form_id));
+        });
+
+        BT::matchOperation(FormDetailsTemplate::OPERATION_EDIT_DETAIL_COLUMN, function() use($form_id){
+            $col_id = BT::getPostValue(FormDetailsTemplate::FIELD_COL_ID);
+
+            $new_col_obj = \Guk\DetailColumn::factory($col_id);
+            $new_col_obj->setTitle(BT::getPostValue(FormDetailsTemplate::FIELD_COL_TITLE));
+            $new_col_obj->save();
+
+            \OLOG\Helpers::redirect(self::docsAction(1, $form_id));
+        });
+
+        BT::matchOperation(FormDetailsTemplate::OPERATION_DELETE_DETAIL_COL, function() use($form_id){
+            $col_id = BT::getPostValue(FormDetailsTemplate::FIELD_COL_ID);
+
+            $new_col_obj = \Guk\DetailColumn::factory($col_id);
+            $new_col_obj->delete();
+
+            \OLOG\Helpers::redirect(self::docsAction(1, $form_id));
+        });
+
+        //
+
+        ob_start();
+        \Guk\Pages\Forms\FormDetailsTemplate::render($form_id);
+        $content = ob_get_clean();
+
+        \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
 

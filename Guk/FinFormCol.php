@@ -1,6 +1,6 @@
 <?php
 /**
- * create table fin_form_col (id int not null auto_increment primary key, form_id int not null, title varchar(100) not null default '', weight int not null default 0) DEFAULT CHARSET=utf8;
+ * create table fin_form_col (id int not null auto_increment primary key, form_id int not null, title varchar(100) not null default '', weight int not null default 0) DEFAULT CHARSET=utf8 engine = InnoDB;
  * alter table fin_form_col add column is_editable_by_vuz boolean default false;
  * alter table fin_form_col add column is_requested_sum boolean not null default false;
  * alter table fin_form_col add column vocabulary_id int not null default 0;

@@ -1,7 +1,6 @@
 <?php
 
-namespace Guk\GukPages;
-
+namespace Guk\Pages\Requests;
 
 class ControllerRequests
 {
@@ -53,8 +52,11 @@ class ControllerRequests
             }
         }
 
-        $content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_request_page.tpl.php", array('request_id' => $request_id));
-        //echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
+        //$content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_request_page.tpl.php", array('request_id' => $request_id));
+        ob_start();
+        RequestTemplate::render($request_id);
+        $content = ob_get_clean();
+
         \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
@@ -80,8 +82,13 @@ class ControllerRequests
             }
         }
 
-        $content = \Cebera\Render\Render::callLocaltemplate("Templates/request_payments_page.tpl.php", array('request_id' => $request_id));
+        //$content = \Cebera\Render\Render::callLocaltemplate("Templates/request_payments_page.tpl.php", array('request_id' => $request_id));
         //echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
+
+        ob_start();
+        RequestPaymentsTemplate::render($request_id);
+        $content = ob_get_clean();
+
         \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
@@ -90,7 +97,11 @@ class ControllerRequests
     }
 
     public function finRequestsPageAction(){
-        $content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_requests_page.tpl.php");
+        //$content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_requests_page.tpl.php");
+        ob_start();
+        RequestsTemplate::render();
+        $content = ob_get_clean();
+
         \Guk\Pages\GukLayoutTemplate::render($content);
     }
 

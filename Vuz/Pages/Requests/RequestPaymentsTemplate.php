@@ -7,7 +7,7 @@ class RequestPaymentsTemplate
     static public function render($vuz_id, $request_id){
         $request_obj = \Guk\FinRequest::factory($request_id);
 
-        //$vuz_obj = \Guk\Vuz::factory($vuz_id);
+        //$vuz_obj = \Guk\Vuzes::factory($vuz_id);
 
         ?>
 

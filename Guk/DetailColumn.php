@@ -1,6 +1,6 @@
 <?php
 /**
- * create table detail_columns(id int not null auto_increment primary key, title varchar(255) not null) default charset UTF8;
+ * create table detail_columns(id int not null auto_increment primary key, title varchar(255) not null) default charset UTF8 engine = InnoDB;
  * alter table detail_columns add column is_requested_sum bool not null default false;
  * alter table detail_columns add column form_id int not null;
  * alter table detail_columns add foreign key (form_id) references fin_form (id);
@@ -42,6 +42,7 @@ class DetailColumn implements \OLOG\Model\InterfaceFactory
     public function getId(){
         return $this->id;
     }
+
 
     public function getTitle(){
         return $this->title;

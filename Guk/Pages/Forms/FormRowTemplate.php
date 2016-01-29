@@ -21,7 +21,7 @@ class FormRowTemplate
 
         echo \Cebera\BT::pageHeader_plain(
             \Cebera\BT::a(\Guk\Pages\Forms\FormsController::formsAction(1), 'Формы') . ' / ' .
-            \Cebera\BT::a(\Guk\Pages\Forms\FormsController::finFormPageAction(1, $form_id), \Guk\Helpers::replaceEmptyString($form_obj->getComment())) . ' / ' .
+            \Cebera\BT::a(\Guk\Pages\Forms\FormsController::formAction(1, $form_id), \Guk\Helpers::replaceEmptyString($form_obj->getComment())) . ' / ' .
             'Строка'
         );
 

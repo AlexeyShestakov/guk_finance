@@ -11,7 +11,7 @@ class Controller
     }
 
     static public function expensesAction(){
-        $vuz_id = 1; // TODO: get from session
+        $vuz_id = \Vuz\Auth::getCurrentOperatorVuzId();
 
         \Cebera\BT::matchOperation(
             \Vuz\Pages\Expenses\Controller::OPERATION_CODE_EDIT_EXPENCE,

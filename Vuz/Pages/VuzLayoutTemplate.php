@@ -69,7 +69,17 @@ $cccn = \OLOG\Router::getCurrentControllerClassName();
                     <li <?php if ($cccn == \Vuz\Pages\Expenses\Controller::class){echo ' class="active" ';} ?> ><a href="<?= \Vuz\Pages\Expenses\Controller::expensesUrl() ?>">Расходы</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Михаил Платонов (академия РВСН)</a></li>
+                    <li><a href="#"><?php
+
+                            $current_operator_user_id = \Guk\User::getCurrentOperatorUserId();
+                            $current_operator_user_obj = \Guk\User::factory($current_operator_user_id);
+                            echo $current_operator_user_obj->getLogin();
+
+                            $current_vuz_id = \Vuz\Auth::getCurrentOperatorVuzId();
+                            $current_vuz_obj = \Guk\Vuz::factory($current_vuz_id);
+                            echo ' (' . $current_vuz_obj->getTitle() . ')';
+
+                        ?></a></li>
                     <li><a href="/" title="Выйти"><span class="glyphicon glyphicon-log-out"></span></a></li>
                 </ul>
             </div><!--/.nav-collapse -->

@@ -19,7 +19,7 @@ class FormColTemplate
 
         echo \Cebera\BT::pageHeader_plain(
             \Cebera\BT::a(FormsController::formsAction(1), 'Формы') . ' / ' .
-            \Cebera\BT::a(FormsController::finFormPageAction(1, $form_id), \Guk\Helpers::replaceEmptyString($form_obj->getComment())) . ' / ' .
+            \Cebera\BT::a(FormsController::formAction(1, $form_id), \Guk\Helpers::replaceEmptyString($form_obj->getComment())) . ' / ' .
             'Колонка'
         );
 

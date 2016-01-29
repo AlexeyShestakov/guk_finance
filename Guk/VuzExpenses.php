@@ -1,6 +1,6 @@
 <?php
 /**
- * create table vuz_expenses(id int not null auto_increment primary key, vuz_id int not null, form_row_id int not null, expenses_rub int not null default 0) default charset utf8;
+ * create table vuz_expenses(id int not null auto_increment primary key, vuz_id int not null, form_row_id int not null, expenses_rub int not null default 0) default charset utf8 engine = InnoDB;
  */
 
 namespace Guk;

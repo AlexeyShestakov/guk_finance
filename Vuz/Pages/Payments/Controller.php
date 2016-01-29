@@ -12,7 +12,7 @@ class Controller
     }
 
     public function paymentsPageAction(){
-        $vuz_id = 1; // TODO: get from account
+        $vuz_id = \Vuz\Auth::getCurrentOperatorVuzId();
 
         ob_start();
         \Vuz\Pages\Payments\PaymentsTemplate::render($vuz_id);
@@ -26,7 +26,7 @@ class Controller
     }
 
     public function paymentPageAction($payment_id){
-        $vuz_id = 1; // TODO: get from account
+        $vuz_id = \Vuz\Auth::getCurrentOperatorVuzId();
 
         \Cebera\BT::matchOperation(self::OPERATION_CODE_PARTIAL_PAYMENT, function() use($payment_id){self::partialPaymentOperation($payment_id);});
         \Cebera\BT::matchOperation(self::OPERATION_CODE_COMPLETE_PAYMENT, function() use($payment_id){self::completePaymentOperation($payment_id);});

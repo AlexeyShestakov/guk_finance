@@ -41,20 +41,6 @@ class ControllerForms
         echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
     }
 
-    static public function docsUrl($form_id){
-        return '/guk/finform/' . $form_id . '/docs';
-    }
-
-    public function docsAction($form_id){
-        //$content = \Cebera\Render\Render::callLocaltemplate("Templates/fin_form_docs.tpl.php", array('form_id' => $form_id));
-        ob_start();
-        \Guk\Pages\Forms\FormDetails::render($form_id);
-        $content = ob_get_clean();
-
-        //echo \Cebera\Render\Render::callLocaltemplate("../guk_layout.tpl.php", array('content' => $content));
-        \Guk\Pages\GukLayoutTemplate::render($content);
-    }
-
     static public function archiveUrl($form_id){
         return '/guk/finform/' . $form_id . '/archive';
     }
@@ -113,7 +99,7 @@ class ControllerForms
 
         $col_obj->delete();
 
-        \OLOG\Helpers::redirect(FormsController::finFormPageAction(1, $form_id));
+        \OLOG\Helpers::redirect(FormsController::formAction(1, $form_id));
     }
 
     static public function editColOperation($col_id)
@@ -149,7 +135,7 @@ class ControllerForms
 
         $row_obj->save();
 
-        \OLOG\Helpers::redirect(FormsController::finFormPageAction(1, $form_id));
+        \OLOG\Helpers::redirect(FormsController::formAction(1, $form_id));
     }
 
 

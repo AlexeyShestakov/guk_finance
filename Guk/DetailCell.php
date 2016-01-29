@@ -1,6 +1,6 @@
 <?php
 /**
- * create table detail_cell (id int not null auto_increment primary key, detail_column_id int not null, detail_row_id int not null, value varchar(1024) not null default '') default charset = utf8;
+ * create table detail_cell (id int not null auto_increment primary key, detail_column_id int not null, detail_row_id int not null, value varchar(1024) not null default '') default charset = utf8 engine = InnoDB;
  * alter table detail_cell add foreign key (detail_row_id) references detail_row(id);
  * alter table detail_cell add foreign key (detail_row_id) references detail_rows(id);
  */

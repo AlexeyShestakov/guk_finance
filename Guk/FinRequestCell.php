@@ -1,7 +1,7 @@
 <?php
 
 /**
- * create table fin_request_cell (id int not null auto_increment primary key, fin_request_id int not null, col_id int not null, row_id int not null, value varchar(255) not null default '') default charset = utf8;
+ * create table fin_request_cell (id int not null auto_increment primary key, fin_request_id int not null, col_id int not null, row_id int not null, value varchar(255) not null default '') default charset = utf8 engine = InnoDB;
  * alter table fin_request_cell ADD COLUMN corrected_value varchar(255) not null default '';
  */
 

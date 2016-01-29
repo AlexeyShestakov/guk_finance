@@ -3,7 +3,7 @@
 namespace Guk;
 
 /**
- * create table vuz_payment(id int not null auto_increment primary key, created_at_ts int not null default 0, created_by_user_id int not null default 0, title varchar(250) not null default '', amount_rub int not null default 0) default charset = utf8;
+ * create table vuz_payment(id int not null auto_increment primary key, created_at_ts int not null default 0, created_by_user_id int not null default 0, title varchar(250) not null default '', amount_rub int not null default 0) default charset = utf8 engine = InnoDB;
  * alter table vuz_payment add column fin_request_id int not null;
  * alter table vuz_payment add column vuz_id int not null;
  * alter table vuz_payment add column status_code int not null default 0;

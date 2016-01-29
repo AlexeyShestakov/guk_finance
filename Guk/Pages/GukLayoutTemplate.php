@@ -45,6 +45,9 @@ class GukLayoutTemplate
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 </head>
 
 <body>
@@ -66,14 +69,14 @@ class GukLayoutTemplate
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li <?php if ($cccn == \Guk\GukPages\ControllerForms::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(FormsController::formsAction(1), 'Формы') ?></li>
-                    <li <?php if ($cccn == \Guk\GukPages\ControllerRequests::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(\Guk\GukPages\ControllerRequests::getFinRequestsUrl(), 'Заявки') ?></li>
+                    <li <?php if ($cccn == Requests\ControllerRequests::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(Requests\ControllerRequests::getFinRequestsUrl(), 'Заявки') ?></li>
                     <li <?php if ($cccn == \Guk\Pages\Terms\ControllerTerms::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(\Guk\Pages\Terms\ControllerTerms::vocabulariesUrl(), 'Справочники') ?></li>
-                    <li <?php if ($cccn == \Guk\GukPages\ControllerReports::class){echo ' class="active" ';} ?> class="dropdown">
+                    <li <?php if ($cccn == Reports\ControllerReports::class){echo ' class="active" ';} ?> class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Отчеты <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/guk/report/kbk">Для текущей формы по КБК</a></li>
                             <li><a href="/guk/report/current_form_payments">Платежи для текущей формы</a></li>
-                            <li><a href="<?= \Guk\GukPages\ControllerReports::reportsByVuzUrl(); ?>">Заявки по ВУЗам для текущей формы</a></li>
+                            <li><a href="<?= Reports\ControllerReports::reportsByVuzAction(1); ?>">Заявки по ВУЗам для текущей формы</a></li>
                         </ul>
                     </li>
                     <li <?php if ($cccn == \Guk\Pages\Payments\Controller::class){echo ' class="active" ';} ?> ><a href="<?= \Guk\Pages\Payments\Controller::paymentsUrl(); ?>">Платежи</a></li>
@@ -100,8 +103,6 @@ class GukLayoutTemplate
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>

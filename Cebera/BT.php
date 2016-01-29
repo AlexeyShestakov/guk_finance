@@ -8,7 +8,34 @@ class BT
         return '<div>&nbsp;</div>';
     }
 
-    static public function formInput($field_name, $field_value, $readonly = false){
+    static public function toolbar_plain($html){
+        ob_start();
+
+        echo self::div_plain($html);
+        echo self::delimiter();
+
+        return ob_get_clean();
+    }
+
+    static public function formCheckbox($field_name, $checked){
+        ob_start();
+
+        echo '<div class="checkbox">';
+        echo '<label>';
+
+        $checked_str = '';
+        if ($checked){
+            $checked_str = ' checked ';
+        }
+
+        echo '<input name="' . $field_name . '" type="checkbox" ' . $checked_str. ' >';
+        echo '</label>';
+        echo '</div>';
+
+        return ob_get_clean();
+    }
+
+    static public function formInput($field_name, $field_value = '', $readonly = false){
         ob_start();
 
         $readonly_str = '';
@@ -17,7 +44,15 @@ class BT
             $readonly_str = 'readonly';
         }
 
-        echo '<input class="form-control" name="' . self::sanitizeAttrValue($field_name) . '" value="' . self::sanitizeAttrValue($field_value) . '" ' . $readonly_str . '/>';
+        echo '<input class="form-control" name="' . self::sanitizeAttrValue($field_name) . '" id="' . self::sanitizeAttrValue($field_name) . '" value="' . self::sanitizeAttrValue($field_value) . '" ' . $readonly_str . '/>';
+
+        return ob_get_clean();
+    }
+
+    static public function hiddenInput($field_name, $field_value = ''){
+        ob_start();
+
+        echo '<input type="hidden" name="' . self::sanitizeAttrValue($field_name) . '" id="' . self::sanitizeAttrValue($field_name) . '" value="' . self::sanitizeAttrValue($field_value) . '"/>';
 
         return ob_get_clean();
     }
@@ -58,6 +93,16 @@ class BT
         return '<button class="btn btn-default" data-toggle="modal" data-target="#' . $modal_id . '">' . $title . '</button>';
     }
 
+    static public function modalToggleLink($modal_id, $title, $data_attrs_arr = array()){
+        $data_attrs_str = '';
+
+        foreach ($data_attrs_arr as $attr_name => $attr_value){
+            $data_attrs_str .= ' ' . $attr_name . '="' . $attr_value . '" '; // TODO: sanitize
+        }
+
+        return '<button ' . $data_attrs_str . ' class="btn btn-link" data-toggle="modal" data-target="#' . $modal_id . '">' . $title . '</button>';
+    }
+
     static public function sanitizeTagContent($value){
         $value = htmlspecialchars($value);
         $value = preg_replace('@\R@mu', '<br>', $value);
@@ -93,8 +138,8 @@ class BT
         return htmlspecialchars($value);
     }
 
-    static public function th($val){
-        return '<th>' . self::sanitizeTagContent($val) . '</th>';
+    static public function th($val, $classes_str = ''){
+        return '<th class="' . $classes_str . '">' . self::sanitizeTagContent($val) . '</th>';
     }
 
     static public function td($val, $classes_str = ''){

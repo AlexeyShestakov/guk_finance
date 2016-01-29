@@ -14,8 +14,6 @@ echo \Cebera\BT::pageHeader_plain('<a href="' . FormsController::formsAction(1) 
 
 <?php \Guk\Pages\Forms\FormTabsTemplate::render($form_id); ?>
 
-<div>&nbsp;</div>
-
 <form class="form-horizontal" method="post" action="<?php echo \Guk\GukPages\ControllerForms::getFinFormParamsPageUrl($form_obj->getId()); ?>">
     <input type="hidden" name="a" value="edit_form">
 

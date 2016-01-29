@@ -1,7 +1,7 @@
 <?php
 
 /**
- * create table fin_request_log (id int not null auto_increment primary key, request_id int not null, created_at_ts int not null, author_user_id int not null, comment varchar(1024), change_info varchar(1024)) default charset = utf8;
+ * create table fin_request_log (id int not null auto_increment primary key, request_id int not null, created_at_ts int not null, author_user_id int not null, comment varchar(1024), change_info varchar(1024)) default charset = utf8 engine = InnoDB;
  */
 
 namespace Guk;

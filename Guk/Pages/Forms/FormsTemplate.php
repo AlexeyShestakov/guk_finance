@@ -38,7 +38,7 @@ class FormsTemplate
             }
 
             echo \Cebera\BT::beginTr($row_classes);
-            echo '<td>' . \Cebera\BT::a(FormsController::finFormPageAction(1, $form_obj->getId()), $form_obj->getComment()) . '</td>';
+            echo '<td>' . \Cebera\BT::a(FormsController::formAction(1, $form_obj->getId()), $form_obj->getComment()) . '</td>';
             echo \Cebera\BT::td(date('d.m.Y', $form_obj->getCreatedAtTs()));
             echo \Cebera\BT::endTr();
         }

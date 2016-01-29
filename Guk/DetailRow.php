@@ -1,6 +1,6 @@
 <?php
 /**
- * create table detail_rows(id int not null auto_increment primary key, request_id int not null, form_row_id int not null) default charset UTF8;
+ * create table detail_rows(id int not null auto_increment primary key, request_id int not null, form_row_id int not null) default charset UTF8 engine = InnoDB;
  * alter table detail_rows add foreign key (request_id) references fin_request (id);
  * alter table detail_rows add foreign key (form_row_id) references fin_form_row (id);
  */

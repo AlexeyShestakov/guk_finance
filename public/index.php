@@ -53,6 +53,7 @@ try {
 
     //\OLOG\Router::match('@^' . \Guk\Pages\Reports\ControllerReports::reportsByVuzUrl() . '$@', array(\Guk\Pages\Reports\ControllerReports::class, "reportsByVuzAction"), 0);
     \OLOG\Router::match2(\Guk\Pages\Reports\ControllerReports::reportsByVuzAction(2), 0);
+    \OLOG\Router::match2(\Guk\Pages\Reports\ControllerReports::detailsForRequestAndFormRowAction(2, '(\d+)', '(\d+)'), 0);
 
     \OLOG\Router::match('@^' . \Guk\Pages\Terms\ControllerTerms::vocabulariesUrl() . '$@', array(\Guk\Pages\Terms\ControllerTerms::class, "vocabulariesAction"), 0);
     \OLOG\Router::match('@^' . \Guk\Pages\Terms\ControllerTerms::vocabularyUrl('(\d+)') . '$@', array(\Guk\Pages\Terms\ControllerTerms::class, "vocabularyAction"), 0);
@@ -63,7 +64,7 @@ try {
     \OLOG\Router::match2(\Vuz\Pages\Requests\RequestsController::requestsAction(2));
 
     \OLOG\Router::match('@^/vuz/finrequest/(\d+)$@', array(\Guk\VuzPage\ControllerVuz::class, 'finRequestEditAction'), 0);
-    \OLOG\Router::match('@^/vuz/finrequest/(\d+)/fill$@', array(\Guk\VuzPage\ControllerVuz::class, 'finRequestFillPageAction'), 0);
+    \OLOG\Router::match2(RequestsController::finRequestFillPageAction(2, '(\d+)'), 0);
     \OLOG\Router::match('@^' . \Guk\VuzPage\ControllerVuz::getFinRequestHistoryUrl('(\d+)') . '$@', array('\Guk\VuzPage\ControllerVuz', 'finRequestHistoryAction'), 0);
     \OLOG\Router::match('@^' . \Guk\VuzPage\ControllerVuz::getFinRequestPrintUrl('(\d+)') . '$@', array('\Guk\VuzPage\ControllerVuz', 'finRequestPrintAction'), 0);
     \OLOG\Router::match('@^' . \Guk\VuzPage\ControllerVuz::getFinRequestUploadUrl('(\d+)') . '$@', array('\Guk\VuzPage\ControllerVuz', 'finRequestUploadAction'), 0);
@@ -73,12 +74,15 @@ try {
     \OLOG\Router::match('@^' . \Vuz\Pages\Payments\Controller::paymentUrl('(\d+)') . '$@', array(\Vuz\Pages\Payments\Controller::class, 'paymentPageAction'), 0);
     \OLOG\Router::match('@^' . \Vuz\Pages\Expenses\Controller::expensesUrl() . '$@', array(\Vuz\Pages\Expenses\Controller::class, 'expensesAction'), 0);
 
+    \OLOG\Router::match2(\Vuz\Pages\ControllerAjax::vocabularyTermsAction(2, '(\d+)'), 0);
+
 } catch (\Exception $exception) {
     error_log($exception->getMessage() . "\n" . $exception->getTraceAsString());
     $content_html = '';
     $content_html .= '<h1>Ошибка</h1>';
     $content_html .= '<p>' . $exception->getMessage() . '</p>';
     $content_html .= '<div style="margin:30px 0; font-size:18px;"><a href="#" onclick="history.back(); return false;"><span class="glyphicon glyphicon-arrow-left" style="font-size:16px;"></span> Назад</a></div>';
+    $content_html .= '<pre>'. $exception->getTraceAsString() . '</pre>';
 
     \Auth\Pages\EntryTemplate::render($content_html);
 

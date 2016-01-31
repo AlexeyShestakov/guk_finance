@@ -168,6 +168,8 @@ class FormsController
 
             $new_col_obj = \Guk\DetailColumn::factory($col_id);
             $new_col_obj->setTitle(BT::getPostValue(FormDetailsTemplate::FIELD_COL_TITLE));
+            $new_col_obj->setWeight(BT::getPostValue(FormDetailsTemplate::FIELD_COL_WEIGHT));
+            $new_col_obj->setVocabularyId(BT::getPostValue(FormDetailsTemplate::FIELD_COL_VOCABULARY_ID));
             $new_col_obj->save();
 
             \OLOG\Helpers::redirect(self::docsAction(1, $form_id));

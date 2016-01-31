@@ -100,4 +100,24 @@ class FinForm implements \OLOG\Model\InterfaceFactory
 
         return $requested_sum_col_id;
     }
+
+
+    /**
+     * @return int 0 if not found
+     */
+    public function getRequestedSumDetailColId(){
+        $col_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrForFormByWeight($this->id);
+
+        $requested_sum_col_id = 0;
+
+        foreach ($col_ids_arr as $col_id) {
+            $col_obj = \Guk\DetailColumn::factory($col_id);
+            if ($col_obj->getIsRequestedSum()){
+                $requested_sum_col_id = $col_id;
+            }
+        }
+
+        return $requested_sum_col_id;
+    }
+
 }

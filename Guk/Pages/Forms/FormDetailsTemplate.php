@@ -8,8 +8,10 @@ use Cebera\BT;
 class FormDetailsTemplate
 {
     const MODAL_EDIT_COL = 'MODAL_EDIT_COL';
-    const FIELD_COL_TITLE = 'FIELD_COL_TITLE';
-    const FIELD_COL_ID = 'FIELD_COL_ID';
+    const FIELD_COL_TITLE = 'title';
+    const FIELD_COL_ID = 'id';
+    const FIELD_COL_WEIGHT = 'weight';
+    const FIELD_COL_VOCABULARY_ID = 'vocabulary_id';
     const OPERATION_DELETE_DETAIL_COL = 'OPERATION_DELETE_DETAIL_COL';
     const OPERATION_EDIT_DETAIL_COLUMN = 'OPERATION_EDIT_DETAIL_COLUMN';
 
@@ -25,7 +27,7 @@ class FormDetailsTemplate
             BT::operationButton($self_actions_url, FormsController::OPERATION_ADD_DETAIL_COLUMN, 'Добавить колонку детализации')
         );
 
-        $detail_cols_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrForFormById($form_id);
+        $detail_cols_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrForFormByWeight($form_id);
 
         echo BT::beginTable();
 
@@ -39,8 +41,10 @@ class FormDetailsTemplate
                     self::MODAL_EDIT_COL,
                     \Guk\Helpers::replaceEmptyString($detail_col_obj->getTitle()),
                     array(
-                        'data-title' => $detail_col_obj->getTitle(),
-                        'data-col_id' => $detail_col_obj->getId(),
+                        'data-' . self::FIELD_COL_TITLE => $detail_col_obj->getTitle(),
+                        'data-' . self::FIELD_COL_ID => $detail_col_obj->getId(),
+                        'data-' . self::FIELD_COL_WEIGHT => $detail_col_obj->getWeight(),
+                        'data-' . self::FIELD_COL_VOCABULARY_ID => $detail_col_obj->getVocabularyId()
                         )
                 )
             );
@@ -62,6 +66,9 @@ class FormDetailsTemplate
         echo BT::beginModalForm(self::MODAL_EDIT_COL, 'Редактирование колонки', $self_actions_url, self::OPERATION_EDIT_DETAIL_COLUMN);
         echo BT::hiddenInput(self::FIELD_COL_ID, '');
         echo BT::formGroup('Название', BT::formInput(self::FIELD_COL_TITLE, ''));
+        echo BT::formGroup('Вес', BT::formInput(self::FIELD_COL_WEIGHT, ''));
+
+        echo BT::formGroup('Словарь', BT::formInput(self::FIELD_COL_VOCABULARY_ID, ''));
         echo BT::endModalForm();
 
         ?>
@@ -69,11 +76,11 @@ class FormDetailsTemplate
         <script>
             $('#<?= self::MODAL_EDIT_COL ?>').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
-                var title = button.data('title');
-                var col_id = button.data('col_id');
                 var modal = $(this);
-                modal.find('.modal-body #FIELD_COL_TITLE').val(title);
-                modal.find('.modal-body #FIELD_COL_ID').val(col_id);
+                modal.find('.modal-body #<?= self::FIELD_COL_TITLE ?>').val(button.data('<?= self::FIELD_COL_TITLE ?>'));
+                modal.find('.modal-body #<?= self::FIELD_COL_ID ?>').val(button.data('<?= self::FIELD_COL_ID ?>'));
+                modal.find('.modal-body #<?= self::FIELD_COL_WEIGHT ?>').val(button.data('<?= self::FIELD_COL_WEIGHT ?>'));
+                modal.find('.modal-body #<?= self::FIELD_COL_VOCABULARY_ID ?>').val(button.data('<?= self::FIELD_COL_VOCABULARY_ID ?>'));
                 })
         </script>
 

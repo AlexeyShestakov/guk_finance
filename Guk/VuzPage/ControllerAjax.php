@@ -20,7 +20,8 @@ class ControllerAjax
                 $detail_row_obj->setFormRowId($form_row_id);
                 $detail_row_obj->save();
 
-                echo \Cebera\Render\Render::callLocaltemplate('templates/detail_row.tpl.php', array('detail_row_id' => $detail_row_obj->getId()));
+                //echo \Cebera\Render\Render::callLocaltemplate('templates/detail_row.tpl.php', array('detail_row_id' => $detail_row_obj->getId()));
+                \Vuz\Pages\Requests\DetailRowTemplate::detail_row($detail_row_obj->getId());
 
             }
         }

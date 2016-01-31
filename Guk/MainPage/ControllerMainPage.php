@@ -4,7 +4,7 @@ namespace Guk\MainPage;
 
 class ControllerMainPage
 {
-    public function entryPageAction($mode){
+    static public function entryPageAction($mode){
         $self_url = '/';
         if ($mode == 1) return $self_url;
         if ($mode == 2) return array(__METHOD__, $self_url);

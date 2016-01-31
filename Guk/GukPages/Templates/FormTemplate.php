@@ -20,10 +20,12 @@ class FormTemplate
 
         echo \Guk\Pages\Forms\FormTabsTemplate::render($form_id);
 
+        /*
         if ($form_obj->isCurrent()) {
             echo '<div class="alert alert-warning" role="alert">Для текущей формы изменение полей запрещено.</div>';
             return;
         }
+        */
 
         $col_ids_arr = $form_obj->getColIdsArrByWeight();
         $row_ids_arr = $form_obj->getRowIdsArrByWeight();

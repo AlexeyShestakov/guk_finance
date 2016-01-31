@@ -4,6 +4,7 @@
  * alter table detail_columns add column is_requested_sum bool not null default false;
  * alter table detail_columns add column form_id int not null;
  * alter table detail_columns add foreign key (form_id) references fin_form (id);
+ * alter table detail_columns add column weight int not null default 1;
  */
 
 namespace Guk;
@@ -22,6 +23,40 @@ class DetailColumn implements \OLOG\Model\InterfaceFactory
     protected $title = '';
     protected $is_requested_sum = false;
     protected $form_id;
+    protected $weight = 1;
+    protected $vocabulary_id = 0;
+
+    /**
+     * @return int
+     */
+    public function getVocabularyId()
+    {
+        return $this->vocabulary_id;
+    }
+
+    /**
+     * @param int $vocabulary_id
+     */
+    public function setVocabularyId($vocabulary_id)
+    {
+        $this->vocabulary_id = $vocabulary_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWeight()
+    {
+        return $this->weight;
+    }
+
+    /**
+     * @param int $weight
+     */
+    public function setWeight($weight)
+    {
+        $this->weight = $weight;
+    }
 
     /**
      * @return mixed
@@ -60,10 +95,10 @@ class DetailColumn implements \OLOG\Model\InterfaceFactory
         $this->is_requested_sum = $is_requested_sum;
     }
 
-    static public function getDetailColumnIdsArrForFormById($form_id){
+    static public function getDetailColumnIdsArrForFormByWeight($form_id){
         $detail_column_ids_arr = \OLOG\DB\DBWrapper::readColumn(
             \AppConfig\Config::DB_NAME_GUK_FINANCE,
-            'select id from ' . \Guk\DetailColumn::DB_TABLE_NAME. ' where form_id = ? order by id',
+            'select id from ' . \Guk\DetailColumn::DB_TABLE_NAME. ' where form_id = ? order by weight',
             array($form_id)
         );
 

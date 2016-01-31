@@ -2,8 +2,12 @@
 
 namespace Vuz\Pages;
 
+use Cebera\BT;
+
 class VuzLayoutTemplate
 {
+    const MODAL_SELECT_TERM = 'MODAL_SELECT_TERM';
+
     static public function render($content){
         ?><!DOCTYPE html>
 <html lang="en">
@@ -34,6 +38,9 @@ class VuzLayoutTemplate
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 </head>
 
 <body>
@@ -89,6 +96,69 @@ $cccn = \OLOG\Router::getCurrentControllerClassName();
     <!-- Main component for a primary marketing message or call to action -->
     <?php echo $content; ?>
 
+    <?php
+
+    echo BT::beginModal(self::MODAL_SELECT_TERM, 'Выбор значения из словаря');
+    echo BT::beginModalBody();
+
+    echo '<div id="terms_list"></div>';
+
+    echo BT::endModalBody();
+    echo BT::endModal();
+
+    ?>
+
+    <script>
+        $('#<?= self::MODAL_SELECT_TERM ?>').on('show.bs.modal', function (event) {
+            var original_element = $(event.relatedTarget);
+            var modal = $(this);
+            var vocabulary_id = original_element.data('vocabulary_id');
+            var terms_list = modal.find('#terms_list');
+            var ajax_context_obj = {
+                'terms_list': terms_list,
+                'original_element': original_element
+            };
+
+            terms_list.html('');
+
+            $.ajax({
+                    method: "GET",
+                    url: "/vuz/ajax/vocabulary/" + vocabulary_id + "/terms",
+                    context: ajax_context_obj
+                })
+                .done(function( terms_json ) {
+                    for(var i = 0; i < terms_json.length; i++){
+                        var term_obj = terms_json[i];
+
+                        var div = $('<div>' + term_obj.title + '</div>');
+                        this.terms_list.append(div);
+
+                        div.click({'term_obj': term_obj, 'original_element': this.original_element}, function(event){
+                            //alert(event.data.term_obj.id);
+                            $('#<?= self::MODAL_SELECT_TERM ?>').modal('hide');
+                            event.data.original_element.html(event.data.term_obj.title);
+
+                            var operation_code = event.data.original_element.data('operation_code');
+                            var operation_context = event.data.original_element.data('context');
+
+                            $.ajax({
+                                    method: "POST",
+                                    url: window.location.href,
+                                    data: { operation_code: operation_code, term_id: event.data.term_obj.id, context: operation_context }
+                                })
+                                .done(function() {
+                                });
+
+                        });
+                    }
+
+                    //$('#' + this.details_table_htmlid).append(new_row_html);
+                });
+
+
+            //modal.find('.modal-body #terms_list').val(button.data('asdfg'));
+        })
+    </script>
 
 </div> <!-- /container -->
 
@@ -96,8 +166,6 @@ $cccn = \OLOG\Router::getCurrentControllerClassName();
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>

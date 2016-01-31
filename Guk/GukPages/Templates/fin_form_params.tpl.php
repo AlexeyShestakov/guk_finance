@@ -17,13 +17,11 @@ echo \Cebera\BT::pageHeader_plain('<a href="' . FormsController::formsAction(1) 
 <form class="form-horizontal" method="post" action="<?php echo \Guk\GukPages\ControllerForms::getFinFormParamsPageUrl($form_obj->getId()); ?>">
     <input type="hidden" name="a" value="edit_form">
 
-    <div class="form-group">
-        <label for="exampleInputEmail1" class="col-sm-2 control-label">Название формы</label>
-        <div class="col-sm-10">
-            <input class="form-control" id="exampleInputEmail1" name="comment" value="<?php echo $form_obj->getComment(); ?>">
-        </div>
+    <?php
 
-    </div>
+    echo \Cebera\BT::formGroup('Название', \Cebera\BT::formInput('comment', $form_obj->getComment()));
+
+    ?>
 
     <div class="form-group">
         <label for="exampleInputEmail2" class="col-sm-2 control-label">Дата начала приема заявок</label>

@@ -14,15 +14,12 @@ class ReportByVuz2Template
 
     static public function render()
     {
-        echo \Cebera\BT::pageHeader_plain('Заявки по ВУЗам');
-
         $form_id = \Guk\FinFormHelper::getCurrentFormId();
         \OLOG\Helpers::assert($form_id, 'Не назначена текущая форма.');
 
         $form_obj = \Guk\FinForm::factory($form_id);
 
-        echo \Cebera\BT::div_plain('Финансовый период: ' . $form_obj->getComment());
-        echo \Cebera\BT::delimiter();
+        echo \Cebera\BT::pageHeader_plain($form_obj->getComment() . ': заявки по ВУЗам');
 
         $row_ids_arr = $form_obj->getRowIdsArrByWeight();
 
@@ -50,25 +47,97 @@ class ReportByVuz2Template
         echo '<div><span class="glyphicon glyphicon-check corrected_sum_visibility"></span> <a onclick="$(\'.corrected_sum_visibility\').toggle(); return false;" href="#">скорректированная</a></div>';
         echo '<div><span class="glyphicon glyphicon-check cut_sum_visibility"></span> <a onclick="$(\'.cut_sum_visibility\').toggle(); return false;" href="#">секвестр</a></div>';
 
-        echo '<table class="table table-condensed table-bordered">';
-        echo '<thead>';
-        echo '<tr>';
-        echo \Cebera\BT::th('-');
+        echo BT::delimiter();
 
-        foreach ($row_ids_arr as $row_id) {
-            $row_obj = \Guk\FinFormRow::factory($row_id);
-            echo BT::th($row_obj->getId(), 'text-center');
+        $detail_cols_id_arr = \Guk\DetailColumn::getDetailColumnIdsArrForFormByWeight($form_id);
+
+        $detail_col_links_arr = array();
+
+        foreach ($detail_cols_id_arr as $detail_col_id){
+            $detail_col_obj = \Guk\DetailColumn::factory($detail_col_id);
+            array_push($detail_col_links_arr, BT::a(ControllerReports::reportsByVuzAction(1) . '?detail_col_id=' . $detail_col_id, $detail_col_obj->getTitle()));
         }
 
-        $total_limit_sum = 0;
+        echo '<div>Дополнительная детализация: ';
+        echo implode(' | ', $detail_col_links_arr);
+        echo '</div>';
+
+        echo BT::delimiter();
+
+        $detail_col_to_expand_id = 0;
+        if (isset($_GET['detail_col_id'])){
+            $detail_col_to_expand_id = $_GET['detail_col_id'];
+        }
+
+
+        echo '<table class="table table-condensed table-bordered">';
+        echo '<thead>';
+        echo '<tr style="background-color: #eee;">';
+        echo \Cebera\BT::th('Статья финансирования');
+
+        foreach ($row_ids_arr as $row_id) {
+
+            if ($detail_col_to_expand_id) {
+                $detail_col_to_expand_obj = \Guk\DetailColumn::factory($detail_col_to_expand_id);
+                $expand_vocab_id = $detail_col_to_expand_obj->getVocabularyId();
+
+                $term_ids = \Guk\Term::getTermIdsArrForVocabularyByTitle($expand_vocab_id);
+
+                foreach ($term_ids as $term_id) {
+                    echo '<th></th>';
+
+                }
+            }
+
+            $row_obj = \Guk\FinFormRow::factory($row_id);
+            echo BT::th($row_obj->getKbk(), 'text-center');
+        }
 
         echo \Cebera\BT::th('всего', 'text-center');
         echo '</tr>';
 
-        echo '<tr>';
-        echo \Cebera\BT::th('-');
+        if ($detail_col_to_expand_id) {
+            $detail_col_to_expand_obj = \Guk\DetailColumn::factory($detail_col_to_expand_id);
+            $expand_vocab_id = $detail_col_to_expand_obj->getVocabularyId();
+
+            $term_ids = \Guk\Term::getTermIdsArrForVocabularyByTitle($expand_vocab_id);
+
+            echo '<tr style="background-color: #eee;">';
+            echo \Cebera\BT::th($detail_col_to_expand_obj->getTitle());
+
+            foreach ($row_ids_arr as $row_id) {
+
+                foreach ($term_ids as $term_id) {
+                    $term_obj = \Guk\Term::factory($term_id);
+                    echo '<th>' . $term_obj->getTitle() . '</th>';
+
+                }
+
+                echo BT::th('', 'text-center');
+            }
+
+            echo \Cebera\BT::th('всего', 'text-center');
+            echo '</tr>';
+        }
+
+        $total_limit_sum = 0;
+
+        echo '<tr style="background-color: #eee;">';
+        echo \Cebera\BT::th('Лимит');
 
         foreach ($row_ids_arr as $row_id) {
+
+            if ($detail_col_to_expand_id) {
+                $detail_col_to_expand_obj = \Guk\DetailColumn::factory($detail_col_to_expand_id);
+                $expand_vocab_id = $detail_col_to_expand_obj->getVocabularyId();
+
+                $term_ids = \Guk\Term::getTermIdsArrForVocabularyByTitle($expand_vocab_id);
+
+                foreach ($term_ids as $term_id) {
+                    echo '<th></th>';
+                }
+            }
+
             $row_obj = \Guk\FinFormRow::factory($row_id);
             echo BT::th($row_obj->getLimit(), 'text-right');
 
@@ -79,68 +148,65 @@ class ReportByVuz2Template
         echo '</tr>';
         echo '</thead>';
 
-        $total_requested_sums_by_row_id_arr = array();
-        $total_corrected_sums_by_row_id_arr = array();
+        $total_sums_by_row_id_obj_arr = array();
 
         foreach ($row_ids_arr as $form_row_id) {
-            $total_requested_sums_by_row_id_arr[$form_row_id] = 0;
-            $total_corrected_sums_by_row_id_arr[$form_row_id] = 0;
+            $total_sums_by_row_id_obj_arr[$form_row_id] = new Sums();
         }
 
-        $total_requested_sum = 0;
-        $total_corrected_sum = 0;
+        $total_sums_obj = new Sums();
 
         foreach ($vuz_ids_arr as $vuz_id) {
             $vuz_obj = \Guk\Vuz::factory($vuz_id);
 
-            $vuz_requested_sums_by_row_id_arr = array();
-            $vuz_corrected_sums_by_row_id_arr = array();
-            $vuz_requested_sum = 0;
-            $vuz_corrected_sum = 0;
+            $vuz_sums_by_row_id_obj_arr = array();
+            $vuz_sums_obj = new Sums();
 
             $vuz_request_ids_arr = \OLOG\DB\DBWrapper::readColumn(
                 \AppConfig\Config::DB_NAME_GUK_FINANCE,
-                'select id from ' . \Guk\FinRequest::DB_TABLE_NAME . ' where vuz_id = ? and (status_code = ? or status_code = ?) order by created_at_ts desc',
-                array($vuz_id, \Guk\FinRequest::STATUS_IN_GUK_REWIEW, \Guk\FinRequest::STATUS_APPROVED_BY_GUK)
+                'select id from ' . \Guk\FinRequest::DB_TABLE_NAME . ' where fin_form_id = ? and vuz_id = ? and (status_code = ? or status_code = ?) order by created_at_ts desc',
+                array($form_id, $vuz_id, \Guk\FinRequest::STATUS_IN_GUK_REWIEW, \Guk\FinRequest::STATUS_APPROVED_BY_GUK)
             );
 
             foreach ($row_ids_arr as $form_row_id) {
-                $vuz_requested_sums_by_row_id_arr[$form_row_id] = 0;
-                $vuz_corrected_sums_by_row_id_arr[$form_row_id] = 0;
+                $vuz_sums_by_row_id_obj_arr[$form_row_id] = new Sums();
 
                 foreach ($vuz_request_ids_arr as $vuz_request_id) {
                     $vuz_request_obj = \Guk\FinRequest::factory($vuz_request_id);
 
                     $requested_sum = $vuz_request_obj->getRequestedSumForRow($form_row_id);
-                    $vuz_requested_sums_by_row_id_arr[$form_row_id] += $requested_sum;
-                    $vuz_requested_sum += $requested_sum;
-                    $total_requested_sums_by_row_id_arr[$form_row_id] += $requested_sum;
-                    $total_requested_sum += $requested_sum;
-
                     $corrected_sum = $vuz_request_obj->getCorrectedSumForRow($form_row_id);
-                    $vuz_corrected_sums_by_row_id_arr[$form_row_id] += intval($corrected_sum);
-                    $vuz_corrected_sum += intval($corrected_sum);
-                    $total_corrected_sums_by_row_id_arr[$form_row_id] += intval($corrected_sum);
-                    $total_corrected_sum += intval($corrected_sum);
+
+                    $vuz_sums_obj->append($requested_sum, $corrected_sum);
+                    $total_sums_obj->append($requested_sum, $corrected_sum);
+                    $total_sums_by_row_id_obj_arr[$form_row_id]->append($requested_sum, $corrected_sum);
+                    $vuz_sums_by_row_id_obj_arr[$form_row_id]->append($requested_sum, $corrected_sum);
                 }
 
             }
 
             echo '<tr>';
-            echo '<td><b>' . $vuz_obj->getTitle() . ' <a href="#" onclick="$(\'.vuz_' . $vuz_id . '_row\').toggle(); return false;"><span class="glyphicon glyphicon-list"></span></a></b></td>';
+            echo '<td>' . $vuz_obj->getTitle() . ' <a href="#" onclick="$(\'.vuz_' . $vuz_id . '_row\').toggle(); return false;">заявки</a></td>';
             foreach ($row_ids_arr as $form_row_id) {
+
+                if ($detail_col_to_expand_id){
+                    $detail_col_to_expand_obj = \Guk\DetailColumn::factory($detail_col_to_expand_id);
+                    $expand_vocab_id = $detail_col_to_expand_obj->getVocabularyId();
+
+                    $term_ids = \Guk\Term::getTermIdsArrForVocabularyByTitle($expand_vocab_id);
+
+                    foreach ($term_ids as $term_id) {
+                        echo '<th></th>';
+                    }
+                }
+
                 echo '<td class="text-right">';
-                echo '<div class="requested_sum_visibility">' . $vuz_requested_sums_by_row_id_arr[$form_row_id] . '</div>';
-                echo '<div class="corrected_sum_visibility">' . $vuz_corrected_sums_by_row_id_arr[$form_row_id] . '</div>';
-                echo '<div class="cut_sum_visibility">' . ($vuz_requested_sums_by_row_id_arr[$form_row_id] - $vuz_corrected_sums_by_row_id_arr[$form_row_id]) . '</div>';
+                echo $vuz_sums_by_row_id_obj_arr[$form_row_id]->render();
                 echo '</td>';
             }
 
-
             echo '<td class="text-right">';
-            echo '<div class="requested_sum_visibility">' . $vuz_requested_sum . '</div>';
-            echo '<div class="corrected_sum_visibility">' . $vuz_corrected_sum . '</div>';
-            echo '<div class="cut_sum_visibility">' . ($vuz_requested_sum - $vuz_corrected_sum) . '</div>';
+            echo $vuz_sums_obj->render();
             echo '</td>';
 
             echo '</tr>';
@@ -148,28 +214,57 @@ class ReportByVuz2Template
             foreach ($vuz_request_ids_arr as $request_id){
                 $request_obj = \Guk\FinRequest::factory($request_id);
 
-                $request_requested_sum = 0;
-                $request_corrected_sum = 0;
-
+                $request_sums_obj = new Sums();
                 echo '<tr class="vuz_' . $vuz_id . '_row info" style="display: none;">';
                 echo '<td class="text-right">' .  $request_obj->getTitle() . '</td>';
 
                 foreach ($row_ids_arr as $form_row_id) {
+
+
+                    if ($detail_col_to_expand_id) {
+                        $detail_col_to_expand_obj = \Guk\DetailColumn::factory($detail_col_to_expand_id);
+                        $expand_vocab_id = $detail_col_to_expand_obj->getVocabularyId();
+
+                        $term_ids = \Guk\Term::getTermIdsArrForVocabularyByTitle($expand_vocab_id);
+
+                        foreach ($term_ids as $term_id) {
+                            //echo '<td>' . $term_id . '</td>';
+                            $detail_cell_ids_arr = \Guk\DetailCell::getIdsArrForRequestAndFormRowAndTermAndCol($request_id, $form_row_id, $term_id, $detail_col_to_expand_id);
+
+                            $detail_sum = 0;
+
+                            foreach ($detail_cell_ids_arr as $detail_cell_id) {
+                                $detail_cell_obj = \Guk\DetailCell::factory($detail_cell_id);
+                                $detail_row_id = $detail_cell_obj->getDetailRowId();
+                                $detail_row_obj = \Guk\DetailRow::factory($detail_row_id);
+                                $detail_sum += $detail_row_obj->getRequestedSum();
+                            }
+
+                            echo '<td class="text-right">' . $detail_sum . '</td>';
+
+                        }
+                    }
+
+
                     $requested_sum = $request_obj->getRequestedSumForRow($form_row_id);
                     $corrected_sum = $request_obj->getCorrectedSumForRow($form_row_id);
-                    $request_requested_sum += $requested_sum;
-                    $request_corrected_sum += $corrected_sum;
+
+                    $request_sums_obj->append($requested_sum, $corrected_sum);
+
                     echo '<td class="text-right" data-toggle="modal" data-request_id="' . $request_id . '" data-row_id="' . $form_row_id . '" data-corrected_sum="' . $corrected_sum . '" data-target="#' . self::MODAL_EDIT_REQUEST_SUM . '" style="cursor: pointer;">';
+
                     echo '<div class="requested_sum_visibility">' . $requested_sum . '</div>';
                     echo '<div class="corrected_sum_visibility">' . $corrected_sum . '</div>';
                     echo '<div class="cut_sum_visibility">' . ($requested_sum - $corrected_sum) . '</div>';
+
+
+
+
                     echo '</td>';
                 }
 
                 echo '<td class="text-right">';
-                echo '<div class="requested_sum_visibility">' . $request_requested_sum . '</div>';
-                echo '<div class="corrected_sum_visibility">' . $request_corrected_sum . '</div>';
-                echo '<div class="cut_sum_visibility">' . ($request_requested_sum - $request_corrected_sum) . '</div>';
+                echo $request_sums_obj->render();
                 echo '</td>';
 
                 echo '</tr>';
@@ -183,17 +278,24 @@ class ReportByVuz2Template
         echo '<td class="text-right">Всего</td>';
 
         foreach ($row_ids_arr as $form_row_id) {
+            if ($detail_col_to_expand_id) {
+                $detail_col_to_expand_obj = \Guk\DetailColumn::factory($detail_col_to_expand_id);
+                $expand_vocab_id = $detail_col_to_expand_obj->getVocabularyId();
+
+                $term_ids = \Guk\Term::getTermIdsArrForVocabularyByTitle($expand_vocab_id);
+
+                foreach ($term_ids as $term_id) {
+                    echo '<td></td>';
+                }
+            }
+
             echo '<td class="text-right">';
-            echo '<div class="requested_sum_visibility">' . $total_requested_sums_by_row_id_arr[$form_row_id] . '</div>';
-            echo '<div class="corrected_sum_visibility">' . $total_corrected_sums_by_row_id_arr[$form_row_id] . '</div>';
-            echo '<div class="cut_sum_visibility">' . ($total_requested_sum - $total_corrected_sum) . '</div>';
+            echo $total_sums_by_row_id_obj_arr[$form_row_id]->render();
             echo '</td>';
         }
 
         echo '<td class="text-right">';
-        echo '<div class="requested_sum_visibility">' . $total_requested_sum . '</div>';
-        echo '<div class="corrected_sum_visibility">' . $total_corrected_sum . '</div>';
-        echo '<div class="cut_sum_visibility">' . ($total_requested_sum - $total_corrected_sum) . '</div>';
+        echo $total_sums_obj->render();
         echo '</td>';
 
 
@@ -205,16 +307,27 @@ class ReportByVuz2Template
         echo '<td class="text-right">Резерв</td>';
 
         foreach ($row_ids_arr as $form_row_id) {
+            if ($detail_col_to_expand_id) {
+                $detail_col_to_expand_obj = \Guk\DetailColumn::factory($detail_col_to_expand_id);
+                $expand_vocab_id = $detail_col_to_expand_obj->getVocabularyId();
+
+                $term_ids = \Guk\Term::getTermIdsArrForVocabularyByTitle($expand_vocab_id);
+
+                foreach ($term_ids as $term_id) {
+                    echo '<td></td>';
+                }
+            }
+
             $row_obj = \Guk\FinFormRow::factory($form_row_id);
             echo '<td class="text-right">';
-            echo '<div class="requested_sum_visibility">' . ($row_obj->getLimit() - $total_requested_sums_by_row_id_arr[$form_row_id]) . '</div>';
-            echo '<div class="corrected_sum_visibility">' . ($row_obj->getLimit() - $total_corrected_sums_by_row_id_arr[$form_row_id]) . '</div>';
+            echo '<div class="requested_sum_visibility">' . ($row_obj->getLimit() - $total_sums_by_row_id_obj_arr[$form_row_id]->requested) . '</div>';
+            echo '<div class="corrected_sum_visibility">' . ($row_obj->getLimit() - $total_sums_by_row_id_obj_arr[$form_row_id]->corrected) . '</div>';
             echo '</td>';
         }
 
         echo '<td class="text-right">';
-        echo '<div class="requested_sum_visibility">' . ($total_limit_sum - $total_requested_sum) . '</div>';
-        echo '<div class="corrected_sum_visibility">' . ($total_limit_sum - $total_corrected_sum) . '</div>';
+        echo '<div class="requested_sum_visibility">' . ($total_limit_sum - $total_sums_obj->requested) . '</div>';
+        echo '<div class="corrected_sum_visibility">' . ($total_limit_sum - $total_sums_obj->corrected) . '</div>';
         echo '</td>';
 
         echo '</tr>';
@@ -227,6 +340,8 @@ class ReportByVuz2Template
         echo BT::hiddenInput(self::FIELD_REQUEST_ID);
         echo BT::hiddenInput(self::FIELD_ROW_ID);
         echo BT::formGroup('Новая сумма', BT::formInput(self::FIELD_CORRECTED_SUM));
+        echo BT::formGroup('', '<a href="#" onclick="open_details(); return false;">Открыть детализацию</a>');
+        echo '<div id="details_container"></div>';
         echo BT::endModalForm();
 
         ?>
@@ -240,7 +355,26 @@ class ReportByVuz2Template
                 modal.find('.modal-body #<?= self::FIELD_REQUEST_ID ?>').val(button.data('request_id'));
                 modal.find('.modal-body #<?= self::FIELD_ROW_ID ?>').val(button.data('row_id'));
                 modal.find('.modal-body #<?= self::FIELD_CORRECTED_SUM ?>').val(button.data('corrected_sum'));
-            })
+                modal.find('.modal-body #details_container').html('');
+            });
+
+            function open_details(){
+                var modal = $('#<?= self::MODAL_EDIT_REQUEST_SUM ?>');
+                var request_id = modal.find('.modal-body #<?= self::FIELD_REQUEST_ID ?>').val();
+                var form_row_id = modal.find('.modal-body #<?= self::FIELD_ROW_ID ?>').val();
+                ajax_context_obj = {modal: modal};
+
+                $.ajax({
+                        method: "GET",
+                        url: "/guk/reports/details_for_request_and_form_row/" + request_id + "/" + form_row_id,
+                        context: ajax_context_obj
+                    })
+                    .done(function( html ) {
+                        this.modal.find('.modal-body #details_container').html(html);
+                        });
+
+
+            }
         </script>
 
         <?php

@@ -50,4 +50,20 @@ class DetailRow implements \OLOG\Model\InterfaceFactory
 
         return $detail_row_ids_arr;
     }
+
+    public function getRequestedSum(){
+        $form_row_obj = \Guk\FinFormRow::factory($this->getFormRowId());
+        $form_id = $form_row_obj->getFormId();
+        $form_obj = \Guk\FinForm::factory($form_id);
+
+        $requested_sum_detail_col_id = $form_obj->getRequestedSumDetailColId();
+        \OLOG\Helpers::assert($requested_sum_detail_col_id);
+
+        $requested_sum_detail_cell_obj = \Guk\DetailCell::getObjForRowAndCol($this->getId(), $requested_sum_detail_col_id);
+        if (!$requested_sum_detail_cell_obj){
+            return 0;
+        }
+
+        return $requested_sum_detail_cell_obj->getValue();
+    }
 }

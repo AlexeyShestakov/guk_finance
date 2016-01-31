@@ -82,50 +82,11 @@ class ControllerVuz
         \Vuz\Pages\VuzLayoutTemplate::render($content);
     }
 
+    /*
     static public function getFinRequestFillUrl($request_id){
         return '/vuz/finrequest/' . $request_id . '/fill';
     }
-
-    public function finRequestFillPageAction($request_id){
-        //$vuz_id = 1; // TODO: get from account
-
-        if (array_key_exists('a', $_POST)){
-            if ($_POST['a'] == 'set_value'){
-                $row_id = $_POST['row_id'];
-                $col_id = $_POST['col_id'];
-                $value = $_POST['value'];
-
-                $request_cell_obj = \Guk\FinRequestCell::getObjForRequestAndRowAndCol($request_id, $row_id, $col_id);
-                if ($request_cell_obj){
-                    $request_cell_obj->setValue($value);
-                    $request_cell_obj->save();
-                } else {
-                    $request_cell_obj = new \Guk\FinRequestCell();
-                    $request_cell_obj->setFinRequestId($request_id);
-                    $request_cell_obj->setRowId($row_id);
-                    $request_cell_obj->setColId($col_id);
-                    $request_cell_obj->setValue($value);
-                    $request_cell_obj->save();
-                }
-            }
-
-            if ($_POST['a'] == 'set_request_status_code'){
-
-                $status_code = $_POST['status_code'];
-                $request_obj = \Guk\FinRequest::factory($request_id);
-
-                $old_status_code = $request_obj->getStatusCode();
-
-                $request_obj->setStatusCode($status_code);
-                $request_obj->save();
-
-                $request_obj->logChange('ВУЗ изменил статус заявки с "' . \Guk\FinRequest::getStatusStrForCode($old_status_code) . '" на "' . \Guk\FinRequest::getStatusStrForCode($status_code) . '"".');
-            }
-        }
-
-        $content = \Cebera\Render\Render::callLocaltemplate("templates/fin_request_fill_page.tpl.php", array('request_id' => $request_id));
-        \Vuz\Pages\VuzLayoutTemplate::render($content);
-    }
+    */
 
     static public function getFinRequestHistoryUrl($request_id){
         return '/vuz/finrequest/' . $request_id . '/history';

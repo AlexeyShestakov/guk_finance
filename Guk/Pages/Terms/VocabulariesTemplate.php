@@ -1,15 +1,14 @@
 <?php
 
-namespace Guk\GukPages\Templates;
+namespace Guk\Pages\Terms;
 
 class VocabulariesTemplate
 {
-    const ADD_VOCABULARY_MODAL_ID = 'addVocabularyModal';
+    const ADD_VOCABULARY_MODAL_ID = 'ADD_VOCABULARY_MODAL_ID';
 
     static public function render(){
-        echo \Cebera\BT::h1_plain('Словари');
-        echo \Cebera\BT::div_plain(\Cebera\BT::modalToggleButton(self::ADD_VOCABULARY_MODAL_ID, 'Создать'));
-        echo \Cebera\BT::div_plain('&nbsp;');
+        echo \Cebera\BT::pageHeader_plain('Словари');
+        echo \Cebera\BT::toolbar_plain(\Cebera\BT::modalToggleButton(self::ADD_VOCABULARY_MODAL_ID, 'Создать'));
 
         echo \Cebera\BT::beginTable();
 
@@ -28,7 +27,7 @@ class VocabulariesTemplate
         // MODALS
 
         echo \Cebera\BT::beginModal(self::ADD_VOCABULARY_MODAL_ID, 'Создание словаря');
-        echo \Cebera\BT::beginForm(\Guk\Pages\Terms\ControllerTerms::vocabulariesUrl(), \Guk\Pages\Terms\ControllerTerms::ADD_VOCABULARY_OPERATION_CODE);
+        echo \Cebera\BT::beginForm(\Guk\Pages\Terms\ControllerTerms::vocabulariesAction(1), \Guk\Pages\Terms\ControllerTerms::ADD_VOCABULARY_OPERATION_CODE);
 
         ?>
 

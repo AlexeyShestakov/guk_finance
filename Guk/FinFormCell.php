@@ -3,6 +3,7 @@
  * create table fin_form_cell (id int not null auto_increment primary key, col_id int not null, row_id int not null, value varchar(255) not null default '') default charset = utf8 engine = InnoDB;
  * alter table fin_form_cell add foreign key (col_id) references fin_form_col(id);
  * alter table fin_form_cell add foreign key (row_id) references fin_form_row(id);
+ * alter table fin_form_cell add column term_id int not null default 0;
  */
 
 namespace Guk;
@@ -20,6 +21,23 @@ class FinFormCell implements \OLOG\Model\InterfaceFactory
     public $row_id;
     public $col_id;
     public $value = '';
+    public $term_id = 0;
+
+    /**
+     * @return int
+     */
+    public function getTermId()
+    {
+        return $this->term_id;
+    }
+
+    /**
+     * @param int $term_id
+     */
+    public function setTermId($term_id)
+    {
+        $this->term_id = $term_id;
+    }
 
     public function getId(){
         return $this->id;
@@ -42,6 +60,11 @@ class FinFormCell implements \OLOG\Model\InterfaceFactory
     }
 
     public function getValue(){
+        if ($this->getTermId()){
+            $term_obj = \Guk\Term::factory($this->getTermId());
+            return $term_obj->getTitle();
+        }
+
         return $this->value;
     }
 

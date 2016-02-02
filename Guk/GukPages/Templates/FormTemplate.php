@@ -3,14 +3,15 @@
 namespace Guk\GukPages\Templates;
 
 
+use Cebera\BT;
 use Guk\Pages\Forms\FormsController;
 
 class FormTemplate
 {
-    const MODAL_ID_EDIT_CELL = 'MODAL_ID_EDIT_CELL';
-    const FIELD_NAME_ROW_ID = 'FIELD_NAME_ROW_ID';
-    const FIELD_NAME_COL_ID = 'FIELD_NAME_COL_ID';
-    const FIELD_NAME_CELL_VALUE = 'FIELD_NAME_CELL_VALUE';
+    //const MODAL_ID_EDIT_CELL = 'MODAL_ID_EDIT_CELL';
+    //const FIELD_NAME_ROW_ID = 'FIELD_NAME_ROW_ID';
+    //const FIELD_NAME_COL_ID = 'FIELD_NAME_COL_ID';
+    //const FIELD_NAME_CELL_VALUE = 'FIELD_NAME_CELL_VALUE';
 
     static public function render($form_id){
 
@@ -84,7 +85,7 @@ class FormTemplate
 
                 if ($col_obj->getVocabularyId()) {
                     $vocabulary_obj = \Guk\Vocabulary::factory($col_obj->getVocabularyId());
-                    echo '<div>' . $vocabulary_obj->getTitle() . '</div>';
+                    echo '<div>словарь: ' . $vocabulary_obj->getTitle() . '</div>';
                 }
 
                 echo '</th>';
@@ -103,11 +104,12 @@ class FormTemplate
                     $col_obj = \Guk\FinFormCol::factory($col_id);
 
                     if ($col_obj->getIsEditableByVuz()) {
-                        echo '<td style="background-color: #eee;"></td>';
+                        echo '<td style="background-color: #eee;">-</td>';
                     } else {
                         if ($col_obj->getVocabularyId()){
                             echo '<td style="background-color: #eee;">';
 
+                            /*
                             $row_to_term_obj = \Guk\FormRowToTerm::getObjForFormRowAndVocabulary($row_id, $col_obj->getVocabularyId());
                             if ($row_to_term_obj){
                                 $term_id = $row_to_term_obj->getTermId();
@@ -115,6 +117,28 @@ class FormTemplate
 
                                 echo $term_obj->getTitle();
                             }
+                            */
+
+                            $selected_term_id = 0;
+                            $selected_term_title = 'не выбран';
+                            $cell_obj = \Guk\FinFormCell::getObjForRowAndCol($row_obj->getId(), $col_obj->getId());
+                            if ($cell_obj) {
+                                $selected_term_id = $cell_obj->getTermId();
+                                if ($selected_term_id) {
+                                    $selected_term_obj = \Guk\Term::factory($selected_term_id);
+                                    $selected_term_title = $selected_term_obj->getTitle();
+                                }
+                            }
+
+                            $vocabulary_obj = \Guk\Vocabulary::factory($col_obj->getVocabularyId());
+
+                            echo '<a class="x-editable"
+                            data-value="' . BT::sanitizeAttrValue($selected_term_id) . '"
+                            data-source="' . BT::sanitizeAttrValue($vocabulary_obj->getTermsJsonStr()) . '"
+                            data-type="select"
+                            data-url="' . \Guk\Pages\ControllerAjax::ajaxAction(1, \Guk\Pages\ControllerAjax::OPERATION_UPDATE_FORM_CELL_TERM) . '"
+                            data-pk="' . BT::sanitizeAttrValue($row_id . ',' . $col_id) . '"
+                            href="#">' . \Cebera\BT::sanitizeTagContent($selected_term_title) . '</a>';
 
                             echo '</td>';
 
@@ -128,12 +152,11 @@ class FormTemplate
 
                             echo '<td>';
 
-                            $cell_content_class = '';
-                            if (trim($cell_value) == ''){ // trim на случай только пробелов в названии
-                                $cell_content_class = ' glyphicon glyphicon-pencil ';
-                            }
-
-                            echo '<div class="' . $cell_content_class . '" style="cursor: pointer; border-bottom: 1px dashed gray;" data-rowid="' . $row_id . '" data-colid="' . $col_id . '" href="#" onclick="openCellEditModal($(this));">' . \Cebera\BT::sanitizeTagContent($cell_value) . '</div>';
+                            echo '<a class="x-editable"
+                            data-type="text"
+                            data-url="' . \Guk\Pages\ControllerAjax::ajaxAction(1, \Guk\Pages\ControllerAjax::OPERATION_UPDATE_FORM_CELL) . '"
+                            data-pk="' . BT::sanitizeAttrValue($row_id . ',' . $col_id) . '"
+                            href="#">' . \Cebera\BT::sanitizeTagContent($cell_value) . '</a>';
 
                             echo '</td>';
                         }
@@ -148,24 +171,14 @@ class FormTemplate
 
         echo \Cebera\BT::endTable();
 
-        echo \Cebera\BT::beginModalForm(self::MODAL_ID_EDIT_CELL, 'Редактирование ячейки', FormsController::formAction(1, $form_id), FormsController::OPERATION_CODE_EDIT_CELL);
-        echo '<input type="hidden" name="' . self::FIELD_NAME_ROW_ID. '" id="' . self::FIELD_NAME_ROW_ID. '">';
-        echo '<input type="hidden" name="' . self::FIELD_NAME_COL_ID. '" id="' . self::FIELD_NAME_COL_ID. '">';
-        echo \Cebera\BT::formGroup('Значение', '<textarea class="form-control" name="' . self::FIELD_NAME_CELL_VALUE. '" id="' . self::FIELD_NAME_CELL_VALUE. '"></textarea>');
-        echo \Cebera\BT::endModalForm();
-
         ?>
 
         <script>
-            function openCellEditModal(target_jquery_element){
-                $("#<?= self::FIELD_NAME_ROW_ID ?>").val(target_jquery_element.data("rowid"));
-                $("#<?= self::FIELD_NAME_COL_ID ?>").val(target_jquery_element.data("colid"));
-                var value = target_jquery_element.html();
-                var regex = /<br\s*[\/]?>/gi;
-                value = value.replace(regex, "\n");
-                $("#<?= self::FIELD_NAME_CELL_VALUE ?>").val(value);
-                $("#<?= self::MODAL_ID_EDIT_CELL ?>").modal();
-            }
+            $.fn.editable.defaults.mode = 'inline';
+
+            $(document).ready(function() {
+                $('.x-editable').editable();
+            });
         </script>
 
         <?php

@@ -31,14 +31,14 @@ class GukLayoutTemplate
     <link href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!--<link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">-->
 
     <!-- Custom styles for this template -->
     <!--<link href="navbar.css" rel="stylesheet">-->
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+    <!--<script src="../../assets/js/ie-emulation-modes-warning.js"></script>-->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,7 +48,11 @@ class GukLayoutTemplate
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-</head>
+
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <link href="/bower_components/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
+    <script src="/bower_components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js"></script></head>
 
 <body>
 
@@ -70,7 +74,7 @@ class GukLayoutTemplate
                 <ul class="nav navbar-nav">
                     <li <?php if ($cccn == \Guk\GukPages\ControllerForms::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(FormsController::formsAction(1), 'Формы') ?></li>
                     <li <?php if ($cccn == Requests\ControllerRequests::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(Requests\ControllerRequests::getFinRequestsUrl(), 'Заявки') ?></li>
-                    <li <?php if ($cccn == \Guk\Pages\Terms\ControllerTerms::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(\Guk\Pages\Terms\ControllerTerms::vocabulariesUrl(), 'Справочники') ?></li>
+                    <li <?php if ($cccn == \Guk\Pages\Terms\ControllerTerms::class){echo ' class="active" ';} ?> ><?= \Cebera\BT::a(\Guk\Pages\Terms\ControllerTerms::vocabulariesAction(1), 'Справочники') ?></li>
                     <li <?php if ($cccn == Reports\ControllerReports::class){echo ' class="active" ';} ?> class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Отчеты <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -103,9 +107,8 @@ class GukLayoutTemplate
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+<!--<script src="/bower_components/bootstrap/dist/assets/js/ie10-viewport-bug-workaround.js"></script>-->
 </body>
 </html>
 <?php

@@ -42,7 +42,7 @@ class RequestTemplate
 
         <div>&nbsp;</div>
 
-        <table class="table table-bordered table-condensed">
+        <table class="table">
 
             <?php
 
@@ -52,11 +52,11 @@ class RequestTemplate
             foreach ($col_ids_arr as $col_id){
                 $col_obj = \Guk\FinFormCol::factory($col_id);
 
-                echo '<th class="text-center"><small>' . $col_obj->getTitle() . '</small></th>';
+                echo '<th class="text-center">' . $col_obj->getTitle() . '</th>';
             }
 
-            //echo '<th class="text-center"><small>Лимит/<br>Запрошено/<br>Одобрено</small></th>';
-            echo '<th class="text-center"><small>Детали</small></th>';
+            //echo '<th class="text-center">Лимит/<br>Запрошено/<br>Одобрено</th>';
+            echo '<th class="text-center">Детали</th>';
 
             echo '</tr></thead>';
 
@@ -82,25 +82,25 @@ class RequestTemplate
                                 $cell_text .= ' / <span style="color: red;">' . $corrected_value . '</span>';
                             }
 
-                            echo '<td class="text-right"><small><b>';
+                            echo '<td class="text-right"><b>';
                             echo '<a href="#" onclick="$(\'#request_cell_id\').val(\'' . $request_cell_obj->getId() . '\'); $(\'#editValueModal_value\').val(\'' . $cell_value . '\'); $(\'#editValueModal_corrected_value\').val(\'' . $corrected_value . '\'); $(\'#editValueModal\').modal();">' . $cell_text . '</a>';
-                            echo '</b></small></td>';
+                            echo '</b></td>';
                             $cols_count++;
                         } else {
-                            echo '<td><small></small></td>';
+                            echo '<td></td>';
                             $cols_count++;
                         }
                     } else {
                         $cell_obj = \Guk\FinFormCell::getObjForRowAndCol($row_obj->getId(), $col_obj->getId());
 
-                        echo '<td class="text-center"><small>';
+                        echo '<td class="text-center">';
 
                         if ($cell_obj){
                             $cell_value = $cell_obj->getValue();
                             echo $cell_value;
                         }
 
-                        echo '</small></td>';
+                        echo '</td>';
                         $cols_count++;
 
                     }
@@ -132,13 +132,13 @@ class RequestTemplate
                     }
                 }
 
-                echo '<td class="text-right"><small>' . number_format(floatval($row_obj->getLimit()), 0, '.', ' ') . '<br>' . number_format(floatval($requested_sum), 0, '.', ' ') . '<br>' . number_format(floatval($approved_sum), 0, '.', ' ') . '</small></td>';
+                echo '<td class="text-right">' . number_format(floatval($row_obj->getLimit()), 0, '.', ' ') . '<br>' . number_format(floatval($requested_sum), 0, '.', ' ') . '<br>' . number_format(floatval($approved_sum), 0, '.', ' ') . '</td>';
                 */
 
                 $cols_count++;
 
                 $row_extras_htmlid = 'request_' . $request_id . '_row_' . $row_obj->getId() . '_extras';
-                echo '<td style="text-align: center;"><small><a href="#" class="glyphicon glyphicon-tasks" onclick="$(\'#' . $row_extras_htmlid  . '\').slideToggle(0); return false;"></a></small></td>';
+                echo '<td style="text-align: center;"><a href="#" class="glyphicon glyphicon-tasks" onclick="$(\'#' . $row_extras_htmlid  . '\').slideToggle(0); return false;"></a></td>';
                 $cols_count++;
 
                 echo '</tr>';
@@ -146,13 +146,13 @@ class RequestTemplate
                 $details_table_htmlid = 'request_' . $request_id . '_details_table_for_row_' . $row_obj->getId();
                 echo '<tr style="display: none;" id="' . $row_extras_htmlid . '">';
                 echo '<td style="background-color: #ddd;" colspan="' . $cols_count . '">';
-                echo '<table id="' . $details_table_htmlid . '"  class="table table-bordered table-condensed">';
+                echo '<table id="' . $details_table_htmlid . '"  class="table">';
                 echo '<thead><tr>';
 
                 $detail_column_ids_arr = \Guk\DetailColumn::getDetailColumnIdsArrForFormByWeight($form_id);
                 foreach ($detail_column_ids_arr as $detail_column_id){
                     $detail_column_obj = \Guk\DetailColumn::factory($detail_column_id);
-                    echo '<th class="text-center"><small>' . $detail_column_obj->getTitle() . '</small></th>';
+                    echo '<th class="text-center">' . $detail_column_obj->getTitle() . '</th>';
                 }
 
                 echo '</thead>';
@@ -173,7 +173,7 @@ class RequestTemplate
                             $detail_value = $detail_cell_obj->getValue();
                         }
 
-                        echo '<td><small>' . $detail_value . '</small></td>';
+                        echo '<td>' . $detail_value . '</td>';
                     }
 
                     echo '</tr>';

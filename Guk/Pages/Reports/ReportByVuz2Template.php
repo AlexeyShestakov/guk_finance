@@ -55,7 +55,9 @@ class ReportByVuz2Template
 
         foreach ($detail_cols_id_arr as $detail_col_id){
             $detail_col_obj = \Guk\DetailColumn::factory($detail_col_id);
-            array_push($detail_col_links_arr, BT::a(ControllerReports::reportsByVuzAction(1) . '?detail_col_id=' . $detail_col_id, $detail_col_obj->getTitle()));
+            if ($detail_col_obj->getVocabularyId()) {
+                array_push($detail_col_links_arr, BT::a(ControllerReports::reportsByVuzAction(1) . '?detail_col_id=' . $detail_col_id, $detail_col_obj->getTitle()));
+            }
         }
 
         echo '<div>Дополнительная детализация: ';
@@ -77,20 +79,19 @@ class ReportByVuz2Template
 
         foreach ($row_ids_arr as $row_id) {
 
+            $colspan_str = '';
+
             if ($detail_col_to_expand_id) {
                 $detail_col_to_expand_obj = \Guk\DetailColumn::factory($detail_col_to_expand_id);
                 $expand_vocab_id = $detail_col_to_expand_obj->getVocabularyId();
 
                 $term_ids = \Guk\Term::getTermIdsArrForVocabularyByTitle($expand_vocab_id);
 
-                foreach ($term_ids as $term_id) {
-                    echo '<th></th>';
-
-                }
+                $colspan_str = ' colspan=' . (count($term_ids) + 1);
             }
 
             $row_obj = \Guk\FinFormRow::factory($row_id);
-            echo BT::th($row_obj->getKbk(), 'text-center');
+            echo '<th class="text-center" ' . $colspan_str . '>' . $row_obj->getKbk() . '</th>';
         }
 
         echo \Cebera\BT::th('всего', 'text-center');
@@ -185,6 +186,44 @@ class ReportByVuz2Template
 
             }
 
+            $vuz_sums_for_form_row_and_term_id = array();
+
+            foreach ($vuz_request_ids_arr as $request_id){
+                foreach ($row_ids_arr as $form_row_id) {
+                    if (!isset($vuz_sums_for_form_row_and_term_id[$form_row_id])) {
+                        $vuz_sums_for_form_row_and_term_id[$form_row_id] = array();
+                    }
+
+
+                    if ($detail_col_to_expand_id) {
+                        $detail_col_to_expand_obj = \Guk\DetailColumn::factory($detail_col_to_expand_id);
+                        $expand_vocab_id = $detail_col_to_expand_obj->getVocabularyId();
+
+                        $term_ids = \Guk\Term::getTermIdsArrForVocabularyByTitle($expand_vocab_id);
+
+                        foreach ($term_ids as $term_id) {
+                            $detail_cell_ids_arr = \Guk\DetailCell::getIdsArrForRequestAndFormRowAndTermAndCol($request_id, $form_row_id, $term_id, $detail_col_to_expand_id);
+                            $detail_sum = 0;
+
+                            foreach ($detail_cell_ids_arr as $detail_cell_id) {
+                                $detail_cell_obj = \Guk\DetailCell::factory($detail_cell_id);
+                                $detail_row_id = $detail_cell_obj->getDetailRowId();
+                                $detail_row_obj = \Guk\DetailRow::factory($detail_row_id);
+                                $detail_sum += $detail_row_obj->getRequestedSum();
+                            }
+
+                            if (!isset($vuz_sums_for_form_row_and_term_id[$form_row_id][$term_id])){
+                                $vuz_sums_for_form_row_and_term_id[$form_row_id][$term_id] = 0;
+                            }
+                            $vuz_sums_for_form_row_and_term_id[$form_row_id][$term_id] += $detail_sum;
+                        }
+                    }
+
+                }
+
+            }
+
+
             echo '<tr>';
             echo '<td>' . $vuz_obj->getTitle() . ' <a href="#" onclick="$(\'.vuz_' . $vuz_id . '_row\').toggle(); return false;">заявки</a></td>';
             foreach ($row_ids_arr as $form_row_id) {
@@ -196,7 +235,7 @@ class ReportByVuz2Template
                     $term_ids = \Guk\Term::getTermIdsArrForVocabularyByTitle($expand_vocab_id);
 
                     foreach ($term_ids as $term_id) {
-                        echo '<th></th>';
+                        echo '<td class="text-right">' . $vuz_sums_for_form_row_and_term_id[$form_row_id][$term_id] . '</td>';
                     }
                 }
 
@@ -228,9 +267,7 @@ class ReportByVuz2Template
                         $term_ids = \Guk\Term::getTermIdsArrForVocabularyByTitle($expand_vocab_id);
 
                         foreach ($term_ids as $term_id) {
-                            //echo '<td>' . $term_id . '</td>';
                             $detail_cell_ids_arr = \Guk\DetailCell::getIdsArrForRequestAndFormRowAndTermAndCol($request_id, $form_row_id, $term_id, $detail_col_to_expand_id);
-
                             $detail_sum = 0;
 
                             foreach ($detail_cell_ids_arr as $detail_cell_id) {
@@ -241,7 +278,6 @@ class ReportByVuz2Template
                             }
 
                             echo '<td class="text-right">' . $detail_sum . '</td>';
-
                         }
                     }
 

@@ -12,7 +12,11 @@ class ControllerMainPage
         \OLOG\Helpers::redirect(\Auth\Pages\ControllerAuth::authAction(1));
     }
 
-    public function mainPageAction(){
+    static public function mainPageAction($mode){
+        $self_url = '/guk';
+        if ($mode == 1) return $self_url;
+        if ($mode == 2) return array(__METHOD__, $self_url);
+
         \OLOG\Helpers::redirect(\Guk\Pages\Requests\ControllerRequests::getFinRequestsUrl());
     }
 }

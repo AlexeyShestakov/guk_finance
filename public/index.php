@@ -12,6 +12,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 \OLOG\ConfWrapper::assignConfig(\AppConfig\Config::get());
 
 try {
+    \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormColUrl('(\d+)') . '$@', array(\Guk\GukPages\ControllerForms::class, 'finFormColAction'), 0);
+    \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormParamsPageUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormParamsAction'), 0);
+    \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormViewUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormViewAction'), 0);
+
+    \OLOG\Router::match2(\Guk\MainPage\ControllerMainPage::mainPageAction(2), 0);
+
     \OLOG\Router::match2(\Auth\Pages\ControllerAuth::authAction(2), 0);
 
     \OLOG\Router::match2(\Admin\Pages\Admin\ControllerAdmin::adminAction(2), 0);
@@ -21,16 +27,11 @@ try {
 
     \OLOG\Router::match2(\Guk\MainPage\ControllerMainPage::entryPageAction(2), 0);
 
-    \OLOG\Router::match('@^/guk$@', array(\Guk\MainPage\ControllerMainPage::class, 'mainPageAction'), 0);
+    \OLOG\Router::match2(\Guk\Pages\ControllerAjax::ajaxAction(2, '(\w+)'), 0);
 
     \OLOG\Router::match2(FormsController::formsAction(2), 0);
     \OLOG\Router::match2(FormsController::formAction(2, '(\d+)'), 0);
     \OLOG\Router::match2(FormsController::finFormRowAction(2, '(\d+)'), 0);
-
-//\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormAddPageUrl() . '$@', array('\Guk\GukPages\ControllerForms', 'finFormAddAction'), 0);
-    \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormColUrl('(\d+)') . '$@', array(\Guk\GukPages\ControllerForms::class, 'finFormColAction'), 0);
-    \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormParamsPageUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormParamsAction'), 0);
-    \OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::getFinFormViewUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'finFormViewAction'), 0);
 
 //\OLOG\Router::match('@^' . \Guk\GukPages\ControllerForms::docsUrl('(\d+)') . '$@', array('\Guk\GukPages\ControllerForms', 'docsAction'), 0);
     \OLOG\Router::match2(FormsController::docsAction(2, '(\d+)'), 0);
@@ -55,7 +56,7 @@ try {
     \OLOG\Router::match2(\Guk\Pages\Reports\ControllerReports::reportsByVuzAction(2), 0);
     \OLOG\Router::match2(\Guk\Pages\Reports\ControllerReports::detailsForRequestAndFormRowAction(2, '(\d+)', '(\d+)'), 0);
 
-    \OLOG\Router::match('@^' . \Guk\Pages\Terms\ControllerTerms::vocabulariesUrl() . '$@', array(\Guk\Pages\Terms\ControllerTerms::class, "vocabulariesAction"), 0);
+    \OLOG\Router::match2(\Guk\Pages\Terms\ControllerTerms::vocabulariesAction(2), 0);
     \OLOG\Router::match('@^' . \Guk\Pages\Terms\ControllerTerms::vocabularyUrl('(\d+)') . '$@', array(\Guk\Pages\Terms\ControllerTerms::class, "vocabularyAction"), 0);
 
     \OLOG\Router::match('@^' . \Guk\GukPages\ControllerDFO::dfoUrl() . '$@', array(\Guk\GukPages\ControllerDFO::class, 'dfoAction'), 0);

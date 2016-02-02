@@ -9,18 +9,18 @@ class ControllerTerms
     const RENAME_VOCABULARY_OPERATION_CODE = 'RENAME_VOCABULARY_OPERATION_CODE';
     const ADD_TERM_OPERATION_CODE = 'ADD_TERM_OPERATION_CODE';
 
-    static public function vocabulariesUrl(){
-        return '/guk/vocabularies';
-    }
+    static public function vocabulariesAction($mode){
+        $self_url = '/guk/vocabularies';
+        if ($mode == 1) return $self_url;
+        if ($mode == 2) return array(__METHOD__, $self_url);
 
-    public function vocabulariesAction(){
         \Cebera\BT::matchOperation(
             \Guk\Pages\Terms\ControllerTerms::ADD_VOCABULARY_OPERATION_CODE,
             function() {\Guk\Pages\Terms\ControllerTerms::addVocabularyOperation();}
         );
 
         ob_start();
-        \Guk\GukPages\Templates\VocabulariesTemplate::render();
+        \Guk\Pages\Terms\VocabulariesTemplate::render();
         $content = ob_get_clean();
 
         \Guk\Pages\GukLayoutTemplate::render($content);
@@ -47,7 +47,7 @@ class ControllerTerms
         );
 
         ob_start();
-        \Guk\Pages\Terms\VocabularyTemplate::render($vocabulary_id);
+        VocabularyTemplate::render($vocabulary_id);
         $content = ob_get_clean();
 
         \Guk\Pages\GukLayoutTemplate::render($content);
@@ -62,7 +62,7 @@ class ControllerTerms
         $vocabulary_obj->setTitle($title);
         $vocabulary_obj->save();
 
-        \OLOG\Helpers::redirect(self::vocabulariesUrl());
+        \OLOG\Helpers::redirect(self::vocabulariesAction(1));
     }
 
     static public function addTermOperation($vocabulary_id){
@@ -94,6 +94,6 @@ class ControllerTerms
         $vocabulary_obj = \Guk\Vocabulary::factory($vocabulary_id);
         $vocabulary_obj->delete();
 
-        \OLOG\Helpers::redirect(self::vocabulariesUrl());
+        \OLOG\Helpers::redirect(self::vocabulariesAction(1));
     }
 }

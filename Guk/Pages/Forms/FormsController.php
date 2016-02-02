@@ -43,7 +43,7 @@ class FormsController
         if ($mode == 1) return $self_url;
         if ($mode == 2) return array(__METHOD__, $self_url);
 
-        \Cebera\BT::matchOperation(self::OPERATION_CODE_EDIT_CELL, function() use ($form_id){self::operationEditFormCell($form_id);});
+        //\Cebera\BT::matchOperation(self::OPERATION_CODE_EDIT_CELL, function() use ($form_id){self::operationEditFormCell($form_id);});
         \Cebera\BT::matchOperation(ControllerForms::OPERATION_CODE_ADD_ROW, function () use ($form_id) {ControllerForms::operationAddRow($form_id);});
 
 
@@ -68,6 +68,7 @@ class FormsController
         \Guk\Pages\GukLayoutTemplate::render($content);
     }
 
+    /*
     static public function operationEditFormCell($form_id)
     {
         $row_id = \Cebera\BT::getPostValue(\Guk\GukPages\Templates\FormTemplate::FIELD_NAME_ROW_ID);
@@ -88,6 +89,7 @@ class FormsController
 
         \OLOG\Helpers::redirect(\Guk\Pages\Forms\FormsController::formAction(1, $form_id));
     }
+    */
 
     public static function finFormRowAction($mode, $row_id)
     {

@@ -40,7 +40,6 @@ class Vocabulary implements \OLOG\Model\InterfaceFactory
         return $this->created_at_ts;
     }
 
-
     static public function getAllVocabulariesIdsArrByTitle(){
         $vocabularies_ids_arr = \OLOG\DB\DBWrapper::readColumn(
             \AppConfig\Config::DB_NAME_GUK_FINANCE,
@@ -48,5 +47,19 @@ class Vocabulary implements \OLOG\Model\InterfaceFactory
         );
 
         return $vocabularies_ids_arr;
+    }
+
+    public function getTermsJsonStr(){
+        $term_ids_arr = \Guk\Term::getTermIdsArrForVocabularyByTitle($this->getId());
+
+        $terms_arr = array(array('value' => 0, 'text' => 'не выбран'));
+
+        foreach ($term_ids_arr as $term_id){
+            $term_obj = \Guk\Term::factory($term_id);
+            $terms_arr[] = array('value' => $term_id, 'text' => $term_obj->getTitle());
+
+        }
+
+        return json_encode($terms_arr);
     }
 }

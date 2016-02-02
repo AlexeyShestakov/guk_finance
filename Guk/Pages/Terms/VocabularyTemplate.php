@@ -12,15 +12,13 @@ class VocabularyTemplate
 
     static public function render($vocabulary_id){
         $vocabulary_obj = \Guk\Vocabulary::factory($vocabulary_id);
-        echo \Cebera\BT::h1_plain(\Cebera\BT::a(\Guk\Pages\Terms\ControllerTerms::vocabulariesUrl(), 'Словари') . ' / ' . $vocabulary_obj->getTitle());
+        echo \Cebera\BT::pageHeader_plain(\Cebera\BT::a(\Guk\Pages\Terms\ControllerTerms::vocabulariesAction(1), 'Словари') . ' / ' . $vocabulary_obj->getTitle());
 
-        echo \Cebera\BT::div_plain(
+        echo \Cebera\BT::toolbar_plain(
             \Cebera\BT::modalToggleButton(self::ADD_TERM_MODAL_ID, 'Создать терм') .
             \Cebera\BT::modalToggleButton(self::DELETE_VOCABULARY_MODAL_ID, 'Удалить словарь') .
             \Cebera\BT::modalToggleButton(self::RENAME_VOCABULARY_MODAL_ID, 'Переименовать словарь')
         );
-
-        echo \Cebera\BT::div_plain('&nbsp;');
 
         $terms_ids_arr = \Guk\Term::getTermIdsArrForVocabularyByTitle($vocabulary_id);
         echo \Cebera\BT::beginTable();

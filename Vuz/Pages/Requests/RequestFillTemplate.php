@@ -26,20 +26,20 @@ class RequestFillTemplate
 
         ?>
 
-        <table class="table table-bordered table-condensed">
+        <table class="table">
 
             <?php
 
             echo '<thead><tr>';
-            echo '<th><small>№</small></th>';
+            echo '<th>№</th>';
 
             foreach ($col_ids_arr as $col_id){
                 $col_obj = \Guk\FinFormCol::factory($col_id);
 
-                echo '<th style="text-align: center;"><small>' . $col_obj->getTitle() . '</small></th>';
+                echo '<th style="text-align: center;">' . $col_obj->getTitle() . '</th>';
             }
 
-            echo '<th style="text-align: center;"><small>Детали</small></th>';
+            echo '<th style="text-align: center;">Детали</th>';
             echo '</tr></thead>';
 
             foreach ($row_ids_arr as $row_id){

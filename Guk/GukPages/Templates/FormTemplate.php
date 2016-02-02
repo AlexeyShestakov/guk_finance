@@ -67,10 +67,10 @@ class FormTemplate
 
         echo \Cebera\BT::delimiter();
 
-        echo \Cebera\BT::beginTable('table-bordered');
+        echo \Cebera\BT::beginTable();
 
             echo '<thead><tr>';
-            echo '<th>-</th>';
+            echo '<th></th>';
 
             foreach ($col_ids_arr as $col_id) {
                 $col_obj = \Guk\FinFormCol::factory($col_id);
@@ -133,7 +133,6 @@ class FormTemplate
                                 $cell_content_class = ' glyphicon glyphicon-pencil ';
                             }
 
-                            // используем pre чтобы не переписывать переносы строк в контенте
                             echo '<div class="' . $cell_content_class . '" style="cursor: pointer; border-bottom: 1px dashed gray;" data-rowid="' . $row_id . '" data-colid="' . $col_id . '" href="#" onclick="openCellEditModal($(this));">' . \Cebera\BT::sanitizeTagContent($cell_value) . '</div>';
 
                             echo '</td>';
